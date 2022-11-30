@@ -45,7 +45,7 @@ class UserController extends Controller
             return redirect('/list_ruangan');
         } else { // false
             //Login Fail
-            return redirect('/login')->with('message', 'Username atau password salah');
+            return redirect('/auth')->with('message', 'Username atau password salah');
         }
     }
 
