@@ -27,6 +27,7 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbar">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="page-scroll" href="#page-top">Beranda</a></li>
+                        <li><a class="page-scroll" href="#features">Statistik</a></li>
                         <li><a class="page-scroll" href="#contact">Kontak</a></li>
                     </ul>
                 </div>
@@ -42,16 +43,36 @@
                     <div class="carousel-caption">
                         <h1 class="wow zoomIn animated"> Inventaris Aset </h1>
                         <p class="wow zoomIn animated"> Sistem Informasi Inventaris Aset PSTI-UNRAM </p> <br />
-                        <p> <br /> <a class="btn btn-lg btn-success" href="/auth"> <i
-                                    class="fa fa-lock"></i> &nbsp;Masuk </a> </p>
+                        <p> <br /> <a class="btn btn-lg btn-success" href="/auth"> <i class="fa fa-lock"></i>
+                                &nbsp;Masuk </a> </p>
                     </div>
-                    <div class="carousel-image wow zoomIn animated"> <img
-                            src="{{ asset('storage/logo/logoPSTI.jpg') }}" alt="Praktek Kerja Lapangan"  width="150" height="150"> </div>
+                    <div class="carousel-image wow zoomIn animated"> <img src="{{ asset('storage/logo/logoPSTI.jpg') }}"
+                            alt="Praktek Kerja Lapangan" width="150" height="150"> </div>
                 </div>
                 <div class="header-back"></div>
             </div>
         </div>
     </div>
+
+
+    <section id="features" class="container features">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Statistik Penggunaan</h1> <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-center wow fadeInLeft">
+            </div>
+            <div class="col-md-6 text-center  wow zoomIn">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="col-md-3 text-center wow fadeInRight">
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="gray-section contact">
         <div class="container">
             <div class="row m-b-lg">
@@ -95,6 +116,12 @@
     <script src={{ asset('js/plugins/wow/wow.min.js') }}></script>
     <script src={{ asset('js/popper.min.js') }}></script>
     <script src={{ asset('js/beranda.js') }}></script>
+
+    {{-- chart --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src={{ asset('js/mychart.js') }}></script>
+
+
 
 </body>
 

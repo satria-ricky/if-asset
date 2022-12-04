@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function tampil_home()
     {
-        return view('Auth.login2',[
+        return view('Auth.home',[
             'title' => 'Inventaris Aset PSTI-UNRAM'
         ]);
     }
@@ -52,11 +52,11 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-    
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
-    
+
         return redirect('/')->with('success', 'Berhasil Logout!');
     }
 }
