@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
 
 Route::group(['middleware' => ['auth','ceklevel:2']], function () {
     Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
+    Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 });
 
 Route::group(['middleware' => ['auth','ceklevel:3']], function () {

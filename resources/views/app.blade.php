@@ -73,15 +73,18 @@
 
     <!-- Page-Level Scripts -->
     <script src="{{ asset('js/myjs.js') }}"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+    </script>
 
     @if (Request::is('adm_laporan'))
         <script>
             function setFotoAset() {
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    },
-                });
+
 
                 var id = document.getElementById("IdAsetModalTambah").value;
 
@@ -100,6 +103,61 @@
                         document.getElementById('IdKondisiModalTambah').value = data[0].kondisi;
 
                     },
+                });
+            }
+        </script>
+    @endif
+
+
+    @if (Request::is('list_laporan'))
+        <script>
+            function FilterLaporanProdi() {
+                var tanggal_awal = document.getElementById("tanggal_awal").value;
+                var tanggal_akhir = document.getElementById("tanggal_akhir").value;
+                var kondisi = document.getElementById("kondisi").value;
+
+                // console.log(tanggal_awal,tanggal_akhir,kondisi);
+                $("#dataTabelAset").DataTable().destroy();
+                var i = 0;
+                $("#dataTabelAset").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ url('filterLaporan') }}",
+                        dataType: "json",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            awal: tanggal_awal,
+                            akhir: tanggal_akhir,
+                            kondisi: kondisi
+                        },
+                    },
+                    columns: [
+                        {
+                            data: "id_aset",
+                            render: function (data, type, row, meta) {
+                                return (i = i + 1);
+                            },
+                            className: "text-center",
+                        },
+                        {
+                            data: "kode_aset",
+                            className: "text-center",
+                        },
+                        {
+                            data: "nama",
+                            className: "text-center",
+                        },
+                        {
+                            data: "checked_at",
+                            className: "text-center",
+                        },
+                        {
+                            data: "kondisi",
+                            className: "text-center",
+                        },
+                    ],
                 });
             }
         </script>

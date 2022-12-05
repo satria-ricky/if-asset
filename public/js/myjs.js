@@ -16,7 +16,6 @@ function buttonLogout() {
     });
 }
 
-
 function cekFoto() {
     const getFoto = document.querySelector("#id_foto");
     const setFoto = document.querySelector("#priviewFoto");

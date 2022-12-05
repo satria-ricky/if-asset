@@ -6,7 +6,7 @@
             <h2>Laporan</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/adm_laporan">{{ $title }}</a>
+                    <a>{{ $title }}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Tables</a>

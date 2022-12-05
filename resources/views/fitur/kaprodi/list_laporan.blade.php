@@ -3,10 +3,10 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Aset</h2>
+            <h2>Laporan</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Daftar Laporan</a>
+                    <a>{{ $title }}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Tables</a>
@@ -23,48 +23,39 @@
     <div class="wrapper wrapper-content animated fadeInRight">
 
         <div class="ibox-content m-b-sm border-bottom">
+            <h3>Filter</h3>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="col-form-label" for="order_id">Order ID</label>
-                        <input type="text" id="order_id" name="order_id" value="" placeholder="Order ID" class="form-control">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label" for="status">Order status</label>
-                        <input type="text" id="status" name="status" value="" placeholder="Status" class="form-control">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label" for="customer">Customer</label>
-                        <input type="text" id="customer" name="customer" value="" placeholder="Customer" class="form-control">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_added">Date added</label>
+                        <label class="col-form-label" for="date_added">Batas awal </label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added" type="text" class="form-control" value="03/04/2014">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
+                                type="datetime-local" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Date modified</label>
+                        <label class="col-form-label" for="date_modified">Batas akhir</label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_modified" type="text" class="form-control" value="03/06/2014">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
+                                type="datetime-local" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="col-form-label" for="amount">Amount</label>
-                        <input type="text" id="amount" name="amount" value="" placeholder="Amount" class="form-control">
+                        <label class="col-form-label" for="kondisi">Kondisi</label>
+                        <select class="js-example-basic-single form-control" style="height: 35px;" id="kondisi"
+                                required>
+                                @foreach ($dataKondisi as $item)
+                                    <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
+                                @endforeach
+                            </select>
                     </div>
+                </div>
+                <div class="col-sm-3" style="margin: auto; padding-top: 15px;">
+                    <button class="btn btn-success" onclick="FilterLaporanProdi()"> Filter </button>
                 </div>
             </div>
 
@@ -77,9 +68,9 @@
                         <h5>Aset</h5>
 
                     </div> --}}
-                    <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
-                        <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
-                            Aset</button>
+                    <div class="ibox-content">
+                        {{-- <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
+                            Aset</button> --}}
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover dataTables-example"
                                 id="dataTabelAset">
@@ -88,50 +79,25 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Kode aset</th>
                                         <th class="text-center">Nama aset</th>
-                                        <th class="text-center">Jumlah</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center">Diperiksa</th>
+                                        <th class="text-center">Kondisi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dataAset as $item)
+                                    @foreach ($dataLaporan as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->kode_aset }}</td>
                                             <td class="text-center">{{ $item->nama }}</td>
-                                            <td class="text-center">{{ $item->jumlah }}</td>
+                                            <td class="text-center"> {{ $item->checked_at }}</td>
                                             <td class="text-center">
-                                                <div class="btn-group">
-                                                    <button data-toggle="dropdown"
-                                                        class="btn btn-primary btn-sm dropdown-toggle">Action </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="/detail_aset/{{ Crypt::encrypt($item->id_aset) }}"
-                                                                target="_blank"> Detail</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="/qr_code/{{ Crypt::encrypt($item->id_aset) }}"
-                                                                class="dropdown-item" target="_blank">Generate QR Code</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="/edit_aset/{{ Crypt::encrypt($item->id_aset) }}">
-                                                                Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <form action="/hapus_aset" method="post">
-                                                                @csrf
-                                                                <input type="hidden" name="id"
-                                                                    value="{{ $item->id_aset }}">
-                                                                <button
-                                                                    style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
-                                                                    class="dropdown-item pb-2" type="submit"
-                                                                    onclick="return confirm('Are you sure?')">
-                                                                    Hapus</button>
-                                                            </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                @if ($item->id_kondisi == 1)
+                                                    <p class="btn btn-danger btn-sm"> {{ $item->nama_kondisi }}
+                                                    </p>
+                                                @else
+                                                    <p class="btn btn-success btn-sm"> {{ $item->nama_kondisi }}
+                                                    </p>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
