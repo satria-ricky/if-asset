@@ -50,9 +50,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
-Route::group([Auth::user()->role == 1], function () {
-    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
-});
+// Route::group([Auth::user()->role == 1], function () {
+//     Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
+// });
 
 
 Route::get('/', [UserController::class, 'tampil_home']);
