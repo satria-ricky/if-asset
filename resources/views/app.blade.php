@@ -15,7 +15,7 @@
 
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/alert.js') }}"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
@@ -60,7 +60,7 @@
     <!-- Custom and plugin javascript -->
     <script src={{ asset('js/inspinia.js') }}></script>
     <script src={{ asset('js/plugins/pace/pace.min.js') }}></script>
-
+    <script src={{ asset('js/plugins/datapicker/bootstrap-datepicker.js') }}></script>
     <!-- jQuery UI -->
     <script src={{ asset('js/plugins/jquery-ui/jquery-ui.min.js') }}></script>
     {{-- select2 --}}
@@ -72,6 +72,38 @@
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 
     <!-- Page-Level Scripts -->
+    <script src="{{ asset('js/myjs.js') }}"></script>
+
+    @if (Request::is('adm_laporan'))
+        <script>
+            function setFotoAset() {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                var id = document.getElementById("IdAsetModalTambah").value;
+
+                $.ajax({
+                    type: "post",
+                    url: "{{ url('asetById') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_aset: id,
+                    },
+                    success: function(data) {
+                        //   console.log(data);
+
+                        $('#priviewFoto').attr('src', "{{ asset('storage') }}/" + data[0].foto_aset);
+                        document.getElementById("NamaAsetModalTambah").value = data[0].nama;
+                        document.getElementById('IdKondisiModalTambah').value = data[0].kondisi;
+
+                    },
+                });
+            }
+        </script>
+    @endif
 
     <script>
         // Upgrade button class name
@@ -121,6 +153,10 @@
             $(document).ready(function() {
                 $('.js-example-basic-single').select2();
             });
+
+            $(document).ready(function() {
+                $('.js-example-basic-single-2').select2();
+            });
         });
     </script>
 
@@ -147,12 +183,6 @@
 
     @if (Request::is('list_aset'))
         <script>
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
             let startYear = 1800;
             let endYear = new Date().getFullYear();
             for (i = endYear; i > startYear; i--) {
@@ -216,6 +246,7 @@
             }
         </script>
     @endif
+
 
 </body>
 

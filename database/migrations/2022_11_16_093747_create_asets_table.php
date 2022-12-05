@@ -21,7 +21,7 @@ class CreateAsetsTable extends Migration
             $table->string('id_sumber')->nullable();
             $table->integer('jumlah')->nullable();
             $table->string('lokasi')->nullable();
-            $table->string('kondisi')->nullable();
+            $table->integer('kondisi')->nullable();
             $table->string('tahun_pengadaan')->nullable(); 
             $table->string('foto_aset')->nullable();
             $table->timestamps();

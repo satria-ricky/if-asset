@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Aset::factory(5)->create();
         \App\Models\Ruangan::factory(3)->create();
         \App\Models\Sumber::factory(3)->create();
+        \App\Models\Kondisi::factory(3)->create();
     }
 }

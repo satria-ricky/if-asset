@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLaporansTable extends Migration
+class CreateKondisisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateLaporansTable extends Migration
      */
     public function up()
     {
-        Schema::create('laporans', function (Blueprint $table) {
-            $table->id('id_laporan');
-            $table->integer('id_aset')->nullable();
-            $table->timestamp('checked_at')->nullable();
+        Schema::create('kondisis', function (Blueprint $table) {
+            $table->id('id_kondisi');
+            $table->string('nama_kondisi')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateLaporansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laporans');
+        Schema::dropIfExists('kondisis');
     }
 }

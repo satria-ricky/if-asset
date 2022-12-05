@@ -26,6 +26,9 @@
                     <li  class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @endif">
                         <a href="/list_aset"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Aset</span></a>
                     </li>
+                    <li  class="@if(Request::is('adm_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
+                        <a href="/adm_laporan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Laporan</span></a>
+                    </li>
                 </ul>
 
             </div>

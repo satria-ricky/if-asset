@@ -126,7 +126,7 @@
                     <tbody>
                         <tr>
                             <th scope="row" class="text-start">Kondisi</th>
-                            <td> {{ $data->kondisi }} </td>
+                            <td> {{ $data->nama_kondisi }} </td>
                         </tr>
                     </tbody>
                     <tbody>

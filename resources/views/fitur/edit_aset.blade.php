@@ -33,6 +33,22 @@
                             <input type="hidden" name="id" value="{{ $dataAset->id_aset }}">
                             <div class="table-responsive">
                                 <div class="form-group">
+                                    <label>Sumber</label>
+                                    <select class="js-example-basic-single form-control" style="width: auto"
+                                        name="idSumber" required>
+                                        @foreach ($dataSumber as $item)
+                                            @if ($item->id_sumber == $dataAset->id_sumber)
+                                                <option selected value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
                                     <label>Ruangan</label>
                                     <select class="js-example-basic-single form-control" style="width: auto"
                                         name="idRuangan" required>
@@ -46,6 +62,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+
                                 <div class="form-group">
                                     <label>Kode Aset</label>
                                     <input class="form-control" type="text" name="kode" required
@@ -72,8 +90,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Kondisi</label>
-                                    <input class="form-control" type="text" name="kondisi"
-                                        value="{{ $dataAset->kondisi }}">
+                                    {{-- <input class="form-control" type="text" name="kondisi"
+                                        value="{{ $dataAset->kondisi }}"> --}}
+
+                                    <select class="js-example-basic-single form-control" style="width: auto" name="kondisi">
+                                        @foreach ($dataKondisi as $item)
+                                            @if ($item->id_kondisi == $dataAset->kondisi)
+                                                <option selected value="{{ $item->id_kondisi }}">
+                                                    {{ $item->nama_kondisi }}
+                                                </option>
+                                            @else
+                                                <option selected value="{{ $item->id_kondisi }}">
+                                                    {{ $item->nama_kondisi }}
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+
                                 </div>
                                 <div class="form-group">
                                     <label>Tahun Pengadaan</label>
