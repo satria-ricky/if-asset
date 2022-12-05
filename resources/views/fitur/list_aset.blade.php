@@ -60,7 +60,7 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Kode aset</th>
                                         <th class="text-center">Nama aset</th>
-                                        <th class="text-center">Jumlah</th>
+                                        <th class="text-center">Kondisi</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -70,7 +70,13 @@
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->kode_aset }}</td>
                                             <td class="text-center">{{ $item->nama }}</td>
-                                            <td class="text-center">{{ $item->jumlah }}</td>
+                                            <td class="text-center">
+                                                @if ($item->id_kondisi == 1)
+                                                    <p class="btn btn-rounded btn-danger btn-sm"> {{ $item->nama_kondisi }} </p>
+                                                @else
+                                                    <p class="btn btn-rounded btn-success btn-sm"> {{ $item->nama_kondisi }} </p>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <button data-toggle="dropdown"
@@ -138,7 +144,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Ruangan</label>
                             <select class="js-example-basic-single form-control" style="width: auto" name="idRuangan"
@@ -148,7 +154,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Kode Aset</label>
                             <input class="form-control" type="text" name="kode" required>

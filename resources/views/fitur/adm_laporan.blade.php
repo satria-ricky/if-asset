@@ -6,7 +6,7 @@
             <h2>Laporan</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/adm_laporan">{{  $title }}</a>
+                    <a href="/adm_laporan">{{ $title }}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Tables</a>
@@ -52,7 +52,15 @@
                                             <td class="text-center">{{ $item->kode_aset }}</td>
                                             <td class="text-center">{{ $item->nama }}</td>
                                             <td class="text-center"> {{ $item->checked_at }}</td>
-                                            <td class="text-center">{{ $item->nama_kondisi }}</td>
+                                            <td class="text-center">
+                                                @if ($item->id_kondisi == 1)
+                                                    <p class="btn btn-rounded btn-danger btn-sm"> {{ $item->nama_kondisi }}
+                                                    </p>
+                                                @else
+                                                    <p class="btn btn-rounded btn-success btn-sm"> {{ $item->nama_kondisi }}
+                                                    </p>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <button data-toggle="dropdown"
@@ -104,8 +112,8 @@
                         @csrf
                         <div class="form-group">
                             <label>Kode Aset</label>
-                            <select class="js-example-basic-single-2 form-control" name="id_aset" id="IdAsetModalTambah" onchange="setFotoAset()"
-                                required>
+                            <select class="js-example-basic-single-2 form-control" name="id_aset" id="IdAsetModalTambah"
+                                onchange="setFotoAset()" required>
                                 @foreach ($dataAset as $item)
                                     <option value="{{ $item->id_aset }}"> {{ $item->kode_aset }}</option>
                                 @endforeach
@@ -122,8 +130,8 @@
 
                         <div class="form-group">
                             <label>Kondisi</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="kondisi" id="IdKondisiModalTambah"
-                                required>
+                            <select class="js-example-basic-single form-control" style="width: auto" name="kondisi"
+                                id="IdKondisiModalTambah" required>
                                 @foreach ($dataKondisi as $item)
                                     <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
                                 @endforeach
@@ -138,8 +146,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary"
-                        onclick="return confirm('Are you sure?')">Apply</button>
+                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?')">Apply</button>
                     </form>
                 </div>
             </div>
