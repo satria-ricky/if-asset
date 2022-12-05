@@ -24,7 +24,15 @@
 
 <body>
     <div id="wrapper">
-        @include('template.sidebar')
+        @if (Auth::user()->role == 1)
+            @include('template.sidebar')
+        @elseif (Auth::user()->role == 2)
+            @include('template.sidebar_kaprodi')
+        @elseif (Auth::user()->role == 3)
+            @include('template.sidebar_mahasiswa')
+        @endif
+
+
 
         <div id="page-wrapper" class="gray-bg">
             @include('template.header')
@@ -168,11 +176,10 @@
                             id_ruangan: id
                         }
                     },
-                    "columns": [
-                        {
+                    "columns": [{
                             "data": "id_aset",
                             render: function(data, type, row, meta) {
-                                return i = i +1;
+                                return i = i + 1;
                             },
                             "className": "text-center",
                         },
