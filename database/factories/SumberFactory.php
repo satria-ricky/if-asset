@@ -14,7 +14,7 @@ class SumberFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama_sumber' => $this->faker->name(),
         ];
     }
 }

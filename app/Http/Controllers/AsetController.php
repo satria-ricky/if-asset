@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aset;
 use App\Models\Ruangan;
+use App\Models\Sumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
@@ -62,7 +63,8 @@ class AsetController extends Controller
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
         $dataAset = Aset::all();
-        return view("fitur.list_aset", compact("dataAset", "title", "dataRuangan"));
+        $dataSumber = Sumber::all();
+        return view("fitur.list_aset", compact("dataAset", "title", "dataRuangan","dataSumber"));
 
     }
 
@@ -76,6 +78,7 @@ class AsetController extends Controller
         );
 
         $hasil = [
+            'id_sumber' => $req['idSumber'],
             'id_ruangan' => $req['idRuangan'],
             'kode_aset' => $req['kode'],
             'nama' => $req['nama'],
@@ -133,6 +136,7 @@ class AsetController extends Controller
         );
 
         $hasil = [
+            'id_sumber' => $req['idSumber'],
             'id_ruangan' => $req['idRuangan'],
             'kode_aset' => $req['kode'],
             'nama' => $req['nama'],
@@ -165,6 +169,7 @@ class AsetController extends Controller
         $id = Crypt::decrypt($req->id);
         $dataAset = DB::table('asets')
             ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+            ->leftJoin('sumbers', 'sumbers.id_sumber', '=', 'asets.id_sumber')
             ->where('asets.id_aset',$id)
             ->first();
         

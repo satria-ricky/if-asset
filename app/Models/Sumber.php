@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Sumber extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'id_sumber';
+    protected $guarded = ['id_sumber'];
+
 }

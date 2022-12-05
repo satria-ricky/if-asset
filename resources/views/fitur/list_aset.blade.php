@@ -130,6 +130,16 @@
                     <form role="form" method="post" action="/tambah_aset" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
+                            <label>Sumber</label>
+                            <select class="js-example-basic-single form-control" style="width: auto" name="idSumber"
+                                required>
+                                @foreach ($dataSumber as $item)
+                                    <option value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
                             <label>Ruangan</label>
                             <select class="js-example-basic-single form-control" style="width: auto" name="idRuangan"
                                 required>
@@ -138,6 +148,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        
                         <div class="form-group">
                             <label>Kode Aset</label>
                             <input class="form-control" type="text" name="kode" required>

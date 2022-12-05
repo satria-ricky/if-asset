@@ -18,7 +18,7 @@ class CreateAsetsTable extends Migration
             $table->integer('id_ruangan');
             $table->string('kode_aset');
             $table->string('nama')->nullable();
-            $table->string('sumber')->nullable();
+            $table->string('id_sumber')->nullable();
             $table->integer('jumlah')->nullable();
             $table->string('lokasi')->nullable();
             $table->string('kondisi')->nullable();

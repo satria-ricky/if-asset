@@ -1,1 +1,1 @@
-<img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(250)->mergeString(Storage::get('public/logo/logoPSTI.jpg'),.3)->generate($data)) !!} ">
+<img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(250)->mergeString(Storage::get('public/logo/logoUNRAM.png'),.3)->generate($data)) !!} ">

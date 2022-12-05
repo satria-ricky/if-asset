@@ -86,6 +86,13 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <th scope="row" class="text-start">Sumber</th>
+                            <td> {{ $data->nama_sumber }} </td>
+                        </tr>
+
+                    </tbody>
+                    <tbody>
+                        <tr>
                             <th scope="row" class="text-start">Ruangan</th>
                             <td> {{ $data->nama_ruangan }} </td>
                         </tr>

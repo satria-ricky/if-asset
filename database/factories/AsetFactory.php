@@ -16,6 +16,7 @@ class AsetFactory extends Factory
         return [
             'id_ruangan' => mt_rand(1, 3),
             'kode_aset' => $this->faker->unique()->text($maxNbChars = 7),
+            'id_sumber' => mt_rand(1, 3),
             'nama' => $this->faker->text($maxNbChars = 20),
             'jumlah' => $this->faker->randomDigit(1),
             'lokasi' => $this->faker->text($maxNbChars = 20),

@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function tampil_home()
     {
-        return view('Auth.login2',[
+        return view('Auth.home',[
             'title' => 'Inventaris Aset PSTI-UNRAM'
         ]);
     }

@@ -17,6 +17,9 @@
                     {{-- <li class= {{$loc == 'dashboard' ? "active" : "1"}}>
                         <a href="/"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
                     </li> --}}
+                    {{-- <li  class="@if(Request::is('list_sumber')) active @endif">
+                        <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Sumber</span></a>
+                    </li> --}}
                     <li  class="@if(Request::is('list_ruangan')) active @endif">
                         <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Ruangan</span></a>
                     </li>
