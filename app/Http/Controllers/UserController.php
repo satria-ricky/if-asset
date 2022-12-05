@@ -24,9 +24,22 @@ class UserController extends Controller
 
     public function tampil_login()
     {
-        return view('Auth.login',[
-            'title' => 'Inventaris Aset PSTI-UNRAM'
-        ]);
+        if (!Auth::user()) {
+            return view('Auth.login',[
+                'title' => 'Inventaris Aset PSTI-UNRAM'
+            ]);
+        } else {
+            if (Auth::user()->level == 1) {
+                return redirect('/list_ruangan');
+            } elseif (Auth::user()->level == 2) {
+                return redirect('/list_laporan');
+            }elseif (Auth::user()->level == 3) {
+                return redirect('/list_histori');
+            }
+            
+        }
+        
+        
     }
 
     public function login(Request $request)
@@ -42,7 +55,14 @@ class UserController extends Controller
         // echo Auth::user()->username;
         if (Auth::attempt($data)) { // true sekalian session field di users nanti bisa dipanggil via Auth
             // echo "Login Success";
-            return redirect('/list_ruangan');
+            if (Auth::user()->level == 1) {
+                return redirect('/list_ruangan');
+            } elseif(Auth::user()->level == 2) {
+                return redirect('/list_laporan');
+            } elseif(Auth::user()->level == 3) {
+                return redirect('/list_histori');
+            }
+        
         } else { // false
             //Login Fail
             return redirect('/auth')->with('message', 'Username atau password salah');

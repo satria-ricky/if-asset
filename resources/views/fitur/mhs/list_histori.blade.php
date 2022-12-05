@@ -6,7 +6,7 @@
             <h2>Aset</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Daftar Aset</a>
+                    <a href="index.html">Daftar Histori</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Tables</a>
@@ -21,26 +21,6 @@
 
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row mb-3">
-            <div class="col-lg-12">
-                <div class="row ml-2">
-                    <p style="font-size: 18px;">Filter Ruangan</p>
-                </div>
-                <div class="row ml-2">
-                    <div style="display:flex;">
-                        <select id="idRuangan" class="js-example-basic-single form-control">
-                            @foreach ($dataRuangan as $item)
-                                <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
-                            @endforeach
-
-                        </select>
-                        {{-- <button class="btn btn-sm btn-success ml-2" onclick="filterByRuangan()"> Filter</button> --}}
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-12">

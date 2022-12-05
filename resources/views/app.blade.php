@@ -24,11 +24,11 @@
 
 <body>
     <div id="wrapper">
-        @if (Auth::user()->role == 1)
+        @if (Auth::user()->level == 1)
             @include('template.sidebar')
-        @elseif (Auth::user()->role == 2)
+        @elseif (Auth::user()->level == 2)
             @include('template.sidebar_kaprodi')
-        @elseif (Auth::user()->role == 3)
+        @elseif (Auth::user()->level == 3)
             @include('template.sidebar_mahasiswa')
         @endif
 

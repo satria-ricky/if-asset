@@ -17,7 +17,7 @@ class UserFactory extends Factory
     {
         return [
             'nama' => $this->faker->name(),
-            'role' => mt_rand(2,3),
+            'level' => mt_rand(2,3),
             'username' => $this->faker->username(),
             'password' => Hash::make('123')
         ];

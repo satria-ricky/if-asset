@@ -6,7 +6,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message"> ... </span>
+                            <span class="m-r-sm text-muted welcome-message"> {{ Auth::user()->username }} </span>
                         </li>
                         <li class="dropdown">
                             {{-- <a class=" count-info" href="/profil">

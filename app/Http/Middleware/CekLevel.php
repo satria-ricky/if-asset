@@ -16,6 +16,9 @@ class CekLevel
      */
     public function handle(Request $request, Closure $next, ...$level)
     {
-        return $next($request);
+        if (in_array($request->user()->level,$level)){
+            return $next($request);
+        }
+        return redirect('/');
     }
 }
