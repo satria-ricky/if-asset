@@ -37,8 +37,9 @@
                 </div>
                 <div class="ibox-content">
                     <h1 class="black-text"> Login </h1>
-                    <form class="m-t" role="form" method="POST" action="/login">
+                    <form class="m-t" role="form" method="POST" action="/loginMhs">
                         @csrf
+                        <input type="hidden" name="id_aset" value="{{ $id_aset }}">
                         <div class="form-group">
                             <input type="text" name="username" class="form-control" placeholder="Username" required="">
                         </div>

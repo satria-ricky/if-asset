@@ -138,9 +138,9 @@
                         <tr>
                             <th scope="row" class="text-start">Want to use ? </th>
                             <td>
-                                <form action="/loginMhs" method="post">
+                                <form action="/authMhs" method="get" target="_blank">
                                     @csrf
-                                    <input type="hidden" name="id_aset" value="{{ $data->id_aset }}">
+                                    <input type="hidden" name="id_aset" value="{{ Crypt::encrypt($data->id_aset) }}">
                                     <button type="submit" class="btn btn-success btn-sm"> Use it!</button>
                                 </form> 
                                  

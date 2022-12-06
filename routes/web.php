@@ -75,7 +75,8 @@ Route::post('/login', [UserController::class, 'login']);
 Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
 
 //FROM QRCODE
-Route::post('/loginMhs', [UserController::class, 'tampil_loginMhs']);
+Route::get('/authMhs', [UserController::class, 'tampil_loginMhs'])->named('authMhs');
+Route::post('/loginMhs', [UserController::class, 'loginMhs']);
 
 
 
