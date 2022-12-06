@@ -81,24 +81,17 @@ class UserController extends Controller
 
 
     public function tampil_loginMhs(Request $request)
-    {
-        // dd($request->id_aset);
-        
-        if ($request->id_aset != '') {
-            
-            $i = Crypt::decrypt($request->id_aset);
-            session(['id_aset' => $i]);
-        } 
-
+    {   
+// dd($request->id_aset);
         return view('Auth.login_mhs', [
             'title' => 'Inventaris Aset PSTI-UNRAM',
-            'id_aset' => session('id_aset')
+            'id_aset' => $request->id_aset
         ]);
     }
 
     public function loginMhs(Request $request)
     {
-        
+        // dd($request);
         $id_aset = Crypt::decrypt($request->id_aset);
 
         $data = [
@@ -131,7 +124,7 @@ class UserController extends Controller
             }
         } else { // false
             //Login Fail
-            return redirect('/authMhs')->with('message', 'Username atau password salah');
+            return redirect('/authMhs/'.Crypt::encrypt($id_aset))->with('message', 'Username atau password salah');
         }
     }
 

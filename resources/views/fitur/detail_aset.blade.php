@@ -138,11 +138,7 @@
                         <tr>
                             <th scope="row" class="text-start">Want to use ? </th>
                             <td>
-                                <form action="/authMhs" method="get" target="_blank">
-                                    @csrf
-                                    <input type="hidden" name="id_aset" value="{{ Crypt::encrypt($data->id_aset) }}">
-                                    <button type="submit" class="btn btn-success btn-sm"> Use it!</button>
-                                </form> 
+                                <a href="/authMhs/{{ Crypt::encrypt($data->id_aset) }}"  target="_blank" class="btn btn-success btn-sm"> Use it!  </a>
                                  
                             </td>
                         </tr>

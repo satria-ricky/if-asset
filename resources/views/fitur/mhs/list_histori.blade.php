@@ -61,7 +61,7 @@
                                                 @if ($item->selesai == '')
                                                     <form action="/selesai_dipakai" method="post">
                                                         @csrf
-                                                        <input type="hidden" value="{{ $item->id }}" name="id">
+                                                        <input type="hidden" value="{{ $item->id_histori }}" name="id">
                                                         <button class="btn btn-rounded btn-danger btn-sm" type="submit"  onclick="return confirm('Are you sure?')" > Have done ? Click here! </button>
                                                     </form>
                                                 @else
