@@ -59,7 +59,9 @@ class UserController extends Controller
                 return redirect('/list_ruangan');
             } elseif(Auth::user()->level == 2) {
                 return redirect('/list_laporan');
-            } elseif(Auth::user()->level == 3) {
+            } 
+            
+            elseif(Auth::user()->level == 3) {
                 return redirect('/list_histori');
             }
         
@@ -68,6 +70,22 @@ class UserController extends Controller
             return redirect('/auth')->with('message', 'Username atau password salah');
         }
     }
+
+
+
+    //FROM QR CODE
+
+
+    public function tampil_loginMhs(Request $request)
+    {
+        // dd($request->id_aset);
+        return view('Auth.login_mhs',[
+            'title' => 'Inventaris Aset PSTI-UNRAM',
+            'id_aset' => $request->id_aset
+        ]);
+        
+    }
+
 
     public function logout(Request $request)
     {

@@ -96,7 +96,6 @@
                             <th scope="row" class="text-start">Ruangan</th>
                             <td> {{ $data->nama_ruangan }} </td>
                         </tr>
-
                     </tbody>
                     <tbody>
                         <tr>
@@ -133,6 +132,19 @@
                         <tr>
                             <th scope="row" class="text-start">Tahun Pengadaan</th>
                             <td> {{ $data->tahun_pengadaan }} </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Want to use ? </th>
+                            <td>
+                                <form action="/loginMhs" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id_aset" value="{{ $data->id_aset }}">
+                                    <button type="submit" class="btn btn-success btn-sm"> Use it!</button>
+                                </form> 
+                                 
+                            </td>
                         </tr>
                     </tbody>
 

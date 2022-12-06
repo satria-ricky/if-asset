@@ -14,8 +14,7 @@ class CreateHistorisTable extends Migration
     public function up()
     {
         Schema::create('historis', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_ruangan')->nullable();
+            $table->id('id_histori');
             $table->integer('id_user')->nullable();
             $table->integer('id_aset')->nullable();
             $table->timestamp('mulai')->nullable();

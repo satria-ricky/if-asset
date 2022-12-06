@@ -200,4 +200,21 @@ class AsetController extends Controller
             "url" => url('detail-aset/' . $req->id)
         ]);
     }
+
+
+    public function qr_code(Request $req)
+    { $id = Crypt::decrypt($req->id);
+
+        $aset = Aset::findOrFail($id);
+        
+        return view('fitur.qr_code',[
+            'aset' => $aset,
+            'title' => 'QRcode',
+            'data' => url('/detail_aset/'.$req->id)
+        ]);
+
+    }
+
+
+
 }

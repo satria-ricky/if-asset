@@ -15,7 +15,7 @@
                         </div>
                     </li>
                     <li  class="@if(Request::is('list_histori')) active @endif">
-                        <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Histori Penggunaan</span></a>
+                        <a href="/list_histori"><i class="fa fa-tachometer"></i> <span class="nav-label">Histori Penggunaan</span></a>
                     </li>
 
 

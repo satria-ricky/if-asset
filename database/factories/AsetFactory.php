@@ -20,7 +20,7 @@ class AsetFactory extends Factory
             'nama' => $this->faker->text($maxNbChars = 20),
             'jumlah' => $this->faker->randomDigit(1),
             'lokasi' => $this->faker->text($maxNbChars = 20),
-            'kondisi' => mt_rand(1, 3),
+            'kondisi' => mt_rand(1, 2),
             'tahun_pengadaan' => $this->faker->year(),
             'foto_aset' => 'foto-aset/default.png',
         ];

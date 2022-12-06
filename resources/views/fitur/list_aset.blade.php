@@ -72,9 +72,9 @@
                                             <td class="text-center">{{ $item->nama }}</td>
                                             <td class="text-center">
                                                 @if ($item->id_kondisi == 1)
-                                                    <p class="btn btn-rounded btn-danger btn-sm"> {{ $item->nama_kondisi }} </p>
+                                                    <p class="btn btn-danger btn-sm"> {{ $item->nama_kondisi }} </p>
                                                 @else
-                                                    <p class="btn btn-rounded btn-success btn-sm"> {{ $item->nama_kondisi }} </p>
+                                                    <p class="btn btn-success btn-sm"> {{ $item->nama_kondisi }} </p>
                                                 @endif
                                             </td>
                                             <td class="text-center">

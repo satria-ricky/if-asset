@@ -18,7 +18,7 @@
                         <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Ruangan</span></a>
                     </li> --}}
                     <li  class="@if(Request::is('list_laporan')) active @elseif(Request::is('edit_aset/*')) active @endif">
-                        <a href="/list_aset"><i class="fa fa-sticky-note"></i> <span class="nav-label">Laporan</span></a>
+                        <a href="/list_aset"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
                     </li>
                 </ul>
 

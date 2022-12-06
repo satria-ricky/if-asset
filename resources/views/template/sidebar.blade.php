@@ -21,13 +21,13 @@
                         <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Sumber</span></a>
                     </li> --}}
                     <li  class="@if(Request::is('list_ruangan')) active @endif">
-                        <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Ruangan</span></a>
+                        <a href="/list_ruangan"><i class="fa fa-home"></i> <span class="nav-label">Daftar Ruangan</span></a>
                     </li>
                     <li  class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @endif">
-                        <a href="/list_aset"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Aset</span></a>
+                        <a href="/list_aset"><i class="fa fa-database"></i> <span class="nav-label">Daftar Aset</span></a>
                     </li>
                     <li  class="@if(Request::is('adm_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
-                        <a href="/adm_laporan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Laporan</span></a>
+                        <a href="/adm_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Daftar Laporan</span></a>
                     </li>
                 </ul>
 
