@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ $title }}</title>
-
+    <link rel="shortcut icon" type="image/png" href="https://pkl.if.unram.ac.id/assets/img/fav.png" sizes="16x16" />
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
@@ -133,10 +133,9 @@
                             kondisi: kondisi
                         },
                     },
-                    columns: [
-                        {
+                    columns: [{
                             data: "id_aset",
-                            render: function (data, type, row, meta) {
+                            render: function(data, type, row, meta) {
                                 return (i = i + 1);
                             },
                             className: "text-center",
@@ -162,6 +161,81 @@
             }
         </script>
     @endif
+
+
+    @if (Request::is('adm_histori'))
+        <script>
+            function FilterHistoriAdm() {
+                var tanggal_awal = document.getElementById("tanggal_awal").value;
+                var tanggal_akhir = document.getElementById("tanggal_akhir").value;
+                var mahasiswa = document.getElementById("mahasiswa").value;
+
+                // console.log(tanggal_awal,tanggal_akhir,mahasiswa);
+                $("#dataTableHistori").DataTable().destroy();
+                var i = 0;
+
+                $.ajax({
+                    url: "{{ url('filterHistori') }}",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        awal: tanggal_awal,
+                        akhir: tanggal_akhir,
+                        mahasiswa: mahasiswa
+                    },
+                    success: function(data) {
+                        console.log('ini '+data);
+                    },
+                })
+                // $("#dataTableHistori").DataTable({
+                //     processing: true,
+                //     serverSide: true,
+                //     ajax: {
+                //         url: "{{ url('filterHistori') }}",
+                //         dataType: "json",
+                //         type: "POST",
+                //         data: {
+                //             _token: "{{ csrf_token() }}",
+                //             awal: tanggal_awal,
+                //             akhir: tanggal_akhir,
+                //             mahasiswa: mahasiswa
+                //         },
+                //     },
+                //     columns: [
+                //         {
+                //             data: "id_histori",
+                //             render: function (data, type, row, meta) {
+                //                 return (i = i + 1);
+                //             },
+                //             className: "text-center",
+                //         },
+                //         {
+                //             data: "nama",
+                //             className: "text-center",
+                //         },
+                //         {
+                //             data: "kode_aset",
+                //             className: "text-center",
+                //         },
+                //         {
+                //             data: "nama_aset",
+                //             className: "text-center",
+                //         },
+                //         {
+                //             data: "mulai",
+                //             className: "text-center",
+                //         },
+                //         {
+                //             data: "selesai",
+                //             className: "text-center",
+                //         },
+                //     ],
+                // });
+            }
+        </script>
+    @endif
+
 
     <script>
         // Upgrade button class name

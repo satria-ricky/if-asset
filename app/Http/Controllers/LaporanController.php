@@ -51,6 +51,8 @@ class LaporanController extends Controller
 
 
     //ADMIN
+   
+
     public function adm_laporan()
     {
         $title = "Daftar Laporan";
@@ -63,7 +65,7 @@ class LaporanController extends Controller
         return view("fitur.adm_laporan", compact("dataLaporan", "dataAset", "dataKondisi", "title"));
     }
 
-
+    
     public function tambah_laporan(Request $req)
     {
         // dd($req);

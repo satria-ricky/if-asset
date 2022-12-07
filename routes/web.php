@@ -56,6 +56,11 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::get('/adm_laporan',[LaporanController::class,'adm_laporan']);
     Route::post('/tambah_laporan',[LaporanController::class,'tambah_laporan']);
     Route::post('/hapus_laporan', [LaporanController::class, 'hapus_laporan']);
+
+
+    Route::get('/adm_histori',[HistoriController::class,'adm_histori']);
+    Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
+
 });
 
 

@@ -91,23 +91,34 @@ class UserController extends Controller
                 'id_aset' => $request->id_aset
             ]);
         } else {
-            $checkHistori = DB::table('historis')
-                ->where('id_user', Auth::user()->id)
-                ->where('id_aset', $id_aset)
-                ->whereNull('selesai')
-                ->first();
-            // dd($checkHistori);
-            if ($checkHistori == null) {
-                $hasil = [
-                    'id_user' => Auth::user()->id,
-                    'id_aset' => $id_aset,
-                    'mulai' => Carbon::now()->toDateTimeString()
-                ];
+            if (Auth::user()->level == 1 || Auth::user()->level == 2) {
+                Auth::logout();
 
-                Histori::create($hasil);
-                return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
-            } else {
-                return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                return redirect('/auth')->with('message', 'Silahkan login kembali!');
+
+            } elseif (Auth::user()->level == 3) {
+                $checkHistori = DB::table('historis')
+                    ->where('id_user', Auth::user()->id)
+                    ->where('id_aset', $id_aset)
+                    ->whereNull('selesai')
+                    ->first();
+                // dd($checkHistori);
+                if ($checkHistori == null) {
+                    $hasil = [
+                        'id_user' => Auth::user()->id,
+                        'id_aset' => $id_aset,
+                        'mulai' => Carbon::now()->toDateTimeString()
+                    ];
+
+                    Histori::create($hasil);
+                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                } else {
+                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                }
             }
         }
     }
@@ -142,7 +153,7 @@ class UserController extends Controller
                     ->whereNull('selesai')
                     ->first();
 
-                 if ($checkHistori == null) {
+                if ($checkHistori == null) {
                     $hasil = [
                         'id_user' => Auth::user()->id,
                         'id_aset' => $id_aset,
