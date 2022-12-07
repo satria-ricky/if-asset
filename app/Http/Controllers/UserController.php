@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Histori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
@@ -81,12 +82,34 @@ class UserController extends Controller
 
 
     public function tampil_loginMhs(Request $request)
-    {   
-// dd($request->id_aset);
-        return view('Auth.login_mhs', [
-            'title' => 'Inventaris Aset PSTI-UNRAM',
-            'id_aset' => $request->id_aset
-        ]);
+    {
+        // dd($request->id_aset);
+        $id_aset = Crypt::decrypt($request->id_aset);
+        if (!Auth::user()) {
+            return view('Auth.login_mhs', [
+                'title' => 'Inventaris Aset PSTI-UNRAM',
+                'id_aset' => $request->id_aset
+            ]);
+        } else {
+            $checkHistori = DB::table('historis')
+                ->where('id_user', Auth::user()->id)
+                ->where('id_aset', $id_aset)
+                ->whereNull('selesai')
+                ->first();
+            // dd($checkHistori);
+            if ($checkHistori == null) {
+                $hasil = [
+                    'id_user' => Auth::user()->id,
+                    'id_aset' => $id_aset,
+                    'mulai' => Carbon::now()->toDateTimeString()
+                ];
+
+                Histori::create($hasil);
+                return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+            } else {
+                return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+            }
+        }
     }
 
     public function loginMhs(Request $request)
@@ -113,18 +136,28 @@ class UserController extends Controller
                 return redirect('/authMhs')->with('message', 'Username salah!');
             } elseif (Auth::user()->level == 3) {
 
-                $hasil = [
-                    'id_user' => Auth::user()->id,
-                    'id_aset' => $id_aset,
-                    'mulai' => Carbon::now()->toDateTimeString()
-                ];
-               
-                Histori::create($hasil);
-                return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');;
+                $checkHistori = DB::table('historis')
+                    ->where('id_user', Auth::user()->id)
+                    ->where('id_aset', $id_aset)
+                    ->whereNull('selesai')
+                    ->first();
+
+                 if ($checkHistori == null) {
+                    $hasil = [
+                        'id_user' => Auth::user()->id,
+                        'id_aset' => $id_aset,
+                        'mulai' => Carbon::now()->toDateTimeString()
+                    ];
+
+                    Histori::create($hasil);
+                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                } else {
+                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                }
             }
         } else { // false
             //Login Fail
-            return redirect('/authMhs/'.Crypt::encrypt($id_aset))->with('message', 'Username atau password salah');
+            return redirect('/authMhs/' . Crypt::encrypt($id_aset))->with('message', 'Username atau password salah');
         }
     }
 

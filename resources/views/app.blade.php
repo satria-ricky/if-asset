@@ -228,6 +228,11 @@
             swal("Gagal!", "{{ session('error') }}", "error");
         </script>
     @endif
+    @if (session()->has('warning'))
+        <script>
+            swal("Oppss!", "{{ session('warning') }}", "warning");
+        </script>
+    @endif
     @if (Request::is('list_ruangan'))
         <script>
             function buttonModalEditRuangan(params) {
