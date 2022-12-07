@@ -19,16 +19,16 @@ class HistoriController extends Controller
     public function filterHistori(Request $req)
     {
 
-        // $data = DB::select('SELECT historis.*, users.*, asets.* FROM historis LEFT JOIN users ON users.id = historis.id_user LEFT JOIN asets ON asets.id_aset = historis.id_aset WHERE users.id = ? AND historis.mulai BETWEEN ? AND ?', [$req->mahasiswa,$req->awal,$req->akhir]);
+        $data = DB::select('SELECT historis.*, users.*, asets.*, asets.nama as nama_aset FROM historis LEFT JOIN users ON users.id = historis.id_user LEFT JOIN asets ON asets.id_aset = historis.id_aset WHERE users.id = ? AND historis.mulai BETWEEN ? AND ?', [$req->mahasiswa,$req->awal,$req->akhir]);
         // DB::table('historis')
         //     ->leftJoin('users', 'users.id', '=', 'historis.id_user')
         //     ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
         //     ->whereBetween('mulai', [$req->awal, $req->akhir])
         //     ->where('users.id', [$req->mahasiswa])
-        //     ->select('historis.*','users.*','asets.*')->get();
+        //     ->select('historis.*','users.*','asets.*', 'asets.nama as nama_aset')->get();
 
-            return response()->json($req);
-        // return Datatables::of($data)->make(true);
+            // return response()->json($data);
+        return Datatables::of($data)->make(true);
     }
 
     public function list_histori()
