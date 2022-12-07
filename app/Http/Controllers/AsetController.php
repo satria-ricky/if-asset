@@ -17,7 +17,7 @@ class AsetController extends Controller
 
     public function asetByRuangan(Request $req)
     {
-        $data = DB::select('SELECT asets.* FROM asets LEFT JOIN ruangans ON asets.id_ruangan = ruangans.id_ruangan WHERE asets.id_ruangan = ?', [$req->id_ruangan]);
+        $data = DB::select('SELECT asets.*, kondisis.* FROM asets LEFT JOIN ruangans ON asets.id_ruangan = ruangans.id_ruangan LEFT JOIN kondisis ON asets.kondisi = kondisis.id_kondisi WHERE asets.id_ruangan = ?', [$req->id_ruangan]);
 
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
@@ -54,7 +54,15 @@ class AsetController extends Controller
                 </div>';
                 return $btn;
             })
-            ->rawColumns(['action'])->make(true);
+            ->editColumn('kondisi',function ($data){
+                if ($data->kondisi == 1) {
+                    $kondisi = '<p class="btn btn-danger btn-sm"> ' . $data->nama_kondisi . ' </p>';
+                } else {
+                    $kondisi = '<p class="btn btn-success btn-sm"> ' . $data->nama_kondisi . ' </p>';
+                }
+                return $kondisi; 
+            })
+            ->rawColumns(['kondisi','action'])->make(true);
     }
 
     public function asetById(Request $req)

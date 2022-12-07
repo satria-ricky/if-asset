@@ -280,7 +280,7 @@
                             "className": "text-center",
                         },
                         {
-                            "data": "jumlah",
+                            "data": "kondisi",
                             "className": "text-center",
                         },
                         {
