@@ -6,7 +6,7 @@
             <h2>Ruangan</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Daftar Ruangan</a>
+                    <a href="index.html">{{ $title }}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Tables</a>
@@ -43,7 +43,43 @@
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->nama_ruangan }}</td>
-                                            <td class="text-center" style="width: 153px">
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown"
+                                                        class="btn btn-primary btn-sm dropdown-toggle">Action </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="/detail_ruangan/{{ Crypt::encrypt($item->id_ruangan) }}"
+                                                                target="_blank"> Detail</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/qr_codeRuangan/{{ Crypt::encrypt($item->id_ruangan) }}"
+                                                                class="dropdown-item" target="_blank">Generate QR Code</a>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                    style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
+                                                                    class="dropdown-item pb-2" 
+                                                                    onclick="buttonModalEditRuangan({{ $item }})">
+                                                                    Edit</button>
+                                                        </li>
+                                                        <li>
+                                                            <form action="hapus_ruangan" method="post">
+                                                                @csrf
+                                                                <input type="hidden" name="id"
+                                                                    value="{{ $item->id_ruangan }}">
+                                                                    <button
+                                                                    style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
+                                                                    class="dropdown-item pb-2" type="submit"
+                                                                    onclick="return confirm('Are you sure?')">
+                                                                    Hapus</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            {{-- <td class="text-center" style="width: 153px">
                                                 <div style="display:flex;">
 
                                                     <button class="btn btn-sm btn-info " type="button"
@@ -58,7 +94,7 @@
                                                                 class="fa fa-trash"></i> Hapus</button>
                                                     </form>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

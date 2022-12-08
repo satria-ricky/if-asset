@@ -29,12 +29,9 @@ use LaravelQRCode\Facades\QRCode as FacadesQRCode;
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/profil',  [UserController::class, 'tampil_profil']);
 
-
-    // Route::get('/qr_code/{id}', function($id){
-       
-    // });
-
     Route::get('/qr_code/{id}', [AsetController::class, 'qr_code']);
+
+    Route::get('/qr_codeRuangan/{id}', [RuanganController::class, 'qr_code']);
 
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
     Route::post('/asetById', [AsetController::class, 'asetById'])->name('asetById');
@@ -83,14 +80,23 @@ Route::group(['middleware' => ['auth','ceklevel:3']], function () {
     Route::post('/selesai_dipakai',[HistoriController::class,'selesai_dipakai']);
 });
 
+Route::group(['middleware' => ['auth','ceklevel:4']], function () {
+    Route::get('/list_ruanganDsn',[HistoriController::class,'list_histori_ruangan']);
+    Route::post('/selesai_dipakai_ruangan',[HistoriController::class,'selesai_dipakai_ruangan']);
+});
+
 Route::get('/', [UserController::class, 'tampil_home']);
 Route::get('/auth', [UserController::class, 'tampil_login'])->name("login");
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
 
+Route::get('/detail_ruangan/{id}', [RuanganController::class, 'tampil_detail_ruangan']);
+
 //FROM QRCODE
 Route::get('/authMhs/{id_aset}', [UserController::class, 'tampil_loginMhs']);
 Route::post('/loginMhs', [UserController::class, 'loginMhs']);
+
+Route::get('/authDsn/{id_ruangan}', [UserController::class, 'tampil_loginDsn']);
 
 
 

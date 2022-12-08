@@ -15,6 +15,7 @@ class RuanganFactory extends Factory
     {
         return [
             'nama_ruangan' => $this->faker->name(),
+            'foto_ruangan' => 'foto-ruangan/default.jpg',
         ];
     }
 }

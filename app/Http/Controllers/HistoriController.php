@@ -24,6 +24,7 @@ class HistoriController extends Controller
         return Datatables::of($data)->make(true);
     }
 
+    //Mahasiswa
     public function list_histori()
     {
         $title = "Daftar Histori";
@@ -46,6 +47,29 @@ class HistoriController extends Controller
         return redirect('/list_histori')->with('success', 'You did great :)');
     }
 
+    //DOSEN
+
+    public function list_histori_ruangan()
+    {
+        $title = "Daftar Histori";
+        $dataHistori = DB::table('historis')
+            ->leftJoin('users', 'users.id', '=', 'historis.id_user')
+            ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
+            ->where('historis.id_user', [Auth::user()->id])
+            ->get();
+        // dd($dataHistori);
+        return view("fitur.mhs.list_histori", compact("dataHistori", "title"));
+    }
+
+    public function selesai_dipakai_ruangan(Request $req)
+    {
+        // dd($req);
+        Histori::all()->where('id_histori', $req['id'])->first()->update([
+            'selesai' => Carbon::now()->toDateTimeString()
+        ]);
+
+        return redirect('/list_histori')->with('success', 'You did great :)');
+    }
 
     //ADMIN
     public function adm_histori()

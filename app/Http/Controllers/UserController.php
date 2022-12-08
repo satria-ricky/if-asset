@@ -59,9 +59,11 @@ class UserController extends Controller
             // echo "Login Success";
             if (Auth::user()->level == 1) {
                 return redirect('/list_ruangan');
-            } elseif (Auth::user()->level == 2) {
+            } 
+            elseif (Auth::user()->level == 2) {
                 return redirect('/list_laporan');
-            } elseif (Auth::user()->level == 3) {
+            }
+            elseif (Auth::user()->level == 3) {
                 Auth::logout();
 
                 $request->session()->invalidate();
@@ -70,6 +72,9 @@ class UserController extends Controller
 
                 return redirect('/auth')->with('message', 'Username salah!');
             }
+            elseif (Auth::user()->level == 4) {
+                return redirect('/list_ruanganDsn');
+            } 
         } else { // false
             //Login Fail
             return redirect('/auth')->with('message', 'Username atau password salah');
@@ -171,6 +176,54 @@ class UserController extends Controller
             return redirect('/authMhs/' . Crypt::encrypt($id_aset))->with('message', 'Username atau password salah');
         }
     }
+
+
+
+
+    //LOGIN DOSEN
+    public function tampil_loginDsn(Request $request)
+    {
+        // dd($request->id_aset);
+        $id_ruangan = Crypt::decrypt($request->id_ruangan);
+        if (!Auth::user()) {
+            return view('Auth.login_mhs', [
+                'title' => 'Inventaris Aset PSTI-UNRAM',
+                'id_aset' => $request->id_ruangan
+            ]);
+        } else {
+            if (Auth::user()->level == 1 || Auth::user()->level == 2) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                return redirect('/auth')->with('message', 'Silahkan login kembali!');
+
+            } elseif (Auth::user()->level == 3) {
+                $checkHistori = DB::table('historis')
+                    ->where('id_user', Auth::user()->id)
+                    ->where('id_aset', $id_ruangan)
+                    ->whereNull('selesai')
+                    ->first();
+                // dd($checkHistori);
+                if ($checkHistori == null) {
+                    $hasil = [
+                        'id_user' => Auth::user()->id,
+                        'id_aset' => $id_ruangan,
+                        'mulai' => Carbon::now()->toDateTimeString()
+                    ];
+
+                    Histori::create($hasil);
+                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                } else {
+                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                }
+            }
+        }
+    }
+
+
 
 
     public function logout(Request $request)

@@ -27,7 +27,7 @@
                         <a href="/list_aset"><i class="fa fa-database"></i> <span class="nav-label">Aset</span></a>
                     </li> --}}
 
-                    <li class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @endif">
+                    <li class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @elseif(Request::is('list_jenis_aset')) active @endif">
                         <a href="#"><i class="fa fa-database"></i> <span class="nav-label">Aset </span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="/list_jenis_aset">Jenis Aset</a></li>

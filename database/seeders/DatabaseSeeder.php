@@ -39,6 +39,12 @@ class DatabaseSeeder extends Seeder
                 'level' => 3,
                 'username' => 'mhs',
                 'password' => Hash::make('123')
+            ],
+            [
+                'nama' => 'nama dsn',
+                'level' => 4,
+                'username' => 'dsn',
+                'password' => Hash::make('123')
             ]
         ]);
 

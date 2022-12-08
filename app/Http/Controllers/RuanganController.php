@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ruangan;
 use App\Models\User;
+use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 
 class RuanganController extends Controller
 {
     public function list_ruangan() {
-        $loc = "list_ruangan";
         $title = "Daftar Ruangan";
         $dataRuangan = Ruangan::all();
-        return view("fitur.list_ruangan", compact("loc","dataRuangan","title"));
+        return view("fitur.list_ruangan", compact("dataRuangan","title"));
     }
     
     public function tambah_ruangan(Request $req)
@@ -55,6 +56,31 @@ class RuanganController extends Controller
         $data->delete();
 
         return redirect('/list_ruangan')->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function qr_code(Request $req)
+    { $id = Crypt::decrypt($req->id);
+
+        $ruangan = Ruangan::findOrFail($id);
+        
+        return view('fitur.qr_code_ruangan',[
+            'ruangan' => $ruangan,
+            'title' => 'QRcode',
+            'data' => url('/detail_ruangan/'.$req->id)
+        ]);
+
+    }
+
+
+    public function tampil_detail_ruangan(Request $req)
+    {
+        $id = Crypt::decrypt($req->id);
+        $ruangan = Ruangan::findOrFail($id);
+
+        return view('fitur.detail_ruangan', [
+            "data" => $ruangan,
+            "url" => url('detail_ruangan/' . $req->id)
+        ]);
     }
 
 
