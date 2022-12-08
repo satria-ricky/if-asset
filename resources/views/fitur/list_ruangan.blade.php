@@ -23,9 +23,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
-                    <div class="ibox-title">
+                    {{-- <div class="ibox-title">
                         <h5>Ruangan</h5>
-                    </div>
+                    </div> --}}
                     <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
                         <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
                             Ruangan</button>
