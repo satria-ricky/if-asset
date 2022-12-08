@@ -87,6 +87,14 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
+        DB::table('jenis_asets')->insert([
+            [
+                'nama_jenis'    => 'ATK'
+            ],
+            [
+                'nama_jenis'    => 'Elektronik'
+            ]
+        ]);
         
     }
 }

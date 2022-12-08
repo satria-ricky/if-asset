@@ -14,6 +14,7 @@ class AsetFactory extends Factory
     public function definition()
     {
         return [
+            'id_jenis' => mt_rand(1, 2),
             'id_ruangan' => mt_rand(1, 3),
             'kode_aset' => $this->faker->unique()->text($maxNbChars = 7),
             'id_sumber' => mt_rand(1, 3),

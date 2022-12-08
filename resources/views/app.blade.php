@@ -309,13 +309,24 @@
             swal("Oppss!", "{{ session('warning') }}", "warning");
         </script>
     @endif
+
     @if (Request::is('list_ruangan'))
         <script>
             function buttonModalEditRuangan(params) {
-                console.log(params)
+                // console.log(params)
                 $('#ModalEditRuangan').modal('show');
                 $("#formModalNamaRuangan").val(params.nama_ruangan);
                 $("#formModalIdRuangan").val(params.id_ruangan);
+            }
+        </script>
+    @endif
+    @if (Request::is('list_jenis_aset'))
+        <script>
+            function buttonModalEditJenisAset(params) {
+                // console.log(params)
+                $('#ModalEditRuangan').modal('show');
+                $("#formModalNama").val(params.nama_jenis);
+                $("#formModalId").val(params.id_jenis);
             }
         </script>
     @endif

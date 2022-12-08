@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HistoriController;
+use App\Http\Controllers\JenisAsetController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\RuanganController;
+use App\Models\JenisAset;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use LaravelQRCode\Facades\QRCode as FacadesQRCode;
 
@@ -45,6 +47,13 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/tambah_ruangan', [RuanganController::class, 'tambah_ruangan']);
     Route::post('/edit_ruangan', [RuanganController::class, 'edit_ruangan']);
     Route::post('/hapus_ruangan', [RuanganController::class, 'hapus_ruangan']);
+
+    Route::get('/list_jenis_aset',[JenisAsetController::class,'list_jenis_aset']);
+    Route::post('/tambah_jenis_aset', [JenisAsetController::class, 'tambah_jenis_aset']);
+    Route::post('/hapus_jenis_aset', [JenisAsetController::class, 'hapus_jenis_aset']);
+    Route::post('/edit_jenis_aset', [JenisAsetController::class, 'edit_jenis_aset']);
+
+
 
     Route::get('/list_aset',[AsetController::class,'list_aset']);
     Route::post('/tambah_aset', [AsetController::class, 'tambah_aset']);

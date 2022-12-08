@@ -16,6 +16,7 @@ class CreateAsetsTable extends Migration
         Schema::create('asets', function (Blueprint $table) {
             $table->id('id_aset');
             $table->integer('id_ruangan');
+            $table->integer('id_jenis');
             $table->string('kode_aset');
             $table->string('nama')->nullable();
             $table->string('id_sumber')->nullable();
