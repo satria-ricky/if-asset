@@ -14,8 +14,8 @@
                             IF-UNRAM
                         </div>
                     </li>
-                    <li  class="@if(Request::is('list_histori')) active @endif">
-                        <a href="/list_histori"><i class="fa fa-tachometer"></i> <span class="nav-label">Histori Penggunaan Ruangan</span></a>
+                    <li  class="@if(Request::is('list_historiDsn')) active @endif">
+                        <a href="/list_historiDsn"><i class="fa fa-history"></i> <span class="nav-label">Histori Penggunaan Ruangan</span></a>
                     </li>
 
 

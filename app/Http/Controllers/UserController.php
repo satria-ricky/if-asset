@@ -239,9 +239,10 @@ class UserController extends Controller
                 $request->session()->regenerateToken();
 
                 return redirect('/authRuangan/'.$request->id_ruangan)->with('message', 'Username salah!');
-            } elseif (Auth::user()->level == 3) {
+            } elseif (Auth::user()->level == 4) {
 
                 $checkHistori = DB::table('histori_ruangans')
+                    ->leftJoin('ruangans', 'ruangans.id_ruangan', '=','histori_ruangans.id_ruangan')
                     ->where('id_user', Auth::user()->id)
                     ->where('id_ruangan', $id_ruangan)
                     ->whereNull('selesai')
@@ -256,9 +257,9 @@ class UserController extends Controller
                     ];
 
                     Histori::create($hasil);
-                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                    return redirect('/list_historiDsn')->with('success', 'Histori berhasil ditambah :)');
                 } else {
-                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                    return redirect('/list_historiDsn')->with('warning', 'Anda masih menggunakannya :(');
                 }
             }
         } else { // false

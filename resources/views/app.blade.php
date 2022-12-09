@@ -30,6 +30,8 @@
             @include('template.sidebar_kaprodi')
         @elseif (Auth::user()->level == 3)
             @include('template.sidebar_mahasiswa')
+            @elseif (Auth::user()->level == 4)
+            @include('template.sidebar_dosen')
         @endif
 
 

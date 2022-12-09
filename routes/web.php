@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth','ceklevel:3']], function () {
 });
 
 Route::group(['middleware' => ['auth','ceklevel:4']], function () {
-    Route::get('/list_ruanganDsn',[HistoriController::class,'list_histori_ruangan']);
+    Route::get('/list_historiDsn',[HistoriController::class,'list_histori_ruangan']);
     Route::post('/selesai_dipakai_ruangan',[HistoriController::class,'selesai_dipakai_ruangan']);
 });
 

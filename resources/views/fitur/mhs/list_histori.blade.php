@@ -36,8 +36,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Kode aset</th>
-                                        <th class="text-center">Nama aset</th>
+                                        <th class="text-center">Nama Ruangan</th>
                                         <th class="text-center">Dipakai pada:</th>
                                         <th class="text-center">Selesai pada:</th>
                                         <th class="text-center">Action</th>
@@ -47,8 +46,7 @@
                                     @foreach ($dataHistori as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td class="text-center">{{ $item->kode_aset }}</td>
-                                            <td class="text-center">{{ $item->nama }}</td>
+                                            <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">{{ $item->mulai }}</td>
                                             <td class="text-center">
                                                 @if ($item->selesai == '')

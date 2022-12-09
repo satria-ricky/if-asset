@@ -52,10 +52,10 @@ class HistoriController extends Controller
     public function list_histori_ruangan()
     {
         $title = "Daftar Histori";
-        $dataHistori = DB::table('historis')
-            ->leftJoin('users', 'users.id', '=', 'historis.id_user')
-            ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
-            ->where('historis.id_user', [Auth::user()->id])
+        $dataHistori = DB::table('histori_ruangans')
+            ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
+            ->where('histori_ruangans.id_user', [Auth::user()->id])
             ->get();
         // dd($dataHistori);
         return view("fitur.mhs.list_histori", compact("dataHistori", "title"));
