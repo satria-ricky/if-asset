@@ -93,11 +93,11 @@ Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
 Route::get('/detail_ruangan/{id}', [RuanganController::class, 'tampil_detail_ruangan']);
 
 //FROM QRCODE
-Route::get('/authMhs/{id_aset}', [UserController::class, 'tampil_loginMhs']);
-Route::post('/loginMhs', [UserController::class, 'loginMhs']);
+Route::get('/authAset/{id_aset}', [UserController::class, 'tampil_loginAset']);
+Route::post('/loginAset', [UserController::class, 'loginAset']);
 
-Route::get('/authDsn/{id_ruangan}', [UserController::class, 'tampil_loginDsn']);
-
+Route::get('/authRuangan/{id_ruangan}', [UserController::class, 'tampil_loginRuangan']);
+Route::post('/loginRuangan', [UserController::class, 'loginRuangan']);
 
 
 

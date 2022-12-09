@@ -74,22 +74,28 @@ class DatabaseSeeder extends Seeder
 
         DB::table('ruangans')->insert([
             [
-                'nama_ruangan'    => 'Lab 1'
+                'nama_ruangan'    => 'Lab 1',
+                'foto_ruangan' => 'foto-ruangan/default.jpg'
             ],
             [
-                'nama_ruangan'    => 'Lab 2'
+                'nama_ruangan'    => 'Lab 2',
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
             ],
             [
-                'nama_ruangan'    => 'Lab 3'
+                'nama_ruangan'    => 'Lab 3',
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
             ],
             [
-                'nama_ruangan'    => 'Lab 4'
+                'nama_ruangan'    => 'Lab 4',
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
             ],
             [
-                'nama_ruangan'    => 'Ruang D3-03'
+                'nama_ruangan'    => 'Ruang D3-03',
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
             ],
             [
-                'nama_ruangan'    => 'Ruang D4-03'
+                'nama_ruangan'    => 'Ruang D4-03',
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
             ]
         ]);
 

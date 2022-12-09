@@ -119,7 +119,7 @@
                 </div>
                 <div class="modal-body bg-white">
 
-                    <form role="form" method="post" action="/tambah_ruangan">
+                    <form role="form" method="post" action="/tambah_ruangan" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>Nama Ruangan</label>
@@ -131,6 +131,17 @@
                             @enderror
 
                         </div>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input id="id_foto" type="file" name="foto" accept="image/*"
+                                    class="custom-file-input" onchange="cekFoto()">
+                                <label class="custom-file-label" for="id_foto">Masukkan foto</label>
+
+                            </div>
+
+                        </div>
+                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                        
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -151,14 +162,25 @@
                 </div>
                 <div class="modal-body bg-white">
 
-                    <form role="form" method="post" action="/edit_ruangan">
+                    <form role="form" method="post" action="/edit_ruangan" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>Nama Ruangan</label>
                             <input type="hidden" name="id" id="formModalIdRuangan">
+                            <input type="hidden" name="fotoLama" id="formModalFotoLama">
                             <input class="form-control" type="text" name="nama_ruangan" id="formModalNamaRuangan"
                                 required autocomplete="off">
                         </div>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input id="id_foto" type="file" name="foto" accept="image/*"
+                                    class="custom-file-input" onchange="cekFoto()">
+                                <label class="custom-file-label" for="id_foto">Masukkan foto</label>
+
+                            </div>
+
+                        </div>
+                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>

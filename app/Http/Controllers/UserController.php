@@ -40,6 +40,8 @@ class UserController extends Controller
                 return redirect('/list_laporan');
             } elseif (Auth::user()->level == 3) {
                 return redirect('/list_histori');
+            } elseif (Auth::user()->level == 4) {
+                return redirect('/list_historiDsn');
             }
         }
     }
@@ -55,8 +57,7 @@ class UserController extends Controller
         Auth::attempt($data);
         // dd(Auth::user());
         // echo Auth::user()->username;
-        if (Auth::attempt($data)) { // true sekalian session field di users nanti bisa dipanggil via Auth
-            // echo "Login Success";
+        if (Auth::attempt($data)) {
             if (Auth::user()->level == 1) {
                 return redirect('/list_ruangan');
             } 
@@ -64,20 +65,14 @@ class UserController extends Controller
                 return redirect('/list_laporan');
             }
             elseif (Auth::user()->level == 3) {
-                Auth::logout();
-
-                $request->session()->invalidate();
-
-                $request->session()->regenerateToken();
-
-                return redirect('/auth')->with('message', 'Username salah!');
+                return redirect('/list_histori');
             }
             elseif (Auth::user()->level == 4) {
-                return redirect('/list_ruanganDsn');
+                return redirect('/list_historiDsn');
             } 
         } else { // false
             //Login Fail
-            return redirect('/auth')->with('message', 'Username atau password salah');
+            return redirect('/auth')->with('message', 'Username salah');
         }
     }
 
@@ -86,24 +81,24 @@ class UserController extends Controller
     //FROM QR CODE
 
 
-    public function tampil_loginMhs(Request $request)
+    public function tampil_loginAset(Request $request)
     {
         // dd($request->id_aset);
         $id_aset = Crypt::decrypt($request->id_aset);
         if (!Auth::user()) {
-            return view('Auth.login_mhs', [
+            return view('Auth.login_aset', [
                 'title' => 'Inventaris Aset PSTI-UNRAM',
                 'id_aset' => $request->id_aset
             ]);
         } else {
-            if (Auth::user()->level == 1 || Auth::user()->level == 2) {
+            if (Auth::user()->level == 1 || Auth::user()->level == 2 || Auth::user()->level == 4) {
                 Auth::logout();
 
                 $request->session()->invalidate();
 
                 $request->session()->regenerateToken();
 
-                return redirect('/auth')->with('message', 'Silahkan login kembali!');
+                return redirect('/authAset/'.$request->id_aset)->with('message', 'Silahkan login kembali!');
 
             } elseif (Auth::user()->level == 3) {
                 $checkHistori = DB::table('historis')
@@ -128,7 +123,7 @@ class UserController extends Controller
         }
     }
 
-    public function loginMhs(Request $request)
+    public function loginAset(Request $request)
     {
         // dd($request);
         $id_aset = Crypt::decrypt($request->id_aset);
@@ -140,16 +135,15 @@ class UserController extends Controller
 
 
         Auth::attempt($data);
-        if (Auth::attempt($data)) { // true sekalian session field di users nanti bisa dipanggil via Auth
-            // echo "Login Success";
-            if (Auth::user()->level == 1 || Auth::user()->level == 2) {
+        if (Auth::attempt($data)) { 
+            if (Auth::user()->level == 1 || Auth::user()->level == 2 || Auth::user()->level == 4) {
                 Auth::logout();
 
                 $request->session()->invalidate();
 
                 $request->session()->regenerateToken();
 
-                return redirect('/authMhs')->with('message', 'Username salah!');
+                return redirect('/authAset/'.$request->id_aset)->with('message', 'Username salah!');
             } elseif (Auth::user()->level == 3) {
 
                 $checkHistori = DB::table('historis')
@@ -173,7 +167,7 @@ class UserController extends Controller
             }
         } else { // false
             //Login Fail
-            return redirect('/authMhs/' . Crypt::encrypt($id_aset))->with('message', 'Username atau password salah');
+            return redirect('/authAset/' . Crypt::encrypt($id_aset))->with('message', 'Username salah');
         }
     }
 
@@ -181,26 +175,26 @@ class UserController extends Controller
 
 
     //LOGIN DOSEN
-    public function tampil_loginDsn(Request $request)
+    public function tampil_loginRuangan(Request $request)
     {
         // dd($request->id_aset);
         $id_ruangan = Crypt::decrypt($request->id_ruangan);
         if (!Auth::user()) {
-            return view('Auth.login_mhs', [
+            return view('Auth.login_ruangan', [
                 'title' => 'Inventaris Aset PSTI-UNRAM',
-                'id_aset' => $request->id_ruangan
+                'id_ruangan' => $request->id_ruangan
             ]);
         } else {
-            if (Auth::user()->level == 1 || Auth::user()->level == 2) {
+            if (Auth::user()->level == 1 || Auth::user()->level == 2|| Auth::user()->level == 3) {
                 Auth::logout();
 
                 $request->session()->invalidate();
 
                 $request->session()->regenerateToken();
 
-                return redirect('/auth')->with('message', 'Silahkan login kembali!');
+                return redirect('/authRuangan/'.$request->id_ruangan)->with('message', 'Username salah!');
 
-            } elseif (Auth::user()->level == 3) {
+            } elseif (Auth::user()->level == 4) {
                 $checkHistori = DB::table('historis')
                     ->where('id_user', Auth::user()->id)
                     ->where('id_aset', $id_ruangan)
@@ -220,6 +214,56 @@ class UserController extends Controller
                     return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
                 }
             }
+        }
+    }
+
+    public function loginRuangan(Request $request)
+    {
+        // dd($request);
+        $id_ruangan = Crypt::decrypt($request->id_ruangan);
+
+        $data = [
+            'username'     => $request->input('username'),
+            'password'  => $request->input('password'),
+        ];
+
+
+        Auth::attempt($data);
+        if (Auth::attempt($data)) { 
+
+            if (Auth::user()->level == 1 || Auth::user()->level == 2 || Auth::user()->level == 3) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                return redirect('/authRuangan/'.$request->id_ruangan)->with('message', 'Username salah!');
+            } elseif (Auth::user()->level == 3) {
+
+                $checkHistori = DB::table('histori_ruangans')
+                    ->where('id_user', Auth::user()->id)
+                    ->where('id_ruangan', $id_ruangan)
+                    ->whereNull('selesai')
+                    ->first();
+                dd($checkHistori);
+                
+                if ($checkHistori == null) {
+                    $hasil = [
+                        'id_user' => Auth::user()->id,
+                        'id_ruangan' => $id_ruangan,
+                        'mulai' => Carbon::now()->toDateTimeString()
+                    ];
+
+                    Histori::create($hasil);
+                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                } else {
+                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                }
+            }
+        } else { // false
+            //Login Fail
+            return redirect('/authRuangan/' . Crypt::encrypt($id_ruangan))->with('message', 'Username salah');
         }
     }
 

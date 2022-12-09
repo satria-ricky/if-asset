@@ -7,6 +7,7 @@ use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class RuanganController extends Controller
 {
@@ -29,6 +30,16 @@ class RuanganController extends Controller
             'nama_ruangan' => $req['nama_ruangan'],
         ];
 
+        if ($req->file('foto')) {
+            $extension = $req->file('foto')->getClientOriginalExtension();
+            $filename = 'foto-ruangan/' . uniqid() . '.' . $extension;
+            $req->file('foto')->storeAs('public', $filename);
+
+            $hasil['foto_ruangan'] = $filename;
+        } else {
+            $hasil['foto_ruangan'] = 'foto-ruangan/default.jpg';
+        }
+
         Ruangan::create($hasil);
         return redirect('/list_ruangan')->with('success', 'Data Ruangan Ditambah');
     }
@@ -43,6 +54,20 @@ class RuanganController extends Controller
             ['nama_ruangan.unique' => 'Nama ruangan telah tersedia!']
         );
 
+        if ($req->file('foto')) {
+            $extension = $req->file('foto')->getClientOriginalExtension();
+            $filename = 'foto-ruangan/' . uniqid() . '.' . $extension;
+            $req->file('foto')->storeAs('public', $filename);
+
+            if (($req['fotoLama'] != 'foto-ruangan/default.jpg')) {
+                Storage::delete('public/' . $req['fotoLama']);
+            }
+
+            $hasil['foto_aset'] = $filename;
+        } else {
+            $hasil['foto_aset'] = $req['fotoLama'];
+        }
+
         Ruangan::all()->where('id_ruangan', $req['id'])->first()->update([
             'nama_ruangan' => $req['nama_ruangan']
         ]);
@@ -54,7 +79,10 @@ class RuanganController extends Controller
     {
         $data = Ruangan::findOrFail($req['id']);
         $data->delete();
-
+        if (($data['foto_ruangan'] != 'foto-ruangan/default.jpg')) {
+            Storage::delete('public/' . $data['foto_ruangan']);
+        }
+        
         return redirect('/list_ruangan')->with('success', 'Data Berhasil Dihapus');
     }
 

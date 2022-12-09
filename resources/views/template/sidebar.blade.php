@@ -39,9 +39,17 @@
                     <li  class="@if(Request::is('adm_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
                         <a href="/adm_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
                     </li>
-                    <li  class="@if(Request::is('adm_histori')) active @endif">
-                        <a href="/adm_histori"><i class="fa fa-history"></i> <span class="nav-label">Histori </span></a>
+                    <li class="@if(Request::is('adm_histori')) active @elseif (Request::is('adm_histori/*')) active @elseif(Request::is('list_jenis_aset')) active @endif">
+                        <a href="#"><i class="fa fa-history"></i> <span class="nav-label">Histori </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="#"> Penggunaan Aset</a></li>
+                            <li><a href="#">Penggunaan Ruangan</a></li>
+                        </ul>
                     </li>
+
+                    {{-- <li  class="@if(Request::is('adm_histori')) active @endif">
+                        <a href="/adm_histori"><i class="fa fa-history"></i> <span class="nav-label">Histori </span></a>
+                    </li> --}}
                 </ul>
 
             </div>

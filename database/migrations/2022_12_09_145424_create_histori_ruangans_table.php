@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistorisTable extends Migration
+class CreateHistoriRuangansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateHistorisTable extends Migration
      */
     public function up()
     {
-        Schema::create('historis', function (Blueprint $table) {
-            $table->id('id_histori');
+        Schema::create('histori_ruangans', function (Blueprint $table) {
+            $table->id('id_histori_ruangan');
             $table->integer('id_user')->nullable();
-            $table->integer('id_aset')->nullable();
+            $table->integer('id_ruangan')->nullable();
             $table->timestamp('mulai')->nullable();
             $table->timestamp('selesai')->nullable();
             $table->string('keterangan')->nullable();
@@ -31,6 +31,6 @@ class CreateHistorisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historis');
+        Schema::dropIfExists('histori_ruangans');
     }
 }

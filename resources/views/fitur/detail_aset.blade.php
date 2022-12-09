@@ -138,7 +138,7 @@
                         <tr>
                             <th scope="row" class="text-start">Want to use ? </th>
                             <td>
-                                <a href="/authMhs/{{ Crypt::encrypt($data->id_aset) }}"  target="_blank" class="btn btn-success btn-sm"> Use it!  </a>
+                                <a href="/authAset/{{ Crypt::encrypt($data->id_aset) }}"  target="_blank" class="btn btn-success btn-sm"> Use it!  </a>
                                  
                             </td>
                         </tr>

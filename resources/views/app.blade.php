@@ -317,6 +317,7 @@
                 $('#ModalEditRuangan').modal('show');
                 $("#formModalNamaRuangan").val(params.nama_ruangan);
                 $("#formModalIdRuangan").val(params.id_ruangan);
+                $("#formModalFotoLama").val(params.foto_ruangan);
             }
         </script>
     @endif

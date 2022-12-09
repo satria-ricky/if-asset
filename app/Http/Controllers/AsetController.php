@@ -108,6 +108,7 @@ class AsetController extends Controller
             'kondisi' => $req['kondisi'],
             'tahun_pengadaan' => $req['tahun_pengadaan']
         ];
+        
         if ($req->file('foto')) {
             $extension = $req->file('foto')->getClientOriginalExtension();
             $filename = 'foto-aset/' . uniqid() . '.' . $extension;
