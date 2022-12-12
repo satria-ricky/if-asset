@@ -165,7 +165,7 @@
     @endif
 
 
-    @if (Request::is('adm_histori'))
+    @if (Request::is('histori_aset'))
         <script>
             function FilterHistoriAdm() {
                 var tanggal_awal = document.getElementById("tanggal_awal").value;
@@ -173,7 +173,7 @@
                 var mahasiswa = document.getElementById("mahasiswa").value;
 
                 // console.log(tanggal_awal,tanggal_akhir,mahasiswa);
-                $("#dataTableHistori").DataTable().destroy();
+                $("#dataTableHistoriAdmin").DataTable().destroy();
                 var i = 0;
 
                 // $.ajax({
@@ -192,7 +192,7 @@
                 // })
 
 
-                $("#dataTableHistori").DataTable({
+                $("#dataTableHistoriAdmin").DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -215,7 +215,7 @@
                             className: "text-center",
                         },
                         {
-                            data: "nama",
+                            data: "nama_user",
                             className: "text-center",
                         },
                         {

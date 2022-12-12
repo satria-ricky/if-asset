@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RuanganFactory extends Factory
+class JurusanFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,9 +14,7 @@ class RuanganFactory extends Factory
     public function definition()
     {
         return [
-            'id_jurusan' => mt_rand(1, 5),
-            'nama_ruangan' => $this->faker->name(),
-            'foto_ruangan' => 'foto-ruangan/default.jpg'
+            'nama_jurusan' => $this->faker->name(),
         ];
     }
 }

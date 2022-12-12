@@ -15,15 +15,18 @@ class CreateAsetsTable extends Migration
     {
         Schema::create('asets', function (Blueprint $table) {
             $table->id('id_aset');
-            $table->integer('id_ruangan');
-            $table->integer('id_jenis');
             $table->string('kode_aset');
-            $table->string('nama')->nullable();
-            $table->string('id_sumber')->nullable();
+            $table->integer('kode_jurusan');
+            $table->integer('id_ruangan');
+            $table->integer('id_jenis')->nullable();
+            $table->string('nama_aset')->nullable();
+            $table->string('tahun_pengadaan')->nullable();
+            $table->integer('nup')->nullable();
+            $table->string('merk_type')->nullable();
             $table->integer('jumlah')->nullable();
-            $table->string('lokasi')->nullable();
-            $table->integer('kondisi')->nullable();
-            $table->string('tahun_pengadaan')->nullable(); 
+            $table->decimal('nilai_barang')->nullable();
+            $table->integer('id_kondisi')->nullable(); 
+            $table->string('keterangan')->nullable();
             $table->string('foto_aset')->nullable();
             $table->timestamps();
         });

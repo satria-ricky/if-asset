@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jurusan;
 use App\Models\User;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
@@ -13,8 +14,9 @@ class RuanganController extends Controller
 {
     public function list_ruangan() {
         $title = "Daftar Ruangan";
+        $dataJurusan = Jurusan::all();
         $dataRuangan = Ruangan::all();
-        return view("fitur.list_ruangan", compact("dataRuangan","title"));
+        return view("fitur.list_ruangan", compact("dataJurusan","dataRuangan","title"));
     }
     
     public function tambah_ruangan(Request $req)

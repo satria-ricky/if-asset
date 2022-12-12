@@ -9,6 +9,7 @@ use App\Http\Controllers\AsetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HistoriController;
 use App\Http\Controllers\JenisAsetController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\RuanganController;
 use App\Models\JenisAset;
@@ -35,16 +36,39 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
     Route::post('/asetById', [AsetController::class, 'asetById'])->name('asetById');
+
+    //HISTORI
+    Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
+    Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
+
+    Route::get('/histori_ruangan',[HistoriController::class,'histori_ruangan']);
+
+
+
+    //SELESAI DIPAKAI
+    Route::post('/selesai_dipakai',[HistoriController::class,'selesai_dipakai']);
+    Route::post('/selesai_dipakai_ruangan',[HistoriController::class,'selesai_dipakai_ruangan']);
+
+
+
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
 Route::group(['middleware' => ['auth','ceklevel:1']], function () {
 
+    //JURUSAN
+    Route::get('/list_jurusan',[JurusanController::class,'list_jurusan']);
+    Route::post('/tambah_jurusan', [JurusanController::class, 'tambah_jurusan']);
+
+    
+    //RUANGAN
     Route::get('/list_ruangan',[RuanganController::class,'list_ruangan']);
     Route::post('/tambah_ruangan', [RuanganController::class, 'tambah_ruangan']);
     Route::post('/edit_ruangan', [RuanganController::class, 'edit_ruangan']);
     Route::post('/hapus_ruangan', [RuanganController::class, 'hapus_ruangan']);
 
+
+    //JENIS ASET
     Route::get('/list_jenis_aset',[JenisAsetController::class,'list_jenis_aset']);
     Route::post('/tambah_jenis_aset', [JenisAsetController::class, 'tambah_jenis_aset']);
     Route::post('/hapus_jenis_aset', [JenisAsetController::class, 'hapus_jenis_aset']);
@@ -63,10 +87,6 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/tambah_laporan',[LaporanController::class,'tambah_laporan']);
     Route::post('/hapus_laporan', [LaporanController::class, 'hapus_laporan']);
 
-
-    Route::get('/adm_histori',[HistoriController::class,'adm_histori']);
-    Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
-
 });
 
 
@@ -75,14 +95,14 @@ Route::group(['middleware' => ['auth','ceklevel:2']], function () {
     Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 });
 
-Route::group(['middleware' => ['auth','ceklevel:3']], function () {
-    Route::get('/list_histori',[HistoriController::class,'list_histori']);
-    Route::post('/selesai_dipakai',[HistoriController::class,'selesai_dipakai']);
-});
+// Route::group(['middleware' => ['auth','ceklevel:3']], function () {
+//     Route::get('/list_histori',[HistoriController::class,'list_histori']);
+    
+// });
 
 Route::group(['middleware' => ['auth','ceklevel:4']], function () {
     Route::get('/list_historiDsn',[HistoriController::class,'list_histori_ruangan']);
-    Route::post('/selesai_dipakai_ruangan',[HistoriController::class,'selesai_dipakai_ruangan']);
+   
 });
 
 Route::get('/', [UserController::class, 'tampil_home']);

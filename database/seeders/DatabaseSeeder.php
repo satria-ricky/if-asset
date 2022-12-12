@@ -18,30 +18,29 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(4)->create();
         \App\Models\Aset::factory(5)->create();
-        // \App\Models\Ruangan::factory(3)->create();
-        \App\Models\Sumber::factory(3)->create();
-        // \App\Models\Kondisi::factory(3)->create();
+        \App\Models\Jurusan::factory(3)->create();
+        \App\Models\Ruangan::factory(3)->create();
         DB::table('users')->insert([
             [
-                'nama' => 'nama admin',
+                'nama_user' => 'nama admin',
                 'level' => 1,
                 'username' => 'admin',
                 'password' => Hash::make('123')
             ],
             [
-                'nama' => 'nama prodi',
+                'nama_user' => 'nama prodi',
                 'level' => 2,
                 'username' => 'prodi',
                 'password' => Hash::make('123')
             ],
             [
-                'nama' => 'nama mhs',
+                'nama_user' => 'nama mhs',
                 'level' => 3,
                 'username' => 'mhs',
                 'password' => Hash::make('123')
             ],
             [
-                'nama' => 'nama dsn',
+                'nama_user' => 'nama dsn',
                 'level' => 4,
                 'username' => 'dsn',
                 'password' => Hash::make('123')
@@ -65,39 +64,42 @@ class DatabaseSeeder extends Seeder
 
         DB::table('kondisis')->insert([
             [
-                'nama_kondisi'    => 'Rusak'
+                'nama_kondisi'    => 'RR'
             ],
             [
-                'nama_kondisi'    => 'Baik'
+                'nama_kondisi'    => 'RB'
+            ],
+            [
+                'nama_kondisi'    => 'B'
             ]
         ]);
 
-        DB::table('ruangans')->insert([
-            [
-                'nama_ruangan'    => 'Lab 1',
-                'foto_ruangan' => 'foto-ruangan/default.jpg'
-            ],
-            [
-                'nama_ruangan'    => 'Lab 2',
-                'foto_ruangan' => 'foto-ruangan/default.jpg',
-            ],
-            [
-                'nama_ruangan'    => 'Lab 3',
-                'foto_ruangan' => 'foto-ruangan/default.jpg',
-            ],
-            [
-                'nama_ruangan'    => 'Lab 4',
-                'foto_ruangan' => 'foto-ruangan/default.jpg',
-            ],
-            [
-                'nama_ruangan'    => 'Ruang D3-03',
-                'foto_ruangan' => 'foto-ruangan/default.jpg',
-            ],
-            [
-                'nama_ruangan'    => 'Ruang D4-03',
-                'foto_ruangan' => 'foto-ruangan/default.jpg',
-            ]
-        ]);
+        // DB::table('ruangans')->insert([
+        //     [
+        //         'nama_ruangan'    => 'Lab 1',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg'
+        //     ],
+        //     [
+        //         'nama_ruangan'    => 'Lab 2',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
+        //     ],
+        //     [
+        //         'nama_ruangan'    => 'Lab 3',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
+        //     ],
+        //     [
+        //         'nama_ruangan'    => 'Lab 4',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
+        //     ],
+        //     [
+        //         'nama_ruangan'    => 'Ruang D3-03',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
+        //     ],
+        //     [
+        //         'nama_ruangan'    => 'Ruang D4-03',
+        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
+        //     ]
+        // ]);
 
         DB::table('jenis_asets')->insert([
             [

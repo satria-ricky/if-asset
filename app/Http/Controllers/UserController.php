@@ -39,9 +39,9 @@ class UserController extends Controller
             } elseif (Auth::user()->level == 2) {
                 return redirect('/list_laporan');
             } elseif (Auth::user()->level == 3) {
-                return redirect('/list_histori');
+                return redirect('/histori_aset');
             } elseif (Auth::user()->level == 4) {
-                return redirect('/list_historiDsn');
+                return redirect('/histori_ruangan');
             }
         }
     }
@@ -65,10 +65,10 @@ class UserController extends Controller
                 return redirect('/list_laporan');
             }
             elseif (Auth::user()->level == 3) {
-                return redirect('/list_histori');
+                return redirect('/histori_aset');
             }
             elseif (Auth::user()->level == 4) {
-                return redirect('/list_historiDsn');
+                return redirect('/histori_ruangan');
             } 
         } else { // false
             //Login Fail

@@ -14,18 +14,14 @@
                             IF-UNRAM
                         </div>
                     </li>
-                    {{-- <li class= {{$loc == 'dashboard' ? "active" : "1"}}>
-                        <a href="/"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
-                    </li> --}}
-                    {{-- <li  class="@if(Request::is('list_sumber')) active @endif">
-                        <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Sumber</span></a>
-                    </li> --}}
-                    <li  class="@if(Request::is('list_ruangan')) active @endif">
-                        <a href="/list_ruangan"><i class="fa fa-home"></i> <span class="nav-label">Ruangan</span></a>
+                    
+                    <li class="@if(Request::is('list_ruangan')) active @elseif(Request::is('list_jurusan')) active @endif">
+                        <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Lokasi </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/list_jurusan">Jurusan</a></li>
+                            <li><a href="/list_ruangan">Ruangan</a></li>
+                        </ul>
                     </li>
-                    {{-- <li  class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @endif">
-                        <a href="/list_aset"><i class="fa fa-database"></i> <span class="nav-label">Aset</span></a>
-                    </li> --}}
 
                     <li class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @elseif(Request::is('list_jenis_aset')) active @endif">
                         <a href="#"><i class="fa fa-database"></i> <span class="nav-label">Aset </span><span class="fa arrow"></span></a>
@@ -39,11 +35,11 @@
                     <li  class="@if(Request::is('adm_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
                         <a href="/adm_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
                     </li>
-                    <li class="@if(Request::is('adm_histori')) active @elseif (Request::is('adm_histori/*')) active @elseif(Request::is('list_jenis_aset')) active @endif">
+                    <li class="@if(Request::is('histori_aset')) active @elseif(Request::is('histori_ruangan')) active @endif">
                         <a href="#"><i class="fa fa-history"></i> <span class="nav-label">Histori </span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
-                            <li><a href="#"> Penggunaan Aset</a></li>
-                            <li><a href="#">Penggunaan Ruangan</a></li>
+                            <li><a href="/histori_ruangan">Penggunaan Ruangan</a></li>
+                            <li><a href="/histori_aset"> Penggunaan Aset</a></li>
                         </ul>
                     </li>
 
