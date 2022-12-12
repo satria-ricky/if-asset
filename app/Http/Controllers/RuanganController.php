@@ -22,6 +22,15 @@ class RuanganController extends Controller
     public function tambah_ruangan(Request $req)
     {
         // dd($req);
+        $cekRuangan = DB::table('ruangans')
+            ->where('id_jurusan', $req['id_jurusan'])
+            ->where('nama_ruangan', $req['nama_ruangan'])
+            ->first();
+            // dd($cekRuangan);
+        if ($cekRuangan != null) {
+            return redirect('/list_ruangan')->with('error', 'Nama ruangan telah tersedia!');
+        } 
+        
         $this->validate(
             $req,
             ['nama_ruangan' => 'required|unique:ruangans,nama_ruangan'],
@@ -29,7 +38,8 @@ class RuanganController extends Controller
         );
 
         $hasil = [
-            'nama_ruangan' => $req['nama_ruangan'],
+            'id_jurusan' => $req['id_jurusan'],
+            'nama_ruangan' => $req['nama_ruangan']
         ];
 
         if ($req->file('foto')) {
@@ -49,7 +59,7 @@ class RuanganController extends Controller
 
     public function edit_ruangan(Request $req)
     {
-        // dd($req);
+        dd($req);
         $this->validate(
             $req,
             ['nama_ruangan' => 'required|unique:ruangans,nama_ruangan'],

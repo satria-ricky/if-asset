@@ -5,6 +5,15 @@ function buttonModalEditJurusan(params) {
     $("#formModalIdJurusan").val(params.id_jurusan);
 }
 
+function buttonModalEditRuangan(params) {
+    // console.log(params)
+    $('#ModalEditRuangan').modal('show');
+    $("#formModalNamaRuangan").val(params.nama_ruangan);
+    $("#formModalIdRuangan").val(params.id_ruangan);
+    $("#formModalFotoLama").val(params.foto_ruangan);
+}
+
+
 
 
 function buttonLogout() {

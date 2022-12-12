@@ -122,6 +122,16 @@
                     <form role="form" method="post" action="/tambah_ruangan" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
+                            <label>Kode Jurusan</label>
+                            <select class="js-example-basic-single form-control" style="width: auto" name="id_jurusan"
+                                required>
+                                @foreach ($dataJurusan as $item)
+                                    <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Nama Ruangan</label>
                             <input class="form-control" type="text" name="nama_ruangan" required autocomplete="off">
                             @error('nama_ruangan')
@@ -164,6 +174,16 @@
 
                     <form role="form" method="post" action="/edit_ruangan" enctype="multipart/form-data">
                         @csrf
+                        <div class="form-group">
+                            <label>Kode Jurusan</label>
+                            <select class="js-example-basic-single form-control" style="width: auto" name="idSumber"
+                                required>
+                                @foreach ($dataJurusan as $item)
+                                    <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label>Nama Ruangan</label>
                             <input type="hidden" name="id" id="formModalIdRuangan">

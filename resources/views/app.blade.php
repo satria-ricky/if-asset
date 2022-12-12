@@ -312,17 +312,7 @@
         </script>
     @endif
 
-    @if (Request::is('list_ruangan'))
-        <script>
-            function buttonModalEditRuangan(params) {
-                // console.log(params)
-                $('#ModalEditRuangan').modal('show');
-                $("#formModalNamaRuangan").val(params.nama_ruangan);
-                $("#formModalIdRuangan").val(params.id_ruangan);
-                $("#formModalFotoLama").val(params.foto_ruangan);
-            }
-        </script>
-    @endif
+
     @if (Request::is('list_jenis_aset'))
         <script>
             function buttonModalEditJenisAset(params) {
