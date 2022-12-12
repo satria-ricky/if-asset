@@ -59,8 +59,9 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     //JURUSAN
     Route::get('/list_jurusan',[JurusanController::class,'list_jurusan']);
     Route::post('/tambah_jurusan', [JurusanController::class, 'tambah_jurusan']);
+    Route::post('/edit_jurusan', [JurusanController::class, 'edit_jurusan']);
+    Route::post('/hapus_jurusan', [JurusanController::class, 'hapus_jurusan']);
 
-    
     //RUANGAN
     Route::get('/list_ruangan',[RuanganController::class,'list_ruangan']);
     Route::post('/tambah_ruangan', [RuanganController::class, 'tambah_ruangan']);

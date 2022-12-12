@@ -52,14 +52,14 @@
                                                             <button
                                                                 style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
                                                                 class="dropdown-item pb-2"
-                                                                onclick="buttonModalEditRuangan({{ $item }})">
+                                                                onclick="buttonModalEditJurusan({{ $item }})">
                                                                 Edit</button>
                                                         </li>
                                                         <li>
-                                                            <form action="hapus_ruangan" method="post">
+                                                            <form action="/hapus_jurusan" method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="id"
-                                                                    value="{{ $item->id_ruangan }}">
+                                                                    value="{{ $item->id_jurusan }}">
                                                                 <button
                                                                     style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
                                                                     class="dropdown-item pb-2" type="submit"
@@ -117,7 +117,7 @@
         </div>
     </div>
 
-    <div class="modal inmodal" id="ModalEditRuangan" role="dialog" aria-hidden="true">
+    <div class="modal inmodal" id="ModalEditJurusan" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated fadeIn">
                 <div class="modal-header">
@@ -132,8 +132,8 @@
                         <div class="form-group">
                             <label>Nama jurusan</label>
                             <input type="hidden" name="id" id="formModalIdJurusan">
+                            <input class="form-control" type="text" name="nama_jurusan" id="formModalNamaJurusan">
                         </div>
-                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>

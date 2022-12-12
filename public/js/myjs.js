@@ -1,3 +1,11 @@
+//MODAL EDIT
+function buttonModalEditJurusan(params) {
+    $('#ModalEditJurusan').modal('show');
+    $("#formModalNamaJurusan").val(params.nama_jurusan);
+    $("#formModalIdJurusan").val(params.id_jurusan);
+}
+
+
 
 function buttonLogout() {
     var link = "formLogout";
