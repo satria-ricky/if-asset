@@ -12,31 +12,29 @@ use Illuminate\Support\Facades\Storage;
 
 class RuanganController extends Controller
 {
-    public function list_ruangan() {
+    public function list_ruangan()
+    {
         $title = "Daftar Ruangan";
         $dataJurusan = Jurusan::all();
-        $dataRuangan = Ruangan::all();
-        return view("fitur.list_ruangan", compact("dataJurusan","dataRuangan","title"));
+        $dataRuangan = DB::table('ruangans')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan','=','ruangans.id_jurusan')
+            ->get();
+
+        return view("fitur.list_ruangan", compact("dataJurusan", "dataRuangan", "title"));
     }
-    
+
     public function tambah_ruangan(Request $req)
     {
-        // dd($req);
+
         $cekRuangan = DB::table('ruangans')
             ->where('id_jurusan', $req['id_jurusan'])
             ->where('nama_ruangan', $req['nama_ruangan'])
             ->first();
-            // dd($cekRuangan);
+        // dd($cekRuangan);
         if ($cekRuangan != null) {
             return redirect('/list_ruangan')->with('error', 'Nama ruangan telah tersedia!');
-        } 
+        }
         
-        $this->validate(
-            $req,
-            ['nama_ruangan' => 'required|unique:ruangans,nama_ruangan'],
-            ['nama_ruangan.unique' => 'Nama ruangan telah tersedia!']
-        );
-
         $hasil = [
             'id_jurusan' => $req['id_jurusan'],
             'nama_ruangan' => $req['nama_ruangan']
@@ -59,12 +57,20 @@ class RuanganController extends Controller
 
     public function edit_ruangan(Request $req)
     {
-        dd($req);
-        $this->validate(
-            $req,
-            ['nama_ruangan' => 'required|unique:ruangans,nama_ruangan'],
-            ['nama_ruangan.unique' => 'Nama ruangan telah tersedia!']
-        );
+        $cekRuangan = DB::table('ruangans')
+        ->where('id_jurusan', $req['id_jurusan'])
+        ->where('nama_ruangan', $req['nama_ruangan'])
+        ->where('id_ruangan','!=', $req['id'])
+        ->first();
+        // dd($cekRuangan);
+        if ($cekRuangan != null) {
+            return redirect('/list_ruangan')->with('error', 'Nama ruangan telah tersedia!');
+        }
+
+        $hasil = [
+            'id_jurusan' => $req['id_jurusan'],
+            'nama_ruangan' => $req['nama_ruangan']
+        ];
 
         if ($req->file('foto')) {
             $extension = $req->file('foto')->getClientOriginalExtension();
@@ -75,14 +81,12 @@ class RuanganController extends Controller
                 Storage::delete('public/' . $req['fotoLama']);
             }
 
-            $hasil['foto_aset'] = $filename;
+            $hasil['foto_ruangan'] = $filename;
         } else {
-            $hasil['foto_aset'] = $req['fotoLama'];
+            $hasil['foto_ruangan'] = $req['fotoLama'];
         }
 
-        Ruangan::all()->where('id_ruangan', $req['id'])->first()->update([
-            'nama_ruangan' => $req['nama_ruangan']
-        ]);
+        Ruangan::all()->where('id_ruangan', $req['id'])->first()->update($hasil);
 
         return redirect('/list_ruangan')->with('success', 'Data Ruangan Diubah');
     }
@@ -94,21 +98,21 @@ class RuanganController extends Controller
         if (($data['foto_ruangan'] != 'foto-ruangan/default.jpg')) {
             Storage::delete('public/' . $data['foto_ruangan']);
         }
-        
+
         return redirect('/list_ruangan')->with('success', 'Data Berhasil Dihapus');
     }
 
     public function qr_code(Request $req)
-    { $id = Crypt::decrypt($req->id);
+    {
+        $id = Crypt::decrypt($req->id);
 
         $ruangan = Ruangan::findOrFail($id);
-        
-        return view('fitur.qr_code_ruangan',[
+
+        return view('fitur.qr_code_ruangan', [
             'ruangan' => $ruangan,
             'title' => 'QRcode',
-            'data' => url('/detail_ruangan/'.$req->id)
+            'data' => url('/detail_ruangan/' . $req->id)
         ]);
-
     }
 
 
@@ -122,6 +126,4 @@ class RuanganController extends Controller
             "url" => url('detail_ruangan/' . $req->id)
         ]);
     }
-
-
 }

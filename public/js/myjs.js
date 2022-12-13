@@ -7,14 +7,19 @@ function buttonModalEditJurusan(params) {
 
 function buttonModalEditRuangan(params) {
     // console.log(params)
+
     $('#ModalEditRuangan').modal('show');
     $("#formModalNamaRuangan").val(params.nama_ruangan);
+    $("#formModalNamaJurusan").val(params.id_jurusan).change();
     $("#formModalIdRuangan").val(params.id_ruangan);
     $("#formModalFotoLama").val(params.foto_ruangan);
+    
+    $('#priviewFoto2').attr("src", "/storage/"+params.foto_ruangan);
+    
 }
 
 
-
+//
 
 function buttonLogout() {
     var link = "formLogout";
@@ -33,13 +38,15 @@ function buttonLogout() {
     });
 }
 
-function cekFoto() {
-    const getFoto = document.querySelector("#id_foto");
-    const setFoto = document.querySelector("#priviewFoto");
-    // console.log(setFoto);
-
+function cekFoto(p) {
+    const var_getpoto = "#id_foto"+p;
+    const var_setpoto = "#priviewFoto"+p;
+    // console.log(poto);
+    const getFoto = document.querySelector(var_getpoto);
+    const setFoto = document.querySelector(var_setpoto);
+    
     var filePath = getFoto.value;
-
+    
     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         swal({
@@ -49,14 +56,17 @@ function cekFoto() {
         });
         getFoto.value = "";
         setFoto.src = "";
-
         return false;
     } else {
+        // document.getElementById("setFoto").style.display = "none";
+
         const ofReader = new FileReader();
         ofReader.readAsDataURL(getFoto.files[0]);
         ofReader.onload = function (oFREvent) {
             setFoto.src = oFREvent.target.result;
         };
+
+
     }
 
     // else if (getFoto.files[0].size / 1024 / 1024 > 3) {

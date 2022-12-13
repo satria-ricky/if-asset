@@ -34,7 +34,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Nama Ruangan</th>
+                                        <th class="text-center">Kode Jurusan</th>
+                                        <th class="text-center">Ruangan</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -42,6 +43,7 @@
                                     @foreach ($dataRuangan as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $item->nama_jurusan }}</td>
                                             <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
@@ -61,11 +63,11 @@
                                                             <button
                                                                     style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
                                                                     class="dropdown-item pb-2" 
-                                                                    onclick="buttonModalEditRuangan({{ $item }})">
+                                                                    onclick="buttonModalEditRuangan({{ collect($item) }})">
                                                                     Edit</button>
                                                         </li>
                                                         <li>
-                                                            <form action="hapus_ruangan" method="post">
+                                                            <form action="/hapus_ruangan" method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="id"
                                                                     value="{{ $item->id_ruangan }}">
@@ -79,22 +81,6 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            {{-- <td class="text-center" style="width: 153px">
-                                                <div style="display:flex;">
-
-                                                    <button class="btn btn-sm btn-info " type="button"
-                                                        onclick="buttonModalEditRuangan({{ $item }})"><i
-                                                            class="fa fa-paste"></i> Edit</button>
-                                                    <form action="hapus_ruangan" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $item->id_ruangan }}">
-                                                        <button class="btn btn-sm btn-danger ml-2" type="submit"
-                                                            onclick="return confirm('Are you sure?')"><i
-                                                                class="fa fa-trash"></i> Hapus</button>
-                                                    </form>
-                                                </div>
-                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -134,23 +120,18 @@
                         <div class="form-group">
                             <label>Nama Ruangan</label>
                             <input class="form-control" type="text" name="nama_ruangan" required autocomplete="off">
-                            @error('nama_ruangan')
-                                <script>
-                                    swal("Oppss!", "Nama ruangan telah tersedia!", "error");
-                                </script>
-                            @enderror
 
                         </div>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input id="id_foto" type="file" name="foto" accept="image/*"
-                                    class="custom-file-input" onchange="cekFoto()">
+                                <input id="id_foto1" type="file" name="foto" accept="image/*"
+                                    class="custom-file-input" onchange="cekFoto(1)">
                                 <label class="custom-file-label" for="id_foto">Masukkan foto</label>
 
                             </div>
 
                         </div>
-                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto1">
                         
                 </div>
                 <div class="modal-footer">
@@ -176,7 +157,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Kode Jurusan</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="idSumber"
+                            <select class="js-example-basic-single form-control" style="width: auto" name="id_jurusan" id="formModalNamaJurusan"
                                 required>
                                 @foreach ($dataJurusan as $item)
                                     <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
@@ -193,14 +174,14 @@
                         </div>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input id="id_foto" type="file" name="foto" accept="image/*"
-                                    class="custom-file-input" onchange="cekFoto()">
+                                <input id="id_foto2" type="file" name="foto" accept="image/*"
+                                    class="custom-file-input" onchange="cekFoto(2)">
                                 <label class="custom-file-label" for="id_foto">Masukkan foto</label>
-
                             </div>
 
                         </div>
-                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                        {{-- <img src="" class="img rounded mt-2" width="150" id="setFoto"> --}}
+                        <img src="" class="img-priview rounded mt-2" width="150" id="priviewFoto2">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
