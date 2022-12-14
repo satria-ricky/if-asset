@@ -86,8 +86,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row" class="text-start">Sumber</th>
-                            <td> {{ $data->nama_sumber }} </td>
+                            <th scope="row" class="text-start">Kode Jurusan</th>
+                            <td> {{ $data->nama_jurusan }} </td>
                         </tr>
 
                     </tbody>
@@ -106,26 +106,14 @@
                     </tbody>
                     <tbody>
                         <tr>
+                            <th scope="row" class="text-start">Jenis Aset</th>
+                            <td> {{ $data->nama_jenis }} </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
                             <th scope="row" class="text-start">Nama Aset</th>
-                            <td> {{ $data->nama }} </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Jumlah</th>
-                            <td> {{ $data->jumlah }} </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Lokasi</th>
-                            <td> {{ $data->lokasi }} </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-start">Kondisi</th>
-                            <td> {{ $data->nama_kondisi }} </td>
+                            <td> {{ $data->nama_aset }} </td>
                         </tr>
                     </tbody>
                     <tbody>
@@ -134,6 +122,45 @@
                             <td> {{ $data->tahun_pengadaan }} </td>
                         </tr>
                     </tbody>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">NUP</th>
+                            <td> {{ $data->nup }} </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Merk/Type</th>
+                            <td> {{ $data->merk_type }} </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Jumlah</th>
+                            <td> {{ $data->jumlah }} </td>
+                        </tr>
+                    </tbody>
+                    
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Nilai Barang</th>
+                            <td> {{ $data->nilai_barang }} </td>
+                        </tr>
+                    </tbody>
+                    
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Kondisi</th>
+                            <td> <p class="btn btn-{{ $data->icon_kondisi }} btn-sm"> {{ $data->nama_kondisi }} </p> </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Lainnya</th>
+                            <td> {{ $data->keterangan }} </td>
+                        </tr>
+                    </tbody>
+                   
                     <tbody>
                         <tr>
                             <th scope="row" class="text-start">Want to use ? </th>

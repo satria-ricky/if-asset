@@ -21,62 +21,41 @@
 
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        {{-- <div class="row mb-3">
-            <div class="col-lg-12">
-                <div class="row ml-2">
-                    <p style="font-size: 18px;">Filter Ruangan</p>
-                </div>
-                <div class="row ml-2">
-                    <div style="display:flex;">
-                        <select id="idRuangan" class="js-example-basic-single form-control">
-                            @foreach ($dataRuangan as $item)
-                                <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
-                            @endforeach
-
-                        </select>
-                        <button class="btn btn-sm btn-success ml-2" onclick="filterByRuangan()"> Filter</button>
-                    </div>
-
-
-                </div>
-            </div>
-        </div> --}}
+        
 
         <div class="ibox-content m-b-sm border-bottom">
             <h3>Filter</h3>
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-form-label" for="date_added">Batas awal </label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
-                                type="datetime-local" class="form-control">
-                        </div>
+                        <label class="col-form-label" for="date_added">Kode Jurusan </label>
+                        <select class="js-example-basic-single form-control" id="jurusan_filter" onchange="getRuanganByJurusan()">
+                            @foreach ($dataJurusan as $item)
+                                <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Ruangan </label>
+                        <select class="js-example-basic-single form-control" id="ruangan_filter">
+                        </select>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Batas akhir</label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
-                                type="datetime-local" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label class="col-form-label" for="kondisi">Kondisi</label>
-                        <select class="js-example-basic-single form-control" style="height: 35px;" id="kondisi"
-                                required>
-                                @foreach ($dataKondisi as $item)
-                                    <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
-                                @endforeach
-                            </select>
+                        <select class="js-example-basic-single form-control" id="kondisi_filter" required>
+                            @foreach ($dataKondisi as $item)
+                                <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    
                 </div>
-                <div class="col-sm-3" style="margin: auto; padding-top: 15px;">
-                    <button class="btn btn-success" onclick="FilterLaporanProdi()"> Filter </button>
-                </div>
+                <button class="btn btn-success ml-3" onclick="filter_aset()"> Filter </button>
             </div>
 
         </div>
@@ -114,7 +93,8 @@
                                             <td class="text-center">{{ $item->kode_aset }}</td>
                                             <td class="text-center">{{ $item->nama_aset }}</td>
                                             <td class="text-center">
-                                                <p class="btn btn-{{ $item->icon_kondisi }} btn-sm"> {{ $item->nama_kondisi }} </p>
+                                                <p class="btn btn-{{ $item->icon_kondisi }} btn-sm">
+                                                    {{ $item->nama_kondisi }} </p>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
@@ -163,7 +143,7 @@
         </div>
     </div>
     <div class="modal inmodal" id="myModal" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog  modal-lg">
             <div class="modal-content animated fadeIn">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
@@ -174,25 +154,35 @@
 
                     <form role="form" method="post" action="/tambah_aset" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group">
-                            <label>Sumber</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="idSumber"
-                                required>
-                                @foreach ($dataSumber as $item)
-                                    <option value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}</option>
-                                @endforeach
-                            </select>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Kode Jurusan</label>
+                                    <select class="js-example-basic-single form-control" style="width: auto" name="kode_jurusan"
+                                    required id="modal_tambah_kode_jurusan" onchange="">
+                                    @foreach ($dataJurusan as $item)
+                                        <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                    @endforeach
+                                </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Ruangan</label>
+                                    <select class="js-example-basic-single form-control" style="width: auto" name="idRuangan"
+                                        required>
+                                        @foreach ($dataRuangan as $item)
+                                            <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Ruangan</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="idRuangan"
-                                required>
-                                @foreach ($dataRuangan as $item)
-                                    <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
 
                         <div class="form-group">
                             <label>Kode Aset</label>

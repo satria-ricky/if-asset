@@ -37,6 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
     Route::post('/asetById', [AsetController::class, 'asetById'])->name('asetById');
 
+
+    //FILTER
+    Route::post('/getRuanganByJurusan', [RuanganController::class, 'getRuanganByJurusan']);
+
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
     Route::post('/filterHistori',[HistoriController::class,'filterHistori']);

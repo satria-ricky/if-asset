@@ -27,7 +27,7 @@
                 <thead>
                     <tr>
                         <th style="width: 52px;">Nama : </th>
-                        <td>  {{ $aset->nama }} </td>
+                        <td>  {{ $aset->nama_aset }} </td>
                     </tr>
                 </thead>
             </table>

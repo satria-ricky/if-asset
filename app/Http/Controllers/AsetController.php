@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aset;
+use App\Models\Jurusan;
 use App\Models\Kondisi;
 use App\Models\Ruangan;
 use App\Models\Sumber;
@@ -78,8 +79,9 @@ class AsetController extends Controller
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
         // $dataAset = Aset::all();
-        $dataSumber = Sumber::all();
+        $dataJurusan = Jurusan::all();
         $dataKondisi = Kondisi::all();
+
         $dataAset = DB::table('asets')
             ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
             ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
@@ -87,12 +89,13 @@ class AsetController extends Controller
             ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
             ->get();
 
-        return view("fitur.list_aset", compact("dataKondisi", "dataAset", "title", "dataRuangan", "dataSumber"));
+        return view("fitur.list_aset", compact("dataKondisi", "dataAset", "title", "dataRuangan", "dataJurusan"));
     }
 
     public function tambah_aset(Request $req)
     {
 
+        dd($req);
         $this->validate(
             $req,
             ['kode' => 'required|unique:asets,kode_aset'],
@@ -199,11 +202,12 @@ class AsetController extends Controller
     {
         $id = Crypt::decrypt($req->id);
         $dataAset = DB::table('asets')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('sumbers', 'sumbers.id_sumber', '=', 'asets.id_sumber')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.kondisi')
-            ->where('asets.id_aset', $id)
-            ->first();
+        ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+        ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+        ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+        ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+        ->where('asets.id_aset', $id)
+        ->first();
 
         return view('fitur.detail_aset', [
             "data" => $dataAset,
