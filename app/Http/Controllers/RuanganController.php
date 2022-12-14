@@ -106,11 +106,15 @@ class RuanganController extends Controller
     {
         $id = Crypt::decrypt($req->id);
 
-        $ruangan = Ruangan::findOrFail($id);
+        $ruangan =DB::table('ruangans')
+        ->leftJoin('jurusans','jurusans.id_jurusan', '=', 'ruangans.id_jurusan')
+        ->where('id_ruangan', $id)
+        ->first();
+
 
         return view('fitur.qr_code_ruangan', [
             'ruangan' => $ruangan,
-            'title' => 'QRcode',
+            'title' => 'QRcode Ruangan',
             'data' => url('/detail_ruangan/' . $req->id)
         ]);
     }
@@ -119,8 +123,11 @@ class RuanganController extends Controller
     public function tampil_detail_ruangan(Request $req)
     {
         $id = Crypt::decrypt($req->id);
-        $ruangan = Ruangan::findOrFail($id);
-
+        $ruangan = DB::table('ruangans')
+        ->leftJoin('jurusans','jurusans.id_jurusan', '=', 'ruangans.id_jurusan')
+        ->where('id_ruangan', $id)
+        ->first();
+        
         return view('fitur.detail_ruangan', [
             "data" => $ruangan,
             "url" => url('detail_ruangan/' . $req->id)

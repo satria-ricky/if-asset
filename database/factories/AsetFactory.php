@@ -15,7 +15,7 @@ class AsetFactory extends Factory
     {
         return [
             'kode_aset' => $this->faker->unique()->text($maxNbChars = 7),
-            'kode_jurusan' => mt_rand(1, 5),
+            'kode_jurusan' => mt_rand(1, 3),
             'id_ruangan' => mt_rand(1, 3),
             'id_jenis' => mt_rand(1, 2),
             'nama_aset' => $this->faker->text($maxNbChars = 20),

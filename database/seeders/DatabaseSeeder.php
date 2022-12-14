@@ -64,13 +64,16 @@ class DatabaseSeeder extends Seeder
 
         DB::table('kondisis')->insert([
             [
-                'nama_kondisi'    => 'RR'
+                'nama_kondisi'    => 'RR',
+                'icon_kondisi'    => 'warning'
             ],
             [
-                'nama_kondisi'    => 'RB'
+                'nama_kondisi'    => 'RB',
+                'icon_kondisi'    => 'danger'
             ],
             [
-                'nama_kondisi'    => 'B'
+                'nama_kondisi'    => 'B',
+                'icon_kondisi'    => 'success'
             ]
         ]);
 

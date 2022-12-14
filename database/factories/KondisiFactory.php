@@ -14,7 +14,8 @@ class KondisiFactory extends Factory
     public function definition()
     {
         return [
-            'nama_kondisi' => $this->faker->name()
+            'nama_kondisi' => $this->faker->name(),
+            'icon_kondisi' => $this->faker->name()
         ];
     }
 }

@@ -81,9 +81,10 @@ class AsetController extends Controller
         $dataSumber = Sumber::all();
         $dataKondisi = Kondisi::all();
         $dataAset = DB::table('asets')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
             ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('sumbers', 'sumbers.id_sumber', '=', 'asets.id_sumber')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.kondisi')
+            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
             ->get();
 
         return view("fitur.list_aset", compact("dataKondisi", "dataAset", "title", "dataRuangan", "dataSumber"));

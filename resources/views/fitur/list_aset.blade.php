@@ -21,7 +21,7 @@
 
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row mb-3">
+        {{-- <div class="row mb-3">
             <div class="col-lg-12">
                 <div class="row ml-2">
                     <p style="font-size: 18px;">Filter Ruangan</p>
@@ -34,12 +34,51 @@
                             @endforeach
 
                         </select>
-                        {{-- <button class="btn btn-sm btn-success ml-2" onclick="filterByRuangan()"> Filter</button> --}}
+                        <button class="btn btn-sm btn-success ml-2" onclick="filterByRuangan()"> Filter</button>
                     </div>
 
 
                 </div>
             </div>
+        </div> --}}
+
+        <div class="ibox-content m-b-sm border-bottom">
+            <h3>Filter</h3>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_added">Batas awal </label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Batas akhir</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="kondisi">Kondisi</label>
+                        <select class="js-example-basic-single form-control" style="height: 35px;" id="kondisi"
+                                required>
+                                @foreach ($dataKondisi as $item)
+                                    <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="margin: auto; padding-top: 15px;">
+                    <button class="btn btn-success" onclick="FilterLaporanProdi()"> Filter </button>
+                </div>
+            </div>
+
         </div>
 
         <div class="row">
@@ -58,7 +97,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
+                                        <th class="text-center">Kode Jurusan</th>
                                         <th class="text-center">Kode aset</th>
+                                        <th class="text-center">Ruangan</th>
                                         <th class="text-center">Nama aset</th>
                                         <th class="text-center">Kondisi</th>
                                         <th class="text-center">Action</th>
@@ -68,14 +109,12 @@
                                     @foreach ($dataAset as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $item->nama_jurusan }}</td>
+                                            <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">{{ $item->kode_aset }}</td>
-                                            <td class="text-center">{{ $item->nama }}</td>
+                                            <td class="text-center">{{ $item->nama_aset }}</td>
                                             <td class="text-center">
-                                                @if ($item->id_kondisi == 1)
-                                                    <p class="btn btn-danger btn-sm"> {{ $item->nama_kondisi }} </p>
-                                                @else
-                                                    <p class="btn btn-success btn-sm"> {{ $item->nama_kondisi }} </p>
-                                                @endif
+                                                <p class="btn btn-{{ $item->icon_kondisi }} btn-sm"> {{ $item->nama_kondisi }} </p>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group">

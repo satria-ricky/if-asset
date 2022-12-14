@@ -16,6 +16,7 @@ class CreateKondisisTable extends Migration
         Schema::create('kondisis', function (Blueprint $table) {
             $table->id('id_kondisi');
             $table->string('nama_kondisi')->nullable();
+            $table->string('icon_kondisi')->nullable();
             $table->timestamps();
         });
     }

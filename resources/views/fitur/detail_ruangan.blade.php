@@ -80,8 +80,8 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th style="width: 34%;"></th>
-                            <th style="width: 66%;">{{ $data->nama_ruangan }}</th>
+                            <th style="width: 34%;">Ruangan</th>
+                            <th style="width: 66%;">{{ $data->nama_jurusan }} || {{ $data->nama_ruangan }}</th>
                         </tr>
                     </thead>
                     <tbody>
