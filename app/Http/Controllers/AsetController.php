@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aset;
+use App\Models\JenisAset;
 use App\Models\Jurusan;
 use App\Models\Kondisi;
 use App\Models\Ruangan;
@@ -18,7 +19,26 @@ class AsetController extends Controller
 
     public function asetByRuangan(Request $req)
     {
-        $data = DB::select('SELECT asets.*, kondisis.* FROM asets LEFT JOIN ruangans ON asets.id_ruangan = ruangans.id_ruangan LEFT JOIN kondisis ON asets.kondisi = kondisis.id_kondisi WHERE asets.id_ruangan = ?', [$req->id_ruangan]);
+        if ( $req->refresh == 1) {
+            $data = DB::table('asets')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+            ->get();
+        } else {
+            $data = DB::table('asets')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+            ->where('asets.kode_jurusan', $req->id_jurusan)
+            ->where('asets.id_ruangan', $req->id_ruangan)
+            ->where('asets.id_jenis', $req->id_jenis)
+            ->where('asets.id_kondisi', $req->id_kondisi)
+            ->get();
+        }
+        
 
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
@@ -55,15 +75,10 @@ class AsetController extends Controller
                 </div>';
                 return $btn;
             })
-            ->editColumn('kondisi',function ($data){
-                if ($data->kondisi == 1) {
-                    $kondisi = '<p class="btn btn-danger btn-sm"> ' . $data->nama_kondisi . ' </p>';
-                } else {
-                    $kondisi = '<p class="btn btn-success btn-sm"> ' . $data->nama_kondisi . ' </p>';
-                }
-                return $kondisi; 
+            ->editColumn('id_kondisi',function ($data){
+                return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>'; 
             })
-            ->rawColumns(['kondisi','action'])->make(true);
+            ->rawColumns(['id_kondisi','action'])->make(true);
     }
 
     public function asetById(Request $req)
@@ -78,7 +93,7 @@ class AsetController extends Controller
     {
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
-        // $dataAset = Aset::all();
+        $dataJenis = JenisAset::all();
         $dataJurusan = Jurusan::all();
         $dataKondisi = Kondisi::all();
 
@@ -89,7 +104,7 @@ class AsetController extends Controller
             ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
             ->get();
 
-        return view("fitur.list_aset", compact("dataKondisi", "dataAset", "title", "dataRuangan", "dataJurusan"));
+        return view("fitur.list_aset", compact("dataKondisi", "dataAset", "title", "dataRuangan", "dataJurusan", "dataJenis"));
     }
 
     public function tambah_aset(Request $req)

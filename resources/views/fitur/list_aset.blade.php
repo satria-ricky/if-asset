@@ -21,30 +21,43 @@
 
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        
+
 
         <div class="ibox-content m-b-sm border-bottom">
             <h3>Filter</h3>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_added">Kode Jurusan </label>
-                        <select class="js-example-basic-single form-control" id="jurusan_filter" onchange="getRuanganByJurusan()">
+                        <select class="js-example-basic-single form-control" id="jurusan_filter"
+                            onchange="getRuanganByJurusan()">
                             @foreach ($dataJurusan as $item)
                                 <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
                             @endforeach
                         </select>
                     </div>
-                    
                 </div>
-                <div class="col-sm-4">
+
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_modified">Ruangan </label>
                         <select class="js-example-basic-single form-control" id="ruangan_filter">
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Jenis aset </label>
+                        <select class="js-example-basic-single form-control" id="jenis_filter"
+                            onchange="getRuanganByJurusan()">
+                            @foreach ($dataJenis as $item)
+                                <option value="{{ $item->id_jenis }}"> {{ $item->nama_jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="kondisi">Kondisi</label>
                         <select class="js-example-basic-single form-control" id="kondisi_filter" required>
@@ -53,11 +66,12 @@
                             @endforeach
                         </select>
                     </div>
-                    
                 </div>
-                <button class="btn btn-success ml-3" onclick="filter_aset()"> Filter </button>
-            </div>
 
+                
+            </div>
+            <button class="btn btn-success " onclick="filter_aset()"> Filter </button>
+            <button class="btn btn-warning " onclick="filter_aset(1)"> Refresh </button>
         </div>
 
         <div class="row">
@@ -77,8 +91,8 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center">Kode Jurusan</th>
-                                        <th class="text-center">Kode aset</th>
                                         <th class="text-center">Ruangan</th>
+                                        <th class="text-center">Kode aset</th>
                                         <th class="text-center">Nama aset</th>
                                         <th class="text-center">Kondisi</th>
                                         <th class="text-center">Action</th>
@@ -159,12 +173,12 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Kode Jurusan</label>
-                                    <select class="js-example-basic-single form-control" style="width: auto" name="kode_jurusan"
-                                    required id="modal_tambah_kode_jurusan" onchange="">
-                                    @foreach ($dataJurusan as $item)
-                                        <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
-                                    @endforeach
-                                </select>
+                                    <select class="js-example-basic-single form-control" style="width: auto"
+                                        name="kode_jurusan" required id="modal_tambah_kode_jurusan" onchange="">
+                                        @foreach ($dataJurusan as $item)
+                                            <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -172,8 +186,8 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Ruangan</label>
-                                    <select class="js-example-basic-single form-control" style="width: auto" name="idRuangan"
-                                        required>
+                                    <select class="js-example-basic-single form-control" style="width: auto"
+                                        name="idRuangan" required>
                                         @foreach ($dataRuangan as $item)
                                             <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
                                         @endforeach
@@ -182,7 +196,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <div class="form-group">
                             <label>Kode Aset</label>

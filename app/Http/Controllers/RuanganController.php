@@ -14,12 +14,12 @@ class RuanganController extends Controller
 {
 
     public function getRuanganByJurusan(Request $req){
-        // $data = DB::table('ruangans')
-        // ->leftJoin('jurusans', 'jurusans.id_jurusan','=','ruangans.id_jurusan')
-        // ->where('ruangans.id_jurusan',$req->id_jurusan)
-        // ->get();
+        $data = DB::table('ruangans')
+        ->leftJoin('jurusans', 'jurusans.id_jurusan','=','ruangans.id_jurusan')
+        ->where('ruangans.id_jurusan',$req->id_jurusan)
+        ->get();
 
-        return response()->json($req->id_jurusan);
+        return response()->json($data);
     }
 
     public function list_ruangan()

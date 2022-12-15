@@ -19,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-
+    <script src={{ asset('js/jquery-3.1.1.min.js') }}></script>
 </head>
 
 <body>
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src={{ asset('js/jquery-3.1.1.min.js') }}></script>
+    
     <script src={{ asset('js/popper.min.js') }}></script>
     <script src={{ asset('js/bootstrap.js') }}></script>
     <script src={{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}></script>
@@ -330,52 +330,9 @@
             let endYear = new Date().getFullYear();
             for (i = endYear; i > startYear; i--) {
                 $('#id_tahun_pengadaan').append($('<option />').val(i).html(i));
-                // $('#id_perbaikan_terakhir').append($('<option />').val(i).html(i));
             }
 
-            $(document).on('change', '#idRuangan', function() {
-                var id = document.getElementById("idRuangan").value;
-                $('#dataTabelAset').DataTable().destroy();
-                var i = 0;
-                $('#dataTabelAset').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": {
-                        "url": "{{ url('asetByRuangan') }}",
-                        "dataType": "json",
-                        "type": "POST",
-                        "data": {
-                            _token: "{{ csrf_token() }}",
-                            id_ruangan: id
-                        }
-                    },
-                    "columns": [{
-                            "data": "id_aset",
-                            render: function(data, type, row, meta) {
-                                return i = i + 1;
-                            },
-                            "className": "text-center",
-                        },
-                        {
-                            "data": "kode_aset",
-                            "className": "text-center",
-                        },
-                        {
-                            "data": "nama",
-                            "className": "text-center",
-                        },
-                        {
-                            "data": "kondisi",
-                            "className": "text-center",
-                        },
-                        {
-                            "data": "action",
-                            "className": "text-center",
-                        }
-                    ]
-
-                });
-            });
+            
         </script>
     @endif
 

@@ -34,12 +34,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/qr_codeRuangan/{id}', [RuanganController::class, 'qr_code']);
 
-    Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
+    
     Route::post('/asetById', [AsetController::class, 'asetById'])->name('asetById');
 
 
     //FILTER
     Route::post('/getRuanganByJurusan', [RuanganController::class, 'getRuanganByJurusan']);
+
+    Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
+    
 
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);

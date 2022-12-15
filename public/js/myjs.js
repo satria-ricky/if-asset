@@ -1,30 +1,114 @@
-
-$.ajaxSetup({
-    headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    },
-});
-
 //FILTER
 function getRuanganByJurusan() {
-    
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
 
     var id_jurusan = document.getElementById("jurusan_filter").value;
-    
+
     $.ajax({
         url: "getRuanganByJurusan",
         method: "POST",
         dataType: "json",
         data: {
-            _token: "{{ csrf_token() }}",
-            id_jurusan: id_jurusan
+            id_jurusan: id_jurusan,
         },
-        success: function(data) {
-           console.log(data);
+        success: function (data) {
+            //    console.log(data);
+            $("#ruangan_filter").empty();
+            for (var i in data) {
+                $("#ruangan_filter").append(
+                    "<option value=" +
+                        data[i].id_ruangan +
+                        ">" +
+                        data[i].nama_ruangan +
+                        "</option>"
+                );
+            }
         },
-    })
+    });
+}
 
+function filter_aset(refresh) {
+    var id_jurusan = document.getElementById("jurusan_filter").value;
+    var id_ruangan = document.getElementById("ruangan_filter").value;
+    var id_jenis = document.getElementById("jenis_filter").value;
+    var id_kondisi = document.getElementById("kondisi_filter").value;
 
+    // console.log(id_jurusan,id_ruangan,id_kondisi);
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    // $.ajax({
+    //     url: "asetByRuangan",
+    //     method: "POST",
+    //     dataType: "json",
+    //     data: {
+    //         id_jurusan: id_jurusan,
+    //         id_ruangan: id_ruangan,
+    //         id_kondisi: id_kondisi,
+    //     },
+    //     success: function (data) {
+    //            console.log(data);
+    //     },
+    // });
+
+        $("#dataTabelAset").DataTable().destroy();
+        var i = 0;
+        $("#dataTabelAset").DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "asetByRuangan",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    refresh: refresh,
+                    id_jurusan: id_jurusan,
+                    id_ruangan: id_ruangan,
+                    id_jenis: id_jenis,
+                    id_kondisi: id_kondisi,
+                },
+            },
+            columns: [
+                {
+                    data: "id_aset",
+                    render: function (data, type, row, meta) {
+                        return (i = i + 1);
+                    },
+                    className: "text-center",
+                },
+                {
+                    data: "nama_jurusan",
+                    className: "text-center",
+                },
+                {
+                    data: "nama_ruangan",
+                    className: "text-center",
+                },
+                {
+                    data: "kode_aset",
+                    className: "text-center",
+                },
+                {
+                    data: "nama_aset",
+                    className: "text-center",
+                },
+                {
+                    data: "id_kondisi",
+                    className: "text-center",
+                },
+                {
+                    data: "action",
+                    className: "text-center",
+                },
+            ],
+        });
 }
 
 //MODAL EDIT
