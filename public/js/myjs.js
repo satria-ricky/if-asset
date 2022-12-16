@@ -1,15 +1,16 @@
 //FILTER
-function getRuanganByJurusan() {
+function getRuanganByJurusan(p) {
+    // var jurusan = "jurusan_filter"+p;
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
 
-    var id_jurusan = document.getElementById("jurusan_filter").value;
+    var id_jurusan = document.getElementById("jurusan_filter"+p).value;
 
     $.ajax({
-        url: "getRuanganByJurusan",
+        url: "/getRuanganByJurusan",
         method: "POST",
         dataType: "json",
         data: {
@@ -17,9 +18,9 @@ function getRuanganByJurusan() {
         },
         success: function (data) {
             //    console.log(data);
-            $("#ruangan_filter").empty();
+            $("#ruangan_filter"+p).empty();
             for (var i in data) {
-                $("#ruangan_filter").append(
+                $("#ruangan_filter"+p).append(
                     "<option value=" +
                         data[i].id_ruangan +
                         ">" +
@@ -32,10 +33,10 @@ function getRuanganByJurusan() {
 }
 
 function filter_aset(refresh) {
-    var id_jurusan = document.getElementById("jurusan_filter").value;
-    var id_ruangan = document.getElementById("ruangan_filter").value;
-    var id_jenis = document.getElementById("jenis_filter").value;
-    var id_kondisi = document.getElementById("kondisi_filter").value;
+    var id_jurusan = document.getElementById("jurusan_filter1").value;
+    var id_ruangan = document.getElementById("ruangan_filter1").value;
+    var id_jenis = document.getElementById("jenis_filter1").value;
+    var id_kondisi = document.getElementById("kondisi_filter1").value;
 
     // console.log(id_jurusan,id_ruangan,id_kondisi);
     $.ajaxSetup({
@@ -64,7 +65,7 @@ function filter_aset(refresh) {
             processing: true,
             serverSide: true,
             ajax: {
-                url: "asetByRuangan",
+                url: "/asetByRuangan",
                 dataType: "json",
                 type: "POST",
                 data: {
@@ -128,6 +129,14 @@ function buttonModalEditRuangan(params) {
     $("#formModalFotoLama").val(params.foto_ruangan);
 
     $("#priviewFoto2").attr("src", "/storage/" + params.foto_ruangan);
+}
+
+
+function buttonModalEditJenisAset(params) {
+    // console.log(params)
+    $('#ModalEditRuangan').modal('show');
+    $("#formModalNama").val(params.nama_jenis);
+    $("#formModalId").val(params.id_jenis);
 }
 
 //

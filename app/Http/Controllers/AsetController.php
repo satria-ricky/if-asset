@@ -39,7 +39,6 @@ class AsetController extends Controller
             ->get();
         }
         
-
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
                 $btn = '<div class="btn-group">
@@ -109,23 +108,27 @@ class AsetController extends Controller
 
     public function tambah_aset(Request $req)
     {
-
-        dd($req);
+        // dd($req);
         $this->validate(
             $req,
-            ['kode' => 'required|unique:asets,kode_aset'],
-            ['kode.unique' => 'Kode aset telah tersedia!']
+            ['kode_aset' => 'required|unique:asets,kode_aset'],
+            ['kode_aset.unique' => 'Kode aset telah tersedia!']
         );
 
         $hasil = [
-            'id_sumber' => $req['idSumber'],
-            'id_ruangan' => $req['idRuangan'],
-            'kode_aset' => $req['kode'],
-            'nama' => $req['nama'],
+            'kode_jurusan' => $req['kode_jurusan'],
+            'id_ruangan' => $req['id_ruangan'],
+            'id_jenis' => $req['id_jenis'],
+            'kode_aset' => $req['kode_aset'],
+            'nama_aset' => $req['nama_aset'],
+            'tahun_pengadaan' => $req['tahun_pengadaan'],
+            'nup' => $req['nup'],
+            'merk_type' => $req['merk_type'],
             'jumlah' => $req['jumlah'],
-            'lokasi' => $req['lokasi'],
-            'kondisi' => $req['kondisi'],
-            'tahun_pengadaan' => $req['tahun_pengadaan']
+            'nilai_barang' => $req['nilai_barang'],
+            'id_kondisi' => $req['id_kondisi'],
+            'keterangan' => $req['keterangan'],
+            
         ];
         
         if ($req->file('foto')) {
@@ -159,40 +162,49 @@ class AsetController extends Controller
     public function tampil_edit_aset(Request $req)
     {
         $id = Crypt::decrypt($req->id);
-
+        $title = "Edit Aset";
         $dataAset = Aset::findOrFail($id);
         // dd($dataAset);
-        $title = "Edit Aset";
-        $dataRuangan = Ruangan::all();
-        $dataKondisi = Kondisi::all();
-        $dataSumber = Sumber::all();
+        $dataJurusan = Jurusan::all();
+        $dataRuangan = DB::table('ruangans')
+        ->where('id_jurusan', $dataAset->kode_jurusan)
+        ->get();
 
-        return view("fitur.edit_aset", compact("dataSumber", "dataKondisi", "dataAset", "title", "dataRuangan"));
+        $dataJenis = JenisAset::all();
+        $dataKondisi = Kondisi::all();
+
+        return view("fitur.edit_aset", compact("dataJurusan", "dataKondisi", "dataAset", "title", "dataRuangan","dataJenis"));
     }
 
     public function edit_aset(Request $req)
     {
+        // dd($req);
 
         $data = Aset::findOrFail($req['id']);
 
-        if ($data->kode_aset != $req['kode']) {
+        if ($data->kode_aset != $req['kode_aset']) {
             $this->validate(
                 $req,
-                ['kode' => 'required|unique:asets,kode_aset'],
-                ['kode.unique' => 'Kode aset telah tersedia!']
+                ['kode_aset' => 'required|unique:asets,kode_aset'],
+                ['kode_aset.unique' => 'Kode aset telah tersedia!']
             );
         }
 
         $hasil = [
-            'id_sumber' => $req['idSumber'],
-            'id_ruangan' => $req['idRuangan'],
-            'kode_aset' => $req['kode'],
-            'nama' => $req['nama'],
+            'kode_jurusan' => $req['kode_jurusan'],
+            'id_ruangan' => $req['id_ruangan'],
+            'id_jenis' => $req['id_jenis'],
+            'kode_aset' => $req['kode_aset'],
+            'nama_aset' => $req['nama_aset'],
+            'tahun_pengadaan' => $req['tahun_pengadaan'],
+            'nup' => $req['nup'],
+            'merk_type' => $req['merk_type'],
             'jumlah' => $req['jumlah'],
-            'lokasi' => $req['lokasi'],
-            'kondisi' => $req['kondisi'],
-            'tahun_pengadaan' => $req['tahun_pengadaan']
+            'nilai_barang' => $req['nilai_barang'],
+            'id_kondisi' => $req['id_kondisi'],
+            'keterangan' => $req['keterangan'], 
         ];
+
         // dd($req);
         if ($req->file('foto')) {
             $extension = $req->file('foto')->getClientOriginalExtension();

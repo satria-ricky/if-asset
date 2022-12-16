@@ -31,42 +31,74 @@
                         <form action="/edit_aset" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id" value="{{ $dataAset->id_aset }}">
-                            <div class="table-responsive">
-                                <div class="form-group">
-                                    <label>Sumber</label>
-                                    <select class="js-example-basic-single form-control" style="width: auto"
-                                        name="idSumber" required>
-                                        @foreach ($dataSumber as $item)
-                                            @if ($item->id_sumber == $dataAset->id_sumber)
-                                                <option selected value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}
-                                                </option>
-                                            @else
-                                                <option value="{{ $item->id_sumber }}"> {{ $item->nama_sumber }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="table">
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Kode Jurusan</label>
+                                            <select class="js-example-basic-single form-control" style="width: auto"
+                                                name="kode_jurusan" required id="jurusan_filter2"
+                                                onchange="getRuanganByJurusan(2)">
+                                                @foreach ($dataJurusan as $item)
+                                                    @if ($item->id_jurusan == $dataAset->kode_jurusan)
+                                                        <option selected value="{{ $item->id_jurusan }}">
+                                                            {{ $item->nama_jurusan }}
+                                                        </option>
+                                                    @else
+                                                        <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
 
 
-                                <div class="form-group">
-                                    <label>Ruangan</label>
-                                    <select class="js-example-basic-single form-control" style="width: auto"
-                                        name="idRuangan" required>
-                                        @foreach ($dataRuangan as $item)
-                                            @if ($item->id_ruangan == $dataAset->id_ruangan)
-                                                <option selected value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}
-                                                </option>
-                                            @else
-                                                <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Ruangan</label>
+                                            <select class="js-example-basic-single form-control" style="width: auto"
+                                                name="id_ruangan" id="ruangan_filter2" required>
+                                                @foreach ($dataRuangan as $item)
+                                                    @if ($item->id_ruangan == $dataAset->id_ruangan)
+                                                        <option selected value="{{ $item->id_ruangan }}">
+                                                            {{ $item->nama_ruangan }}
+                                                        </option>
+                                                    @else
+                                                        <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="date_modified">Jenis aset </label>
+                                            <select class="js-example-basic-single-2 form-control" id="jenis_filter"
+                                                name="id_jenis" required>
+                                                @foreach ($dataJenis as $item)
+                                                    @if ($item->id_jenis == $dataAset->id_jenis)
+                                                        <option selected value="{{ $item->id_jenis }}">
+                                                            {{ $item->nama_jenis }}
+                                                        </option>
+                                                    @else
+                                                        <option value="{{ $item->id_jenis }}"> {{ $item->nama_jenis }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
 
 
                                 <div class="form-group">
                                     <label>Kode Aset</label>
-                                    <input class="form-control" type="text" name="kode" required
+                                    <input class="form-control" type="text" name="kode_aset" required
                                         value="{{ $dataAset->kode_aset }}">
                                     @error('kode')
                                         <script>
@@ -76,32 +108,53 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Nama Aset</label>
-                                    <input class="form-control" type="text" name="nama" value="{{ $dataAset->nama }}">
+                                    <input class="form-control" type="text" name="nama_aset"
+                                        value="{{ $dataAset->nama_aset }}">
                                 </div>
+
+                                <div class="form-group">
+                                    <label>Tahun Pengadaan</label>
+                                    <select id="id_tahun_pengadaan" name="tahun_pengadaan" class="form-control"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>NUP</label>
+                                    <input class="form-control" type="number" name="nup" value="{{ $dataAset->nup }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Merk/Type</label>
+                                    <input class="form-control" type="text" name="merk_type"
+                                        value="{{ $dataAset->merk_type }}">
+                                </div>
+
                                 <div class="form-group">
                                     <label>Jumlah</label>
                                     <input class="form-control" type="number" name="jumlah"
                                         value="{{ $dataAset->jumlah }}">
                                 </div>
+
+
                                 <div class="form-group">
-                                    <label>lokasi</label>
-                                    <input class="form-control" type="text" name="lokasi"
-                                        value="{{ $dataAset->lokasi }}">
+                                    <label>Nilai barang</label>
+                                    <input class="form-control" type="number" name="nilai_barang"
+                                        value="{{ $dataAset->nilai_barang }}">
                                 </div>
+
+
                                 <div class="form-group">
                                     <label>Kondisi</label>
-                                    {{-- <input class="form-control" type="text" name="kondisi"
-                                        value="{{ $dataAset->kondisi }}"> --}}
-
-                                    <select class="js-example-basic-single form-control" style="width: auto" name="kondisi">
+                                    <select class="js-example-basic-single form-control" style="width: auto" name="id_kondisi">
                                         @foreach ($dataKondisi as $item)
-                                            @if ($item->id_kondisi == $dataAset->kondisi)
-                                                <option selected value="{{ $item->id_kondisi }}">
-                                                    {{ $item->nama_kondisi }}
-                                                </option>
+                                            @if ($item->id_kondisi == $dataAset->id_kondisi)
+                                            <option selected value="{{ $item->id_kondisi }}">
+                                                <p class="btn btn-{{ $item->icon_kondisi }} btn-sm">
+                                                    {{ $item->nama_kondisi }} </p>
+                                            </option>
                                             @else
-                                                <option selected value="{{ $item->id_kondisi }}">
-                                                    {{ $item->nama_kondisi }}
+                                                <option value="{{ $item->id_kondisi }}">
+                                                    <p class="btn btn-{{ $item->icon_kondisi }} btn-sm">
+                                                        {{ $item->nama_kondisi }} </p>
                                                 </option>
                                             @endif
                                         @endforeach
@@ -109,22 +162,23 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label>Tahun Pengadaan</label>
-                                    <select id="id_tahun_pengadaan" name="tahun_pengadaan" class="form-control"></select>
+                                    <label>Keterangan</label>
+                                    <input class="form-control" type="text" name="keterangan"
+                                        value="{{ $dataAset->keterangan }}">
                                 </div>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="hidden" value="{{ $dataAset->foto_aset }}" name="fotoLama">
-                                        <input id="id_foto" type="file" name="foto" accept="image/*"
-                                            class="custom-file-input" onchange="cekFoto()">
-                                        <label class="custom-file-label" for="id_foto">Foto Aset</label>
+                                        <input id="id_foto1" type="file" name="foto" accept="image/*"
+                                            class="custom-file-input" onchange="cekFoto(1)">
+                                        <label class="custom-file-label" for="id_foto1">Foto Aset</label>
                                     </div>
                                 </div>
                                 @if (old('foto'))
-                                    <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                                    <img class="img-priview rounded mt-2" width="150" id="priviewFoto1">
                                 @else
                                     <img src="{{ asset('storage/' . $dataAset->foto_aset) }}"
-                                        class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                                        class="img-priview rounded mt-2" width="150" id="priviewFoto1">
                                 @endif
 
                             </div>

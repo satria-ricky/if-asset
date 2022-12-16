@@ -29,8 +29,8 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_added">Kode Jurusan </label>
-                        <select class="js-example-basic-single form-control" id="jurusan_filter"
-                            onchange="getRuanganByJurusan()">
+                        <select class="js-example-basic-single form-control" id="jurusan_filter1"
+                            onchange="getRuanganByJurusan(1)">
                             @foreach ($dataJurusan as $item)
                                 <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
                             @endforeach
@@ -41,15 +41,14 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_modified">Ruangan </label>
-                        <select class="js-example-basic-single form-control" id="ruangan_filter">
+                        <select class="js-example-basic-single form-control" id="ruangan_filter1">
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_modified">Jenis aset </label>
-                        <select class="js-example-basic-single form-control" id="jenis_filter"
-                            onchange="getRuanganByJurusan()">
+                        <select class="js-example-basic-single-2 form-control" id="jenis_filter1">
                             @foreach ($dataJenis as $item)
                                 <option value="{{ $item->id_jenis }}"> {{ $item->nama_jenis }}</option>
                             @endforeach
@@ -60,7 +59,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="kondisi">Kondisi</label>
-                        <select class="js-example-basic-single form-control" id="kondisi_filter" required>
+                        <select class="js-example-basic-single form-control" id="kondisi_filter1" required>
                             @foreach ($dataKondisi as $item)
                                 <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
                             @endforeach
@@ -68,7 +67,7 @@
                     </div>
                 </div>
 
-                
+
             </div>
             <button class="btn btn-success " onclick="filter_aset()"> Filter </button>
             <button class="btn btn-warning " onclick="filter_aset(1)"> Refresh </button>
@@ -174,7 +173,8 @@
                                 <div class="form-group">
                                     <label>Kode Jurusan</label>
                                     <select class="js-example-basic-single form-control" style="width: auto"
-                                        name="kode_jurusan" required id="modal_tambah_kode_jurusan" onchange="">
+                                        name="kode_jurusan" required id="jurusan_filter2"
+                                        onchange="getRuanganByJurusan(2)">
                                         @foreach ($dataJurusan as $item)
                                             <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
                                         @endforeach
@@ -187,21 +187,28 @@
                                 <div class="form-group">
                                     <label>Ruangan</label>
                                     <select class="js-example-basic-single form-control" style="width: auto"
-                                        name="idRuangan" required>
-                                        @foreach ($dataRuangan as $item)
-                                            <option value="{{ $item->id_ruangan }}"> {{ $item->nama_ruangan }}</option>
+                                        name="id_ruangan" id="ruangan_filter2" required>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-form-label" for="date_modified">Jenis aset </label>
+                                    <select class="js-example-basic-single-2 form-control" id="jenis_filter"
+                                        name="id_jenis" required>
+                                        @foreach ($dataJenis as $item)
+                                            <option value="{{ $item->id_jenis }}"> {{ $item->nama_jenis }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-
-
                         <div class="form-group">
                             <label>Kode Aset</label>
-                            <input class="form-control" type="text" name="kode" required>
-                            @error('kode')
+                            <input class="form-control" type="text" name="kode_aset" required>
+                            @error('kode_aset')
                                 <script>
                                     swal("Oppss!", "Kode aset telah tersedia!", "error");
                                 </script>
@@ -209,19 +216,36 @@
                         </div>
                         <div class="form-group">
                             <label>Nama Aset</label>
-                            <input class="form-control" type="text" name="nama">
+                            <input class="form-control" type="text" name="nama_aset">
                         </div>
+                        <div class="form-group">
+                            <label>Tahun Pengadaan</label>
+                            <select id="id_tahun_pengadaan" name="tahun_pengadaan" class="form-control"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>NUP</label>
+                            <input class="form-control" type="number" name="nup">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Merk/Type</label>
+                            <input class="form-control" type="text" name="merk_type">
+                        </div>
+
                         <div class="form-group">
                             <label>Jumlah</label>
                             <input class="form-control" type="number" name="jumlah">
                         </div>
+
                         <div class="form-group">
-                            <label>lokasi</label>
-                            <input class="form-control" type="text" name="lokasi">
+                            <label>Nilai barang</label>
+                            <input class="form-control" type="number" name="nilai_barang">
                         </div>
+
                         <div class="form-group">
                             <label>Kondisi</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="kondisi"
+                            <select class="js-example-basic-single form-control" style="width: auto" name="id_kondisi"
                                 required>
                                 @foreach ($dataKondisi as $item)
                                     <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
@@ -229,20 +253,22 @@
                             </select>
 
                         </div>
+
                         <div class="form-group">
-                            <label>Tahun Pengadaan</label>
-                            <select id="id_tahun_pengadaan" name="tahun_pengadaan" class="form-control"></select>
+                            <label>Keterangan</label>
+                            <input class="form-control" type="text" name="keterangan">
                         </div>
+
                         <div class="input-group">
                             <div class="custom-file">
-                                <input id="id_foto" type="file" name="foto" accept="image/*"
-                                    class="custom-file-input" onchange="cekFoto()">
+                                <input id="id_foto1" type="file" name="foto" accept="image/*"
+                                    class="custom-file-input" onchange="cekFoto(1)">
                                 <label class="custom-file-label" for="id_foto">Foto Aset</label>
 
                             </div>
 
                         </div>
-                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto">
+                        <img class="img-priview rounded mt-2" width="150" id="priviewFoto1">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>

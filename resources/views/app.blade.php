@@ -176,22 +176,6 @@
                 $("#dataTableHistoriAdmin").DataTable().destroy();
                 var i = 0;
 
-                // $.ajax({
-                //     url: "{{ url('filterHistori') }}",
-                //     method: "POST",
-                //     dataType: "json",
-                //     data: {
-                //         _token: "{{ csrf_token() }}",
-                //         awal: tanggal_awal,
-                //         akhir: tanggal_akhir,
-                //         mahasiswa: mahasiswa
-                //     },
-                //     success: function(dataadad) {
-                //        console.log(dataadad);
-                //     },
-                // })
-
-
                 $("#dataTableHistoriAdmin").DataTable({
                     processing: true,
                     serverSide: true,
@@ -241,7 +225,7 @@
     @endif
 
 
-    <script>
+    {{-- <script>
         // Upgrade button class name
         $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
 
@@ -281,7 +265,7 @@
             });
 
         });
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -313,26 +297,13 @@
     @endif
 
 
-    @if (Request::is('list_jenis_aset'))
-        <script>
-            function buttonModalEditJenisAset(params) {
-                // console.log(params)
-                $('#ModalEditRuangan').modal('show');
-                $("#formModalNama").val(params.nama_jenis);
-                $("#formModalId").val(params.id_jenis);
-            }
-        </script>
-    @endif
-
     @if (Request::is('list_aset'))
         <script>
             let startYear = 1800;
             let endYear = new Date().getFullYear();
             for (i = endYear; i > startYear; i--) {
                 $('#id_tahun_pengadaan').append($('<option />').val(i).html(i));
-            }
-
-            
+            }            
         </script>
     @endif
 

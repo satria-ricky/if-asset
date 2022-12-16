@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/getRuanganByJurusan', [RuanganController::class, 'getRuanganByJurusan']);
 
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
-    
+
 
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
@@ -83,7 +83,7 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/edit_jenis_aset', [JenisAsetController::class, 'edit_jenis_aset']);
 
 
-
+    //ASET
     Route::get('/list_aset',[AsetController::class,'list_aset']);
     Route::post('/tambah_aset', [AsetController::class, 'tambah_aset']);
     Route::post('/hapus_aset', [AsetController::class, 'hapus_aset']);
