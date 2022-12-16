@@ -43,6 +43,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
 
+    //FILTER LAPORAN
+    Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
+
 
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
@@ -90,8 +93,8 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::get('/edit_aset/{id}', [AsetController::class, 'tampil_edit_aset']);
     Route::post('/edit_aset', [AsetController::class, 'edit_aset']);
 
-
-    Route::get('/adm_laporan',[LaporanController::class,'adm_laporan']);
+    //LAPORAN
+    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
     Route::post('/tambah_laporan',[LaporanController::class,'tambah_laporan']);
     Route::post('/hapus_laporan', [LaporanController::class, 'hapus_laporan']);
 
@@ -99,8 +102,8 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
 
 
 Route::group(['middleware' => ['auth','ceklevel:2']], function () {
-    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
-    Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
+    // Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
+    // Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 });
 
 // Route::group(['middleware' => ['auth','ceklevel:3']], function () {

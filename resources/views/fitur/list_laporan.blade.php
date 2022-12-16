@@ -22,12 +22,71 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
 
+
+        <div class="ibox-content m-b-sm border-bottom">
+            <h3>Filter</h3>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_added">Kode Jurusan </label>
+                        <select class="js-example-basic-single form-control" id="jurusan_filter1"
+                            onchange="getRuanganByJurusan(1)">
+                            @foreach ($dataJurusan as $item)
+                                <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Ruangan </label>
+                        <select class="js-example-basic-single form-control" id="ruangan_filter1">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Jenis aset </label>
+                        <select class="js-example-basic-single-2 form-control" id="jenis_filter1">
+                            @foreach ($dataJenis as $item)
+                                <option value="{{ $item->id_jenis }}"> {{ $item->nama_jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_added">Batas awal diperiksa</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Batas akhir diperiksa</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success " onclick="filter_laporan()"> Filter </button>
+            <button class="btn btn-warning " onclick="filter_laporan(1)"> Refresh </button>
+        </div>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
                     {{-- <div class="ibox-title">
                         <h5>Aset</h5>
-
+                        
                     </div> --}}
                     <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
                         <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
@@ -38,10 +97,12 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
+                                        <th class="text-center">Kode Jurusan</th>
+                                        <th class="text-center">Ruangan</th>
                                         <th class="text-center">Kode aset</th>
                                         <th class="text-center">Nama aset</th>
-                                        <th class="text-center">Diperiksa</th>
                                         <th class="text-center">Kondisi</th>
+                                        <th class="text-center">Di periksa pada:</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -49,28 +110,28 @@
                                     @foreach ($dataLaporan as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $item->nama_jurusan }}</td>
+                                            <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">{{ $item->kode_aset }}</td>
-                                            <td class="text-center">{{ $item->nama }}</td>
-                                            <td class="text-center"> {{ $item->checked_at }}</td>
+                                            <td class="text-center">{{ $item->nama_aset }}</td>
+
                                             <td class="text-center">
-                                                @if ($item->id_kondisi == 1)
-                                                    <p class="btn btn-rounded btn-danger btn-sm"> {{ $item->nama_kondisi }}
-                                                    </p>
-                                                @else
-                                                    <p class="btn btn-rounded btn-success btn-sm"> {{ $item->nama_kondisi }}
-                                                    </p>
-                                                @endif
+                                                <p class="btn btn-{{ $item->icon_kondisi }} btn-sm">
+                                                    {{ $item->nama_kondisi }} </p>
                                             </td>
+
+                                            <td class="text-center">{{ $item->checked_at }}</td>
+
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <button data-toggle="dropdown"
                                                         class="btn btn-primary btn-sm dropdown-toggle">Action </button>
                                                     <ul class="dropdown-menu">
-                                                        {{-- <li>
+                                                        <li>
                                                             <a class="dropdown-item"
-                                                                onclick="">
-                                                                Edit</a>
-                                                        </li> --}}
+                                                                href="/detail_aset/{{ Crypt::encrypt($item->id_aset) }}"
+                                                                target="_blank"> Detail</a>
+                                                        </li>
                                                         <li>
                                                             <form action="/hapus_laporan" method="post">
                                                                 @csrf
@@ -98,6 +159,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="modal inmodal" id="myModal" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated fadeIn">
@@ -130,7 +193,7 @@
 
                         <div class="form-group">
                             <label>Kondisi</label>
-                            <select class="js-example-basic-single form-control" style="width: auto" name="kondisi"
+                            <select class="js-example-basic-single form-control" style="width: auto" name="id_kondisi"
                                 id="IdKondisiModalTambah" required>
                                 @foreach ($dataKondisi as $item)
                                     <option value="{{ $item->id_kondisi }}"> {{ $item->nama_kondisi }}</option>
@@ -140,13 +203,14 @@
 
                         <div class="form-group">
                             <label>Diperiksa pada :</label>
-                            <input class="form-control" type="datetime-local" name="checked_at">
+                            <input class="form-control" type="datetime-local" name="checked_at" required>
                         </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure?')">Apply</button>
+                    <button type="submit" class="btn btn-primary"
+                        onclick="return confirm('Are you sure?')">Apply</button>
                     </form>
                 </div>
             </div>

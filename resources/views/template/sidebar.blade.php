@@ -32,9 +32,10 @@
                     </li>
 
                     
-                    <li  class="@if(Request::is('adm_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
-                        <a href="/adm_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
+                    <li  class="@if(Request::is('list_laporan')) active @elseif(Request::is('adm_laporan/*')) active @endif">
+                        <a href="/list_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
                     </li>
+                    
                     <li class="@if(Request::is('histori_aset')) active @elseif(Request::is('histori_ruangan')) active @endif">
                         <a href="#"><i class="fa fa-history"></i> <span class="nav-label">Histori </span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">

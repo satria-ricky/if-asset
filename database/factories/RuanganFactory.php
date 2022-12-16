@@ -14,7 +14,7 @@ class RuanganFactory extends Factory
     public function definition()
     {
         return [
-            'id_jurusan' => mt_rand(1, 5),
+            'id_jurusan' => mt_rand(1, 3),
             'nama_ruangan' => $this->faker->name(),
             'foto_ruangan' => 'foto-ruangan/default.jpg'
         ];

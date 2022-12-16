@@ -11,11 +11,13 @@ class CreateLaporansTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('laporans', function (Blueprint $table) {
             $table->id('id_laporan');
             $table->integer('id_aset')->nullable();
+            $table->integer('id_kondisi')->nullable();
             $table->timestamp('checked_at')->nullable();
             $table->timestamps();
         });
