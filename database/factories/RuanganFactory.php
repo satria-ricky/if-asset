@@ -15,7 +15,7 @@ class RuanganFactory extends Factory
     {
         return [
             'id_jurusan' => mt_rand(1, 3),
-            'nama_ruangan' => $this->faker->name(),
+            'nama_ruangan' => $this->faker->username(),
             'foto_ruangan' => 'foto-ruangan/default.jpg'
         ];
     }

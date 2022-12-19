@@ -71,7 +71,8 @@
 
     {{-- datatable --}}
 
-    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}">
+    </script>
 
     <!-- Page-Level Scripts -->
     <script src="{{ asset('js/myjs.js') }}"></script>
@@ -82,6 +83,11 @@
             },
         });
     </script>
+<script>
+     $(document).ready(function () {
+            $('.dataTables-example').DataTable();
+     })
+</script>
 
     @if (Request::is('list_laporan'))
         <script>

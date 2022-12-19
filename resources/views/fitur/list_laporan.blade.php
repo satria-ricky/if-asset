@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success " onclick="filter_laporan()"> Filter </button>
+            <button class="btn btn-success " onclick="filter_laporan(0)"> Filter </button>
             <button class="btn btn-warning " onclick="filter_laporan(1)"> Refresh </button>
         </div>
 
@@ -92,8 +92,7 @@
                         <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
                             Laporan</button>
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover dataTables-example"
-                                id="dataTabelAset">
+                            <table class="table table-striped table-bordered table-hover dataTables-example" id="dataTabelAset">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>

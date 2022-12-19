@@ -7,7 +7,7 @@ function getRuanganByJurusan(p) {
         },
     });
 
-    var id_jurusan = document.getElementById("jurusan_filter"+p).value;
+    var id_jurusan = document.getElementById("jurusan_filter" + p).value;
 
     $.ajax({
         url: "/getRuanganByJurusan",
@@ -18,9 +18,9 @@ function getRuanganByJurusan(p) {
         },
         success: function (data) {
             //    console.log(data);
-            $("#ruangan_filter"+p).empty();
+            $("#ruangan_filter" + p).empty();
             for (var i in data) {
-                $("#ruangan_filter"+p).append(
+                $("#ruangan_filter" + p).append(
                     "<option value=" +
                         data[i].id_ruangan +
                         ">" +
@@ -59,61 +59,61 @@ function filter_aset(refresh) {
     //     },
     // });
 
-        $("#dataTabelAset").DataTable().destroy();
-        var i = 0;
-        $("#dataTabelAset").DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/asetByRuangan",
-                dataType: "json",
-                type: "POST",
-                data: {
-                    refresh: refresh,
-                    id_jurusan: id_jurusan,
-                    id_ruangan: id_ruangan,
-                    id_jenis: id_jenis,
-                    id_kondisi: id_kondisi,
-                },
+    $("#dataTabelAset").DataTable().destroy();
+    var i = 0;
+    $("#dataTabelAset").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "/asetByRuangan",
+            dataType: "json",
+            type: "POST",
+            data: {
+                refresh: refresh,
+                id_jurusan: id_jurusan,
+                id_ruangan: id_ruangan,
+                id_jenis: id_jenis,
+                id_kondisi: id_kondisi,
             },
-            columns: [
-                {
-                    data: "id_aset",
-                    render: function (data, type, row, meta) {
-                        return (i = i + 1);
-                    },
-                    className: "text-center",
+        },
+        columns: [
+            {
+                data: "id_aset",
+                render: function (data, type, row, meta) {
+                    return (i = i + 1);
                 },
-                {
-                    data: "nama_jurusan",
-                    className: "text-center",
-                },
-                {
-                    data: "nama_ruangan",
-                    className: "text-center",
-                },
-                {
-                    data: "kode_aset",
-                    className: "text-center",
-                },
-                {
-                    data: "nama_aset",
-                    className: "text-center",
-                },
-                {
-                    data: "id_kondisi",
-                    className: "text-center",
-                },
-                {
-                    data: "action",
-                    className: "text-center",
-                },
-            ],
-        });
+                className: "text-center",
+            },
+            {
+                data: "nama_jurusan",
+                className: "text-center",
+            },
+            {
+                data: "nama_ruangan",
+                className: "text-center",
+            },
+            {
+                data: "kode_aset",
+                className: "text-center",
+            },
+            {
+                data: "nama_aset",
+                className: "text-center",
+            },
+            {
+                data: "id_kondisi",
+                className: "text-center",
+            },
+            {
+                data: "action",
+                className: "text-center",
+            },
+        ],
+    });
 }
 
-
 function filter_laporan(refresh) {
+    var refresh = refresh;
     var id_jurusan = document.getElementById("jurusan_filter1").value;
     var id_ruangan = document.getElementById("ruangan_filter1").value;
     var id_jenis = document.getElementById("jenis_filter1").value;
@@ -121,84 +121,114 @@ function filter_laporan(refresh) {
     var tanggal_akhir = document.getElementById("tanggal_akhir").value;
 
     // console.log(id_jurusan,id_ruangan,id_jenis,tanggal_awal,tanggal_akhir);
-    
+
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
 
-    
+    // $.ajax({
+    //     url: "/filterLaporan",
+    //     method: "POST",
+    //     dataType: "json",
+    //     data: {
+    //         refresh: refresh,
+    //         id_jurusan: id_jurusan,
+    //         id_ruangan: id_ruangan,
+    //         id_jenis: id_jenis,
+    //         tanggal_awal: tanggal_awal,
+    //         tanggal_akhir: tanggal_akhir,
+    //     },
+    //     success: function (data) {
+    //            console.log(data);
+    //     },
+    // });
+
+    $("#dataTabelAset").DataTable().destroy();
+    var i = 0;
+
+    $("#dataTabelAset").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "/filterLaporan",
+            dataType: "json",
+            type: "POST",
+            data: {
+                refresh: refresh,
+                id_jurusan: id_jurusan,
+                id_ruangan: id_ruangan,
+                id_jenis: id_jenis,
+                tanggal_awal: tanggal_awal,
+                tanggal_akhir: tanggal_akhir,
+            },
+        },
+        columns: [
+            {
+                data: "id_aset",
+                render: function (data, type, row, meta) {
+                    return (i = i + 1);
+                },
+                className: "text-center",
+            },
+            {
+                data: "nama_jurusan",
+                className: "text-center",
+            },
+            {
+                data: "nama_ruangan",
+                className: "text-center",
+            },
+            {
+                data: "kode_aset",
+                className: "text-center",
+            },
+            {
+                data: "nama_aset",
+                className: "text-center",
+            },
+            {
+                data: "id_kondisi",
+                className: "text-center",
+            },
+            {
+                data: "checked_at",
+                className: "text-center",
+            },
+            {
+                data: "action",
+                className: "text-center",
+            },
+        ],
+    });
+}
+
+function filter_histori_ruangan(refresh) {
+    var refresh = refresh;
+    var id_jurusan = document.getElementById("jurusan_filter1").value;
+    var id_ruangan = document.getElementById("ruangan_filter1").value;
+    var tanggal_awal = document.getElementById("tanggal_awal").value;
+    var tanggal_akhir = document.getElementById("tanggal_akhir").value;
+
+    // console.log(refresh,id_jurusan,id_ruangan,tanggal_awal,tanggal_akhir);
+
     $.ajax({
-        url: "/filterLaporan",
+        url: "/filterHistoriRuangan",
         method: "POST",
         dataType: "json",
         data: {
+            refresh: refresh,
             id_jurusan: id_jurusan,
             id_ruangan: id_ruangan,
-            id_jenis: id_jenis,
             tanggal_awal: tanggal_awal,
             tanggal_akhir: tanggal_akhir,
         },
         success: function (data) {
-               console.log(data);
+            console.log(data);
         },
     });
-
-        $("#dataTabelAset").DataTable().destroy();
-        var i = 0;
-        // $("#dataTabelAset").DataTable({
-        //     processing: true,
-        //     serverSide: true,
-        //     ajax: {
-        //         url: "/filterLaporan",
-        //         dataType: "json",
-        //         type: "POST",
-        //         data: {
-        //             refresh: refresh,
-        //             id_jurusan: id_jurusan,
-        //             id_ruangan: id_ruangan,
-        //             id_jenis: id_jenis,
-        //             id_kondisi: id_kondisi,
-        //         },
-        //     },
-        //     columns: [
-        //         {
-        //             data: "id_aset",
-        //             render: function (data, type, row, meta) {
-        //                 return (i = i + 1);
-        //             },
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "nama_jurusan",
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "nama_ruangan",
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "kode_aset",
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "nama_aset",
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "id_kondisi",
-        //             className: "text-center",
-        //         },
-        //         {
-        //             data: "action",
-        //             className: "text-center",
-        //         },
-        //     ],
-        // });
 }
-
-
 
 //MODAL EDIT
 function buttonModalEditJurusan(params) {
@@ -219,10 +249,9 @@ function buttonModalEditRuangan(params) {
     $("#priviewFoto2").attr("src", "/storage/" + params.foto_ruangan);
 }
 
-
 function buttonModalEditJenisAset(params) {
     // console.log(params)
-    $('#ModalEditRuangan').modal('show');
+    $("#ModalEditRuangan").modal("show");
     $("#formModalNama").val(params.nama_jenis);
     $("#formModalId").val(params.id_jenis);
 }
@@ -242,17 +271,17 @@ function setFotoAset() {
         data: {
             id_aset: id,
         },
-        success: function(data) {
+        success: function (data) {
             //   console.log(data);
 
-            $('#priviewFoto').attr('src', "/storage/"+ data[0].foto_aset);
-            document.getElementById("NamaAsetModalTambah").value = data[0].nama_aset;
+            $("#priviewFoto").attr("src", "/storage/" + data[0].foto_aset);
+            document.getElementById("NamaAsetModalTambah").value =
+                data[0].nama_aset;
             // document.getElementById('IdKondisiModalTambah').value = data[0].id_kondisi;
             $("#IdKondisiModalTambah").val(data[0].id_kondisi).change();
         },
     });
 }
-
 
 //
 

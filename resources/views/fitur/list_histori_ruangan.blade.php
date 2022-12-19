@@ -22,6 +22,57 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
 
+        @if (Auth::user()->level == 1)
+        <div class="ibox-content m-b-sm border-bottom">
+            <h3>Filter</h3>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_added">Kode Jurusan </label>
+                        <select class="js-example-basic-single form-control" id="jurusan_filter1"
+                            onchange="getRuanganByJurusan(1)">
+                            @foreach ($dataJurusan as $item)
+                                <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Ruangan </label>
+                        <select class="js-example-basic-single form-control" id="ruangan_filter1">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_added">Batas awal dipakai</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label" for="date_modified">Batas akhir dipakai</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
+                                type="datetime-local" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success " onclick="filter_histori_ruangan(0)"> Filter </button>
+            <button class="btn btn-warning " onclick="filter_histori_ruangan(1)"> Refresh </button>
+        </div>
+        @endif
+
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
@@ -36,8 +87,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Kode aset</th>
-                                        <th class="text-center">Nama aset</th>
+                                        <th class="text-center">Kode Jurusan</th>
+                                        <th class="text-center">Nama Ruangan</th>
                                         <th class="text-center">Dipakai pada:</th>
                                         <th class="text-center">Selesai pada:</th>
                                         <th class="text-center">Action</th>
@@ -47,27 +98,47 @@
                                     @foreach ($dataHistori as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td class="text-center">{{ $item->kode_aset }}</td>
-                                            <td class="text-center">{{ $item->nama }}</td>
+                                            <td class="text-center">{{ $item->nama_jurusan }}</td>
+                                            <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">{{ $item->mulai }}</td>
                                             <td class="text-center">
                                                 @if ($item->selesai == '')
-                                                    -
+                                                    <form action="/selesai_dipakai_ruangan" method="post">
+                                                        @csrf
+                                                        <input type="hidden" value="{{ $item->id_histori_ruangan }}"
+                                                            name="id">
+                                                        <button class="btn btn-danger btn-sm" type="submit"
+                                                            onclick="return confirm('Are you sure?')"> Belum selesai </button>
+                                                    </form>
                                                 @else
-                                                    {{ $item->selesai }}
+                                                    <p class="btn btn-success btn-sm"> Great :)
+                                                    </p>
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if ($item->selesai == '')
-                                                    <form action="/selesai_dipakai" method="post">
-                                                        @csrf
-                                                        <input type="hidden" value="{{ $item->id_histori }}" name="id">
-                                                        <button class="btn btn-rounded btn-danger btn-sm" type="submit"  onclick="return confirm('Are you sure?')" > Have done ? Click here! </button>
-                                                    </form>
+                                                @if (Auth::user()->level == 1)
+                                                    <div class="btn-group">
+                                                        <button data-toggle="dropdown"
+                                                            class="btn btn-primary btn-sm dropdown-toggle">Action </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <form action="/hapus_histori_ruangan" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="id"
+                                                                        value="{{ $item->id_histori_ruangan }}">
+                                                                    <button
+                                                                        style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
+                                                                        class="dropdown-item pb-2" type="submit"
+                                                                        onclick="return confirm('Are you sure?')">
+                                                                        Hapus</button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 @else
-                                                    <p class="btn btn-rounded btn-success btn-sm"> Great :)
-                                                    </p>
+                                                -
                                                 @endif
+
                                             </td>
                                         </tr>
                                     @endforeach

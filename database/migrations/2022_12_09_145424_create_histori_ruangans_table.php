@@ -16,6 +16,7 @@ class CreateHistoriRuangansTable extends Migration
         Schema::create('histori_ruangans', function (Blueprint $table) {
             $table->id('id_histori_ruangan');
             $table->integer('id_user')->nullable();
+            $table->integer('kode_jurusan')->nullable();
             $table->integer('id_ruangan')->nullable();
             $table->timestamp('mulai')->nullable();
             $table->timestamp('selesai')->nullable();

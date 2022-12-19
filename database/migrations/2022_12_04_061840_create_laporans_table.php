@@ -17,7 +17,7 @@ class CreateLaporansTable extends Migration
         Schema::create('laporans', function (Blueprint $table) {
             $table->id('id_laporan');
             $table->integer('id_aset')->nullable();
-            $table->integer('id_kondisi')->nullable();
+            $table->integer('kondisi_laporan')->nullable();
             $table->timestamp('checked_at')->nullable();
             $table->timestamps();
         });

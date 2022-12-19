@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Histori;
+use App\Models\HistoriRuangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -177,11 +178,13 @@ class UserController extends Controller
     //LOGIN DOSEN
     public function tampil_loginRuangan(Request $request)
     {
-        // dd($request->id_aset);
+        // dd("ini jurusan : ".$request->id_jurusan." --- ini ruangan : ".$request->id_ruangan);
+        $id_jurusan = Crypt::decrypt($request->id_jurusan);
         $id_ruangan = Crypt::decrypt($request->id_ruangan);
         if (!Auth::user()) {
             return view('Auth.login_ruangan', [
                 'title' => 'Inventaris Aset PSTI-UNRAM',
+                'id_jurusan' => $request->id_jurusan,
                 'id_ruangan' => $request->id_ruangan
             ]);
         } else {
@@ -192,26 +195,27 @@ class UserController extends Controller
 
                 $request->session()->regenerateToken();
 
-                return redirect('/authRuangan/'.$request->id_ruangan)->with('message', 'Username salah!');
+                return redirect('/authRuangan/'.$request->id_jurusan.'/'.$request->id_ruangan)->with('message', 'Username salah!');
 
             } elseif (Auth::user()->level == 4) {
-                $checkHistori = DB::table('historis')
-                    ->where('id_user', Auth::user()->id)
-                    ->where('id_aset', $id_ruangan)
+                $checkHistori = DB::table('histori_ruangans')
+                    ->where('histori_ruangans.kode_jurusan', $id_jurusan)
+                    ->where('histori_ruangans.id_ruangan', $id_ruangan)
                     ->whereNull('selesai')
                     ->first();
                 // dd($checkHistori);
                 if ($checkHistori == null) {
                     $hasil = [
                         'id_user' => Auth::user()->id,
-                        'id_aset' => $id_ruangan,
+                        'kode_jurusan' => $id_jurusan,
+                        'id_ruangan' => $id_ruangan,
                         'mulai' => Carbon::now()->toDateTimeString()
                     ];
 
-                    Histori::create($hasil);
-                    return redirect('/list_histori')->with('success', 'Histori berhasil ditambah :)');
+                    HistoriRuangan::create($hasil);
+                    return redirect('/histori_ruangan')->with('success', 'Histori berhasil ditambah :)');
                 } else {
-                    return redirect('/list_histori')->with('warning', 'Anda masih menggunakannya :(');
+                    return redirect('/histori_ruangan')->with('warning', ' Masih digunakan :(');
                 }
             }
         }
@@ -220,6 +224,7 @@ class UserController extends Controller
     public function loginRuangan(Request $request)
     {
         // dd($request);
+        $id_jurusan = Crypt::decrypt($request->id_jurusan);
         $id_ruangan = Crypt::decrypt($request->id_ruangan);
 
         $data = [
@@ -238,33 +243,34 @@ class UserController extends Controller
 
                 $request->session()->regenerateToken();
 
-                return redirect('/authRuangan/'.$request->id_ruangan)->with('message', 'Username salah!');
+                return redirect('/authRuangan/'.$request->id_jurusan.'/'.$request->id_ruangan)->with('message', 'Username salah!');
             } elseif (Auth::user()->level == 4) {
 
                 $checkHistori = DB::table('histori_ruangans')
                     ->leftJoin('ruangans', 'ruangans.id_ruangan', '=','histori_ruangans.id_ruangan')
-                    ->where('id_user', Auth::user()->id)
-                    ->where('id_ruangan', $id_ruangan)
-                    ->whereNull('selesai')
+                    ->where('histori_ruangans.kode_jurusan', $id_jurusan)
+                    ->where('histori_ruangans.id_ruangan', $id_ruangan)
+                    ->whereNull('histori_ruangans.selesai')
                     ->first();
-                dd($checkHistori);
+                // dd($checkHistori);
                 
                 if ($checkHistori == null) {
                     $hasil = [
                         'id_user' => Auth::user()->id,
+                        'kode_jurusan' => $id_jurusan,
                         'id_ruangan' => $id_ruangan,
                         'mulai' => Carbon::now()->toDateTimeString()
                     ];
 
-                    Histori::create($hasil);
-                    return redirect('/list_historiDsn')->with('success', 'Histori berhasil ditambah :)');
+                    HistoriRuangan::create($hasil);
+                    return redirect('/histori_ruangan')->with('success', 'Histori berhasil ditambah :)');
                 } else {
-                    return redirect('/list_historiDsn')->with('warning', 'Anda masih menggunakannya :(');
+                    return redirect('/histori_ruangan')->with('warning', 'Masih digunakan :(');
                 }
             }
         } else { // false
             //Login Fail
-            return redirect('/authRuangan/' . Crypt::encrypt($id_ruangan))->with('message', 'Username salah');
+            return redirect('/authRuangan/' . Crypt::encrypt($id_jurusan) . '/'.Crypt::encrypt($id_ruangan) )->with('message', 'Username salah');
         }
     }
 

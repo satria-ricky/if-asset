@@ -47,6 +47,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 
 
+    //FILTER HISTORI
+    Route::post('/filterHistoriRuangan',[LaporanController::class,'filterHistoriRuangan']);
+
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
     Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
@@ -127,7 +130,7 @@ Route::get('/detail_ruangan/{id}', [RuanganController::class, 'tampil_detail_rua
 Route::get('/authAset/{id_aset}', [UserController::class, 'tampil_loginAset']);
 Route::post('/loginAset', [UserController::class, 'loginAset']);
 
-Route::get('/authRuangan/{id_ruangan}', [UserController::class, 'tampil_loginRuangan']);
+Route::get('/authRuangan/{id_jurusan}/{id_ruangan}', [UserController::class, 'tampil_loginRuangan']);
 Route::post('/loginRuangan', [UserController::class, 'loginRuangan']);
 
 

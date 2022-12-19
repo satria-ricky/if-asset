@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Aset;
 use App\Models\Histori;
+use App\Models\HistoriRuangan;
+use App\Models\Jurusan;
 use App\Models\Kondisi;
 use App\Models\Laporan;
 use App\Models\Ruangan;
@@ -61,7 +63,7 @@ class HistoriController extends Controller
     public function selesai_dipakai_ruangan(Request $req)
     {
         // dd($req);
-        Histori::all()->where('id_histori', $req['id'])->first()->update([
+        HistoriRuangan::all()->where('id_histori_ruangan', $req['id'])->first()->update([
             'selesai' => Carbon::now()->toDateTimeString()
         ]);
 
@@ -72,13 +74,13 @@ class HistoriController extends Controller
     public function histori_ruangan()
     {
         $title = "Daftar Histori";
-        $dataRuangan = Ruangan::all();
+        $dataJurusan = Jurusan::all();
 
         if (Auth::user()->level == 1) {
             $dataHistori = DB::table('histori_ruangans')
                 ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
                 ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
-                ->where('histori_ruangans.id_user', [Auth::user()->id])
                 ->get();
         } elseif (Auth::user()->level == 2 || Auth::user()->level == 3) {
             return redirect('/');
@@ -86,14 +88,15 @@ class HistoriController extends Controller
 
             $dataHistori = DB::table('histori_ruangans')
                 ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
                 ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
                 ->where('histori_ruangans.id_user', [Auth::user()->id])
                 ->get();
         }
-
+        
 
         // dd($dataHistori);
-        return view("fitur.list_histori_ruangan", compact("dataHistori", "title", "dataRuangan"));
+        return view("fitur.list_histori_ruangan", compact("dataHistori", "title", "dataJurusan"));
     }
 
     public function histori_aset()
