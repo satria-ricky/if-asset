@@ -103,29 +103,24 @@ class LaporanController extends Controller
     {
 
         
-        // if ($req->refresh == 1) {
-        //     $data = DB::table('laporans')
-        //     ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
-        //     ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-        //     ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-        //     ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-        //     ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
-        //     ->get();
-        // } else {
-        //     $data = DB::table('laporans')
-        //     ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
-        //     ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-        //     ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-        //     ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-        //     ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
-        //     ->whereBetween('checked_at', [$req->tanggal_awal, $req->tanggal_akhir])
-        //     ->where('asets.kode_jurusan', [$req->id_jurusan])
-        //     ->where('asets.id_ruangan', [$req->id_ruangan])
-        //     ->where('asets.id_jenis', [$req->id_jenis])
-        //     ->get();
-        // }
+        if ($req->refresh == 1) {
+            $data = DB::table('histori_ruangans')
+            ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
+            ->get();
+        } else {
+            $data = DB::table('histori_ruangans')
+            ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
+            ->whereBetween('mulai', [$req->tanggal_awal, $req->tanggal_akhir])
+            ->where('histori_ruangans.kode_jurusan', [$req->id_jurusan])
+            ->where('histori_ruangans.id_ruangan', [$req->id_ruangan])
+            ->get();
+        }
         
-        return response()->json($req);
+        return response()->json($data);
 
 
         // return Datatables::of($data)
