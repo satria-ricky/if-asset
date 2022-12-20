@@ -169,13 +169,22 @@ class HistoriController extends Controller
         return view("fitur.list_histori_ruangan", compact("dataHistori", "title", "dataJurusan", "dataUser"));
     }
 
+
+    public function hapus_histori_ruangan(Request $req)
+    {
+        // dd($req);
+        $data = HistoriRuangan::findOrFail($req['id']);
+        $data->delete();
+
+        return redirect('/histori_ruangan')->with('success', 'Data Berhasil Dihapus');
+    }
+
+
     public function histori_aset()
     {
         $title = "Daftar Histori";
         $dataUser = DB::table('users')
-            ->where('level', '!=', 1)
-            ->where('level', '!=', 2)
-            ->where('level', '!=', 4)
+            ->where('level', '=', 3)
             ->get();
 
         if (Auth::user()->level == 1) {

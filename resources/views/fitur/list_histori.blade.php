@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col-sm-3" style="margin: auto; padding-top: 15px;">
-                        <button class="btn btn-success" onclick="FilterHistoriAdm()"> Filter </button>
+                        <button class="btn btn-success" onclick="FilterHistoriAset()"> Filter </button>
                     </div>
                 </div>
 
@@ -75,8 +75,7 @@
                     </div> --}}
                     <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
                         <div class="table-responsive">
-                            @if (Auth::user()->level == 1)
-                                <table class="table table-striped table-bordered table-hover dataTables-example"
+                            <table class="table table-striped table-bordered table-hover dataTables-example"
                                     id="dataTableHistoriAdmin">
                                     <thead>
                                         <tr>
@@ -86,6 +85,7 @@
                                             <th class="text-center">Nama aset</th>
                                             <th class="text-center">Dipakai pada:</th>
                                             <th class="text-center">Selesai pada:</th>
+                                            <th class="text-center">Action</th>
 
                                         </tr>
                                     </thead>
@@ -99,69 +99,27 @@
                                                 <td class="text-center">{{ $item->mulai }}</td>
                                                 <td class="text-center">
                                                     @if ($item->selesai == '')
-                                                        <p class="btn btn-warning btn-sm"> is being used
-                                                        </p>
-                                                    @else
-                                                        {{ $item->selesai }}
-                                                    @endif
-                                                </td>
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
-                            @elseif(Auth::user()->level == 3)
-                                <table class="table table-striped table-bordered table-hover dataTables-example"
-                                    id="dataTabelAset">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">No</th>
-                                            <th class="text-center">Kode aset</th>
-                                            <th class="text-center">Nama aset</th>
-                                            <th class="text-center">Dipakai pada:</th>
-                                            <th class="text-center">Selesai pada:</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($dataHistori as $item)
-                                            <tr>
-                                                <td class="text-center">{{ $loop->iteration }}</td>
-                                                <td class="text-center">{{ $item->kode_aset }}</td>
-                                                <td class="text-center">{{ $item->nama_aset }}
-                                                </td>
-                                                <td class="text-center">{{ $item->mulai }}
-                                                </td>
-                                                <td class="text-center">
-                                                    @if ($item->selesai == '')
-                                                        <p class="btn btn-warning btn-sm"> is being used
-                                                        </p>
-                                                    @else
-                                                        {{ $item->selesai }}
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    @if ($item->selesai == '')
                                                         <form action="/selesai_dipakai" method="post">
                                                             @csrf
                                                             <input type="hidden" value="{{ $item->id_histori }}"
                                                                 name="id">
                                                             <button class="btn  btn-success btn-sm" type="submit"
-                                                                onclick="return confirm('Are you sure?')"> Have done ? Click
-                                                                here! </button>
+                                                                onclick="return confirm('Are you sure?')"> Belum selesai </button>
                                                         </form>
                                                     @else
                                                         <p class="btn btn-primary btn-sm"> Great :)
                                                         </p>
                                                     @endif
                                                 </td>
+                                                <td class="text-center">
+                                                    
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
 
                                 </table>
-                            @endif
 
 
                         </div>

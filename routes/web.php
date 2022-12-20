@@ -101,6 +101,10 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/tambah_laporan',[LaporanController::class,'tambah_laporan']);
     Route::post('/hapus_laporan', [LaporanController::class, 'hapus_laporan']);
 
+
+    //HISTORI RUANGAN
+    Route::post('/hapus_histori_ruangan', [HistoriController::class, 'hapus_histori_ruangan']);
+    
 });
 
 

@@ -214,23 +214,6 @@ function filter_histori_ruangan(refresh) {
 
     // console.log(refresh,id_jurusan,id_ruangan,tanggal_awal,tanggal_akhir);
 
-    // $.ajax({
-    //     url: "/filterHistoriRuangan",
-    //     method: "POST",
-    //     dataType: "json",
-    //     data: {
-    //         refresh: refresh,
-    //         id_jurusan: id_jurusan,
-    //         id_ruangan: id_ruangan,
-    //         id_user: id_user,
-    //         tanggal_awal: tanggal_awal,
-    //         tanggal_akhir: tanggal_akhir,
-    //     },
-    //     success: function (data) {
-    //         console.log(data);
-    //     },
-    // });
-
     $("#dataTabelAset").DataTable().destroy();
     var i = 0;
 
@@ -282,6 +265,64 @@ function filter_histori_ruangan(refresh) {
     });
 
 }
+
+
+
+function FilterHistoriAset() {
+    var tanggal_awal = document.getElementById("tanggal_awal").value;
+    var tanggal_akhir = document.getElementById("tanggal_akhir").value;
+    var mahasiswa = document.getElementById("mahasiswa").value;
+
+    // console.log(tanggal_awal,tanggal_akhir,mahasiswa);
+    $("#dataTableHistoriAdmin").DataTable().destroy();
+    var i = 0;
+
+    $("#dataTableHistoriAdmin").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ url('filterHistori') }}",
+            dataType: "json",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                awal: tanggal_awal,
+                akhir: tanggal_akhir,
+                mahasiswa: mahasiswa
+            },
+        },
+        columns: [
+            {
+                data: "id_histori",
+                render: function (data, type, row, meta) {
+                    return (i = i + 1);
+                },
+                className: "text-center",
+            },
+            {
+                data: "nama_user",
+                className: "text-center",
+            },
+            {
+                data: "kode_aset",
+                className: "text-center",
+            },
+            {
+                data: "nama_aset",
+                className: "text-center",
+            },
+            {
+                data: "mulai",
+                className: "text-center",
+            },
+            {
+                data: "selesai",
+                className: "text-center",
+            },
+        ],
+    });
+}
+
 
 //MODAL EDIT
 function buttonModalEditJurusan(params) {
