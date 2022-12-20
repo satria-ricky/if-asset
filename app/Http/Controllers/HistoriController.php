@@ -23,17 +23,84 @@ class HistoriController extends Controller
 
         $data = DB::select('SELECT historis.*, users.*, asets.*, asets.nama as nama_aset FROM historis LEFT JOIN users ON users.id = historis.id_user LEFT JOIN asets ON asets.id_aset = historis.id_aset WHERE users.id = ? AND historis.mulai BETWEEN ? AND ?', [$req->mahasiswa, $req->awal, $req->akhir]);
         // return response()->json($data);
-        return Datatables::of($data)->editColumn('selesai',function ($data){
+        return Datatables::of($data)->editColumn('selesai', function ($data) {
             if ($data->selesai == '') {
                 $selesai = '<p class="btn btn-warning btn-sm"> is being used
                 </p>';
             } else {
                 $selesai = $data->selesai;
             }
-            return $selesai; 
+            return $selesai;
         })
-        ->rawColumns(['selesai'])->make(true);
+            ->rawColumns(['selesai'])->make(true);
     }
+
+
+    public function filterHistoriRuangan(Request $req)
+    {
+
+
+        if ($req->refresh == 1) {
+            $data = DB::table('histori_ruangans')
+                ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
+                ->where('users.level', 4)
+                ->get();
+        } else {
+            $data = DB::table('histori_ruangans')
+                ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
+                ->where('users.id', $req->id_user)
+                ->whereBetween('mulai', [$req->tanggal_awal, $req->tanggal_akhir])
+                ->where('histori_ruangans.kode_jurusan', [$req->id_jurusan])
+                ->where('histori_ruangans.id_ruangan', [$req->id_ruangan])
+                ->get();
+        }
+
+        // return response()->json($data);
+
+
+        return Datatables::of($data)
+            ->addColumn('action', function ($data) {
+                $btn = '<div class="btn-group">
+                <button data-toggle="dropdown"
+                    class="btn btn-primary btn-sm dropdown-toggle">Action </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form action="/hapus_histori_ruangan" method="post">
+                        <input type="hidden" name="_token" value="' . csrf_token() . '" />
+                            <input type="hidden" name="id"
+                                value="' . $data->id_histori_ruangan . '">
+                            <button
+                                style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
+                                class="dropdown-item pb-2" type="submit"
+                                onclick="return confirm(`Are you Sure`)">
+                                Hapus</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>';
+                return $btn;
+            })
+            ->editColumn('selesai', function ($data) {
+                if ($data->selesai == '') {
+                    return '<form action="/selesai_dipakai_ruangan" method="post">
+                    <input type="hidden" name="_token" value="' . csrf_token() . '" />
+                    <input type="hidden" value="' . $data->id_histori_ruangan . '"
+                        name="id">
+                    <button class="btn btn-danger btn-sm" type="submit"
+                        onclick="return confirm(`Are you Sure`)"> Belum selesai </button>
+                </form>';
+                } else {
+                    return '<p class="btn btn-success btn-sm"> Great :)
+            </p>';
+                }
+            })
+            ->rawColumns(['selesai', 'action'])->make(true);
+    }
+
 
     //Mahasiswa
     public function list_histori()
@@ -75,6 +142,9 @@ class HistoriController extends Controller
     {
         $title = "Daftar Histori";
         $dataJurusan = Jurusan::all();
+        $dataUser = DB::table('users')
+            ->where('level', 4)
+            ->get();
 
         if (Auth::user()->level == 1) {
             $dataHistori = DB::table('histori_ruangans')
@@ -93,10 +163,10 @@ class HistoriController extends Controller
                 ->where('histori_ruangans.id_user', [Auth::user()->id])
                 ->get();
         }
-        
+
 
         // dd($dataHistori);
-        return view("fitur.list_histori_ruangan", compact("dataHistori", "title", "dataJurusan"));
+        return view("fitur.list_histori_ruangan", compact("dataHistori", "title", "dataJurusan", "dataUser"));
     }
 
     public function histori_aset()
@@ -115,7 +185,6 @@ class HistoriController extends Controller
                 ->leftJoin('users', 'users.id', '=', 'historis.id_user')
                 ->where('users.level', '!=', 4)
                 ->get();
-            
         } elseif (Auth::user()->level == 2) {
             return redirect('/');
         } elseif (Auth::user()->level == 3 || Auth::user()->level == 4) {

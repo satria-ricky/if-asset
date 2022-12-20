@@ -64,7 +64,7 @@ class LaporanController extends Controller
             ->get();
         }
         
-        // return response()->json($data);
+        return response()->json($data);
 
 
         return Datatables::of($data)
@@ -99,61 +99,7 @@ class LaporanController extends Controller
         ->rawColumns(['id_kondisi','action'])->make(true);
     }
 
-    public function filterHistoriRuangan(Request $req)
-    {
-
-        
-        if ($req->refresh == 1) {
-            $data = DB::table('histori_ruangans')
-            ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
-            ->get();
-        } else {
-            $data = DB::table('histori_ruangans')
-            ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
-            ->whereBetween('mulai', [$req->tanggal_awal, $req->tanggal_akhir])
-            ->where('histori_ruangans.kode_jurusan', [$req->id_jurusan])
-            ->where('histori_ruangans.id_ruangan', [$req->id_ruangan])
-            ->get();
-        }
-        
-        return response()->json($data);
-
-
-        // return Datatables::of($data)
-        // ->addColumn('action', function ($data) {
-        //     $btn = '<div class="btn-group">
-        //         <button data-toggle="dropdown"
-        //             class="btn btn-primary btn-sm dropdown-toggle">Action </button>
-        //         <ul class="dropdown-menu">
-        //             <li>
-        //                 <a class="dropdown-item"
-        //                     href="/detail_aset/' . Crypt::encrypt($data->id_aset) . '" target="_blank"> Detail</a>
-        //             </li>
-        //             <li>
-        //                 <form action="/hapus_laporan" method="post">
-        //                 <input type="hidden" name="_token" value="' . csrf_token() . '" />
-        //                     <input type="hidden" name="id"
-        //                         value="' . $data->id_laporan . '">
-        //                     <button
-        //                         style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
-        //                         class="dropdown-item pb-2" type="submit"
-        //                         onclick="return confirm(`Are you Sure`)">
-        //                         Hapus</button>
-        //                 </form>
-        //             </li>
-        //         </ul>
-        //     </div>';
-        //     return $btn;
-        // })
-        // ->editColumn('id_kondisi',function ($data){
-        //     return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>'; 
-        // })
-        // ->rawColumns(['id_kondisi','action'])->make(true);
-    }
+    
 
 
     //ADMIN

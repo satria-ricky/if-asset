@@ -166,7 +166,7 @@ function filter_laporan(refresh) {
         },
         columns: [
             {
-                data: "id_aset",
+                data: "id_laporan",
                 render: function (data, type, row, meta) {
                     return (i = i + 1);
                 },
@@ -208,26 +208,79 @@ function filter_histori_ruangan(refresh) {
     var refresh = refresh;
     var id_jurusan = document.getElementById("jurusan_filter1").value;
     var id_ruangan = document.getElementById("ruangan_filter1").value;
+    var id_user = document.getElementById("id_user_filter1").value;
     var tanggal_awal = document.getElementById("tanggal_awal").value;
     var tanggal_akhir = document.getElementById("tanggal_akhir").value;
 
     // console.log(refresh,id_jurusan,id_ruangan,tanggal_awal,tanggal_akhir);
 
-    $.ajax({
-        url: "/filterHistoriRuangan",
-        method: "POST",
-        dataType: "json",
-        data: {
-            refresh: refresh,
-            id_jurusan: id_jurusan,
-            id_ruangan: id_ruangan,
-            tanggal_awal: tanggal_awal,
-            tanggal_akhir: tanggal_akhir,
+    // $.ajax({
+    //     url: "/filterHistoriRuangan",
+    //     method: "POST",
+    //     dataType: "json",
+    //     data: {
+    //         refresh: refresh,
+    //         id_jurusan: id_jurusan,
+    //         id_ruangan: id_ruangan,
+    //         id_user: id_user,
+    //         tanggal_awal: tanggal_awal,
+    //         tanggal_akhir: tanggal_akhir,
+    //     },
+    //     success: function (data) {
+    //         console.log(data);
+    //     },
+    // });
+
+    $("#dataTabelAset").DataTable().destroy();
+    var i = 0;
+
+    $("#dataTabelAset").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "/filterHistoriRuangan",
+            dataType: "json",
+            type: "POST",
+            data: {
+                refresh: refresh,
+                id_jurusan: id_jurusan,
+                id_ruangan: id_ruangan,
+                id_user: id_user,
+                tanggal_awal: tanggal_awal,
+                tanggal_akhir: tanggal_akhir,
+            },
         },
-        success: function (data) {
-            console.log(data);
-        },
+        columns: [
+            {
+                data: "id_histori_ruangan",
+                render: function (data, type, row, meta) {
+                    return (i = i + 1);
+                },
+                className: "text-center",
+            },
+            {
+                data: "nama_jurusan",
+                className: "text-center",
+            },
+            {
+                data: "nama_ruangan",
+                className: "text-center",
+            },
+            {
+                data: "mulai",
+                className: "text-center",
+            },
+            {
+                data: "selesai",
+                className: "text-center",
+            },
+            {
+                data: "action",
+                className: "text-center",
+            },
+        ],
     });
+
 }
 
 //MODAL EDIT

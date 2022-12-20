@@ -41,15 +41,18 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="col-form-label" for="date_modified">Ruangan </label>
-                        <select class="js-example-basic-single form-control" id="ruangan_filter1">
+                        <select class="js-example-basic-single-2 form-control" id="ruangan_filter1">
                         </select>
                     </div>
                 </div>
 
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Ruangan </label>
-                        <select class="js-example-basic-single form-control" id="ruangan_filter1">
+                        <label class="col-form-label" for="date_modified">Dosen </label>
+                        <select class="js-example-basic-single form-control" id="id_user_filter1">
+                            @foreach ($dataUser as $item)
+                            <option value="{{ $item->id }}"> {{ $item->nama_user }}</option>
+                        @endforeach
                         </select>
                     </div>
                 </div>

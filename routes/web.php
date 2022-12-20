@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     //FILTER HISTORI
-    Route::post('/filterHistoriRuangan',[LaporanController::class,'filterHistoriRuangan']);
+    Route::post('/filterHistoriRuangan',[HistoriController::class,'filterHistoriRuangan']);
 
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
