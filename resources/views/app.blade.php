@@ -98,7 +98,7 @@
 
     <script>
         $(document).ready(function() {
-            // console.log("ready!");
+            // console.log("ready!"); 
             $(document).ready(function() {
                 $('.js-example-basic-single').select2();
             });

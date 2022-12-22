@@ -11,6 +11,7 @@ use App\Models\JenisAset;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class LaporanController extends Controller
@@ -18,13 +19,18 @@ class LaporanController extends Controller
 
     public function list_laporan()
     {
+        if (Auth::user()->level == 3 || Auth::user()->level == 4) {
+            return redirect('/');
+        } 
+
+
         $title = "Daftar Laporan";
         $dataRuangan = Ruangan::all();
         $dataJenis = JenisAset::all();
         $dataJurusan = Jurusan::all();
         $dataKondisi = Kondisi::all();
         $dataAset = Aset::all();
-        
+
         $dataLaporan = DB::table('laporans')
             ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
             ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
@@ -33,43 +39,43 @@ class LaporanController extends Controller
             ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
             ->get();
         // dd($dataLaporan);
-        return view("fitur.list_laporan", compact("dataLaporan", "dataRuangan", "dataJenis","dataJurusan","dataKondisi","dataAset", "title"));
+        return view("fitur.list_laporan", compact("dataLaporan", "dataRuangan", "dataJenis", "dataJurusan", "dataKondisi", "dataAset", "title"));
     }
 
 
-    
+
     public function filterLaporan(Request $req)
     {
 
-        
+
         if ($req->refresh == 1) {
             $data = DB::table('laporans')
-            ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
-            ->get();
+                ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+                ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+                ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
+                ->get();
         } else {
             $data = DB::table('laporans')
-            ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
-            ->whereBetween('checked_at', [$req->tanggal_awal, $req->tanggal_akhir])
-            ->where('asets.kode_jurusan', [$req->id_jurusan])
-            ->where('asets.id_ruangan', [$req->id_ruangan])
-            ->where('asets.id_jenis', [$req->id_jenis])
-            ->get();
+                ->leftJoin('asets', 'asets.id_aset', '=', 'laporans.id_aset')
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+                ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+                ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'laporans.kondisi_laporan')
+                ->whereBetween('checked_at', [$req->tanggal_awal, $req->tanggal_akhir])
+                ->where('asets.kode_jurusan', [$req->id_jurusan])
+                ->where('asets.id_ruangan', [$req->id_ruangan])
+                ->where('asets.id_jenis', [$req->id_jenis])
+                ->get();
         }
-        
+
         return response()->json($data);
 
 
         return Datatables::of($data)
-        ->addColumn('action', function ($data) {
-            $btn = '<div class="btn-group">
+            ->addColumn('action', function ($data) {
+                $btn = '<div class="btn-group">
                 <button data-toggle="dropdown"
                     class="btn btn-primary btn-sm dropdown-toggle">Action </button>
                 <ul class="dropdown-menu">
@@ -91,20 +97,20 @@ class LaporanController extends Controller
                     </li>
                 </ul>
             </div>';
-            return $btn;
-        })
-        ->editColumn('id_kondisi',function ($data){
-            return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>'; 
-        })
-        ->rawColumns(['id_kondisi','action'])->make(true);
+                return $btn;
+            })
+            ->editColumn('id_kondisi', function ($data) {
+                return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>';
+            })
+            ->rawColumns(['id_kondisi', 'action'])->make(true);
     }
 
-    
+
 
 
     //ADMIN
 
-    
+
     public function tambah_laporan(Request $req)
     {
         // dd($req);

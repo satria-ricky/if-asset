@@ -59,16 +59,97 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="navy-line"></div>
-                <h1>Statistik Penggunaan</h1> <br>
+                <h1>Statistik Penggunaan Aset</h1> <br>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 text-center wow fadeInLeft">
-            </div>
-            <div class="col-md-6 text-center  wow zoomIn">
-                <canvas id="myChart"></canvas>
-            </div>
-            <div class="col-md-3 text-center wow fadeInRight">
+            <div class="col-lg-12">
+
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs" role="tablist">
+                        @foreach ($dataJenis as $item)
+                            @if ($item->id_jenis == 1)
+                                <li><a class="nav-link active" data-toggle="tab" href="#tab{{ $item->id_jenis }}">
+                                        {{ $item->nama_jenis }}</a></li>
+                            @else
+                                <li><a class="nav-link" data-toggle="tab" href="#tab{{ $item->id_jenis }}">
+                                        {{ $item->nama_jenis }}</a></li>
+                            @endif
+                        @endforeach
+
+
+                        {{-- <li><a class="nav-link" data-toggle="tab" href="#tab-2">This is second tab</a></li> --}}
+                    </ul>
+                    <div class="tab-content">
+
+                        @foreach ($dataJenis as $item)
+                            @if ($item->id_jenis == 1)
+                                <div role="tabpanel" id="tab{{ $item->id_jenis }}" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-4"><canvas id="Chart{{ $item->id_jenis }}"></canvas></div>
+                                            <div class="col-4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div role="tabpanel" id="tab{{ $item->id_jenis }}" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-4"><canvas id="Chart{{ $item->id_jenis }}"></canvas></div>
+                                            <div class="col-4"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+
+
+                        {{-- <div role="tabpanel" id="tab-2" class="tab-pane">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-4"></div>
+                                    <div class="col-4"><canvas id="dosen2Chart" height="140"></canvas></div>
+                                    <div class="col-4"></div>
+                                </div>
+                            </div>
+                        </div> --}}
+
+                    </div>
+
+
+                </div>
+
+
+                {{-- <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Profil Tenaga Pengajar</h5>
+                    </div>
+                    <div class="ibox-tools">
+                        <div class="btn-group">
+                            <a href="https://data.if.unram.ac.id/dosen/" style="color: white !important;" class="btn-xs btn-primary btn-ibox-tools" >Lihat Data</a>
+                        </div>
+                    </div>
+                    
+                    <div class="ibox-content">
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <canvas id="dosen1Chart" height="140"></canvas>
+                            </div>
+                            <div class="col-lg-4">
+                                <canvas id="dosen2Chart" height="140"></canvas>
+                            </div>
+                            <div class="col-lg-4">
+                                <canvas id="dosen3Chart" height="140"></canvas>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div> --}}
             </div>
         </div>
     </section>
@@ -119,9 +200,56 @@
 
     {{-- chart --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src={{ asset('js/mychart.js') }}></script>
+    {{-- <script src={{ asset('js/mychart.js') }}></script> --}}
+
+    <script>
+        // console.log(
+        //     @foreach ($dataJenis as $item)
+        //         ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"],
+        //     @endforeach
+        // );
+
+        @foreach ($dataJenis as $item)
+            ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"]
+
+            new Chart(document.getElementById("Chart"+{{ $item->id_jenis }} ).getContext("2d"), {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        @foreach ($dataJenis as $item)
+                            ["{{ $item->nama_jenis }}"],
+                        @endforeach
+                    ],
+                    datasets: [{
+                        data: [
+                            
+                            $.ajax({
+                                url: "asetByRuangan",
+                                method: "POST",
+                                dataType: "json",
+                                data: {
+                                    id_jurusan: id_jurusan,
+                                    id_ruangan: id_ruangan,
+                                    id_kondisi: id_kondisi,
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                            });
+
+                        ],
+                        backgroundColor: ["#2ba9e1", "#1cc09f", "#1cc0d78"]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
 
 
+        @endforeach
+        
+    </script>
 
 </body>
 

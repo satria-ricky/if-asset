@@ -21,18 +21,83 @@ class HistoriController extends Controller
     public function filterHistori(Request $req)
     {
 
-        $data = DB::select('SELECT historis.*, users.*, asets.*, asets.nama as nama_aset FROM historis LEFT JOIN users ON users.id = historis.id_user LEFT JOIN asets ON asets.id_aset = historis.id_aset WHERE users.id = ? AND historis.mulai BETWEEN ? AND ?', [$req->mahasiswa, $req->awal, $req->akhir]);
+        if ($req->refresh == 1) {
+            $data = DB::table('historis')
+                ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
+                ->leftJoin('users', 'users.id', '=', 'historis.id_user')
+                ->get();
+        } else {
+            $data = DB::table('historis')
+                ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
+                ->leftJoin('users', 'users.id', '=', 'historis.id_user')
+                ->where('historis.id_user', $req->id_user)
+                ->whereBetween('mulai', [$req->tanggal_awal, $req->tanggal_akhir])
+                ->get();
+        }
+
         // return response()->json($data);
-        return Datatables::of($data)->editColumn('selesai', function ($data) {
-            if ($data->selesai == '') {
-                $selesai = '<p class="btn btn-warning btn-sm"> is being used
-                </p>';
-            } else {
-                $selesai = $data->selesai;
-            }
-            return $selesai;
-        })
-            ->rawColumns(['selesai'])->make(true);
+
+        if (Auth::user()->level == 1) {
+            return Datatables::of($data)
+            ->addColumn('action', function ($data) {
+                $btn = '<div class="btn-group">
+                <button data-toggle="dropdown"
+                    class="btn btn-primary btn-sm dropdown-toggle">Action </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form action="/hapus_histori" method="post">
+                        <input type="hidden" name="_token" value="' . csrf_token() . '" />
+                            <input type="hidden" name="id"
+                                value="' . $data->id_histori . '">
+                            <button
+                                style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
+                                class="dropdown-item pb-2" type="submit"
+                                onclick="return confirm(`Are you Sure`)">
+                                Hapus</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>';
+                return $btn;
+            })
+            ->editColumn('selesai', function ($data) {
+                if ($data->selesai == '') {
+                    return '<form action="/selesai_dipakai" method="post">
+                    <input type="hidden" name="_token" value="' . csrf_token() . '" />
+                    <input type="hidden" value="' . $data->id_histori. '"
+                        name="id">
+                    <button class="btn btn-danger btn-sm" type="submit"
+                        onclick="return confirm(`Are you Sure`)"> Belum selesai </button>
+                </form>';
+                } else {
+                    return '<p class="btn btn-success btn-sm"> '.$data->selesai.'
+            </p>';
+                }
+            })
+            ->rawColumns(['selesai', 'action'])->make(true);
+        } else {
+            return Datatables::of($data)
+            ->addColumn('action', function ($data) {
+                return '-';
+            })
+            ->editColumn('selesai', function ($data) {
+                if ($data->selesai == '') {
+                    return '<form action="/selesai_dipakai" method="post">
+                    <input type="hidden" name="_token" value="' . csrf_token() . '" />
+                    <input type="hidden" value="' . $data->id_histori. '"
+                        name="id">
+                    <button class="btn btn-danger btn-sm" type="submit"
+                        onclick="return confirm(`Are you Sure`)"> Belum selesai </button>
+                </form>';
+                } else {
+                    return '<p class="btn btn-success btn-sm">'.$data->selesai.'
+            </p>';
+                }
+            })
+            ->rawColumns(['selesai', 'action'])->make(true);
+        }
+
+        
     }
 
 
@@ -94,8 +159,8 @@ class HistoriController extends Controller
                         onclick="return confirm(`Are you Sure`)"> Belum selesai </button>
                 </form>';
                 } else {
-                    return '<p class="btn btn-success btn-sm"> Great :)
-            </p>';
+                    return '<p class="btn btn-success btn-sm"> '.$data->selesai.'
+                    </p>';
                 }
             })
             ->rawColumns(['selesai', 'action'])->make(true);
@@ -134,6 +199,13 @@ class HistoriController extends Controller
             'selesai' => Carbon::now()->toDateTimeString()
         ]);
 
+        DB::table('historis')
+                ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
+                ->whereNull('historis.selesai')
+                ->update([
+                    'selesai' => Carbon::now()->toDateTimeString()
+                ]);
+
         return redirect('/histori_ruangan')->with('success', 'You did great :)');
     }
 
@@ -146,13 +218,13 @@ class HistoriController extends Controller
             ->where('level', 4)
             ->get();
 
-        if (Auth::user()->level == 1) {
+        if (Auth::user()->level == 1 || Auth::user()->level == 2) {
             $dataHistori = DB::table('histori_ruangans')
                 ->leftJoin('users', 'users.id', '=', 'histori_ruangans.id_user')
                 ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'histori_ruangans.kode_jurusan')
                 ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'histori_ruangans.id_ruangan')
                 ->get();
-        } elseif (Auth::user()->level == 2 || Auth::user()->level == 3) {
+        } elseif (Auth::user()->level == 3) {
             return redirect('/');
         } elseif (Auth::user()->level == 4) {
 
@@ -187,15 +259,12 @@ class HistoriController extends Controller
             ->where('level', '=', 3)
             ->get();
 
-        if (Auth::user()->level == 1) {
+        if (Auth::user()->level == 1 || Auth::user()->level == 2) {
 
             $dataHistori = DB::table('historis')
                 ->leftJoin('asets', 'asets.id_aset', '=', 'historis.id_aset')
                 ->leftJoin('users', 'users.id', '=', 'historis.id_user')
-                ->where('users.level', '!=', 4)
                 ->get();
-        } elseif (Auth::user()->level == 2) {
-            return redirect('/');
         } elseif (Auth::user()->level == 3 || Auth::user()->level == 4) {
 
             $dataHistori = DB::table('historis')
@@ -206,5 +275,14 @@ class HistoriController extends Controller
         }
 
         return view("fitur.list_histori", compact("dataHistori", "title", "dataUser"));
+    }
+
+    public function hapus_histori(Request $req)
+    {
+        // dd($req);
+        $data = Histori::findOrFail($req['id']);
+        $data->delete();
+
+        return redirect('/histori_aset')->with('success', 'Data Berhasil Dihapus');
     }
 }

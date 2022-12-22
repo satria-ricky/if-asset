@@ -89,10 +89,15 @@
                         
                     </div> --}}
                     <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
-                        <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
-                            Laporan</button>
+                        @if (Auth::user()->level == 1)
+                            <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal">
+                                Tambah
+                                Laporan</button>
+                        @endif
+
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover dataTables-example" id="dataTabelAset">
+                            <table class="table table-striped table-bordered table-hover dataTables-example"
+                                id="dataTabelAset">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
@@ -102,6 +107,7 @@
                                         <th class="text-center">Nama aset</th>
                                         <th class="text-center">Kondisi</th>
                                         <th class="text-center">Di periksa pada:</th>
+                                        <th class="text-center">Keterangan</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -113,6 +119,7 @@
                                             <td class="text-center">{{ $item->nama_ruangan }}</td>
                                             <td class="text-center">{{ $item->kode_aset }}</td>
                                             <td class="text-center">{{ $item->nama_aset }}</td>
+                                            <td class="text-center">{{ $item->keterangan }}</td>
 
                                             <td class="text-center">
                                                 <p class="btn btn-{{ $item->icon_kondisi }} btn-sm">
@@ -164,8 +171,8 @@
         <div class="modal-dialog">
             <div class="modal-content animated fadeIn">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                            class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">Tambah Laporan</h4>
                 </div>
                 <div class="modal-body bg-white">

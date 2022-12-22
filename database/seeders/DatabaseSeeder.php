@@ -47,33 +47,36 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        DB::table('historis')->insert([
-            [
-                'id_user' => 3,
-                'id_aset' => 3,
-                'mulai' => '2022-12-06 00:44:50',
-                'selesai' => '2022-12-03 11:03:54'
-            ],
-            [
-                'id_user' => 2,
-                'id_aset' => 3,
-                'mulai' => '2022-12-06 00:44:50',
-                'selesai' => '2022-12-03 11:03:54'
-            ]
-        ]);
+        // DB::table('historis')->insert([
+        //     [
+        //         'id_user' => 3,
+        //         'id_aset' => 3,
+        //         'mulai' => '2022-12-06 00:44:50',
+        //         'selesai' => '2022-12-03 11:03:54'
+        //     ],
+        //     [
+        //         'id_user' => 2,
+        //         'id_aset' => 3,
+        //         'mulai' => '2022-12-06 00:44:50',
+        //         'selesai' => '2022-12-03 11:03:54'
+        //     ]
+        // ]);
 
         DB::table('kondisis')->insert([
             [
-                'nama_kondisi'    => 'RR',
-                'icon_kondisi'    => 'warning'
+                'nama_kondisi'    => 'Rusak Ringan',
+                'icon_kondisi'    => 'warning',
+                'warna_kondisi'    => '#f8ac59'
             ],
             [
-                'nama_kondisi'    => 'RB',
-                'icon_kondisi'    => 'danger'
+                'nama_kondisi'    => 'Rusak Berat',
+                'icon_kondisi'    => 'danger',
+                'warna_kondisi'    => '#ED5565'
             ],
             [
-                'nama_kondisi'    => 'B',
-                'icon_kondisi'    => 'success'
+                'nama_kondisi'    => 'Baik',
+                'icon_kondisi'    => 'success',
+                'warna_kondisi'    => '#1c84c6'
             ]
         ]);
 

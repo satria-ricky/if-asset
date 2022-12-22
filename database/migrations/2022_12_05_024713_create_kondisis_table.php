@@ -17,6 +17,7 @@ class CreateKondisisTable extends Migration
             $table->id('id_kondisi');
             $table->string('nama_kondisi')->nullable();
             $table->string('icon_kondisi')->nullable();
+            $table->string('warna_kondisi')->nullable();
             $table->timestamps();
         });
     }

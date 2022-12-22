@@ -19,6 +19,7 @@ class CreateLaporansTable extends Migration
             $table->integer('id_aset')->nullable();
             $table->integer('kondisi_laporan')->nullable();
             $table->timestamp('checked_at')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

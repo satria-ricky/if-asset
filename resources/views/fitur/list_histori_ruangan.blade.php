@@ -23,65 +23,65 @@
     <div class="wrapper wrapper-content animated fadeInRight">
 
         @if (Auth::user()->level == 1)
-        <div class="ibox-content m-b-sm border-bottom">
-            <h3>Filter</h3>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_added">Kode Jurusan </label>
-                        <select class="js-example-basic-single form-control" id="jurusan_filter1"
-                            onchange="getRuanganByJurusan(1)">
-                            @foreach ($dataJurusan as $item)
-                                <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
-                            @endforeach
-                        </select>
+            <div class="ibox-content m-b-sm border-bottom">
+                <h3>Filter</h3>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label" for="date_added">Kode Jurusan </label>
+                            <select class="js-example-basic-single form-control" id="jurusan_filter1"
+                                onchange="getRuanganByJurusan(1)">
+                                @foreach ($dataJurusan as $item)
+                                    <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label" for="date_modified">Ruangan </label>
+                            <select class="js-example-basic-single-2 form-control" id="ruangan_filter1">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label" for="date_modified">Dosen </label>
+                            <select class="js-example-basic-single form-control" id="id_user_filter1">
+                                @foreach ($dataUser as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->nama_user }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Ruangan </label>
-                        <select class="js-example-basic-single-2 form-control" id="ruangan_filter1">
-                        </select>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label" for="date_added">Batas awal dipakai</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                    id="tanggal_awal" type="datetime-local" class="form-control">
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Dosen </label>
-                        <select class="js-example-basic-single form-control" id="id_user_filter1">
-                            @foreach ($dataUser as $item)
-                            <option value="{{ $item->id }}"> {{ $item->nama_user }}</option>
-                        @endforeach
-                        </select>
-                    </div>
-                </div>
-                
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_added">Batas awal dipakai</label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_awal"
-                                type="datetime-local" class="form-control">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label" for="date_modified">Batas akhir dipakai</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                    id="tanggal_akhir" type="datetime-local" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="col-form-label" for="date_modified">Batas akhir dipakai</label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="tanggal_akhir"
-                                type="datetime-local" class="form-control">
-                        </div>
-                    </div>
-                </div>
+                <button class="btn btn-success " onclick="filter_histori_ruangan(0)"> Filter </button>
+                <button class="btn btn-warning " onclick="filter_histori_ruangan(1)"> Refresh </button>
             </div>
-            <button class="btn btn-success " onclick="filter_histori_ruangan(0)"> Filter </button>
-            <button class="btn btn-warning " onclick="filter_histori_ruangan(1)"> Refresh </button>
-        </div>
         @endif
 
 
@@ -112,7 +112,7 @@
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->nama_jurusan }}</td>
                                             <td class="text-center">{{ $item->nama_ruangan }}</td>
-                                            <td class="text-center">{{ $item->mulai }}</td>
+                                            <td class="text-center">{{ $item->mulai }} , oleh: {{ $item->nama_user }}</td> 
                                             <td class="text-center">
                                                 @if ($item->selesai == '')
                                                     <form action="/selesai_dipakai_ruangan" method="post">
@@ -120,10 +120,11 @@
                                                         <input type="hidden" value="{{ $item->id_histori_ruangan }}"
                                                             name="id">
                                                         <button class="btn btn-danger btn-sm" type="submit"
-                                                            onclick="return confirm('Are you sure?')"> Belum selesai </button>
+                                                            onclick="return confirm('Are you sure?')"> Belum selesai
+                                                        </button>
                                                     </form>
                                                 @else
-                                                    <p class="btn btn-success btn-sm"> Great :)
+                                                    <p class="btn btn-success btn-sm"> {{ $item->selesai }}
                                                     </p>
                                                 @endif
                                             </td>
@@ -148,7 +149,7 @@
                                                         </ul>
                                                     </div>
                                                 @else
-                                                -
+                                                    -
                                                 @endif
 
                                             </td>

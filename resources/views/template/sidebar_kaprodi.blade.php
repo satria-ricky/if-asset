@@ -17,8 +17,15 @@
                     {{-- <li  class="@if(Request::is('list_ruangan')) active @endif">
                         <a href="/list_ruangan"><i class="fa fa-sticky-note"></i> <span class="nav-label">Daftar Ruangan</span></a>
                     </li> --}}
-                    <li  class="@if(Request::is('list_laporan')) active @elseif(Request::is('edit_aset/*')) active @endif">
-                        <a href="/list_aset"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
+                    <li  class="@if(Request::is('list_laporan')) active @endif">
+                        <a href="/list_laporan"><i class="fa fa-file-text-o"></i> <span class="nav-label">Laporan</span></a>
+                    </li>
+                    <li class="@if(Request::is('histori_aset')) active @elseif(Request::is('histori_ruangan')) active @endif">
+                        <a href="#"><i class="fa fa-history"></i> <span class="nav-label">Histori </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/histori_ruangan">Penggunaan Ruangan</a></li>
+                            <li><a href="/histori_aset"> Penggunaan Aset</a></li>
+                        </ul>
                     </li>
                 </ul>
 

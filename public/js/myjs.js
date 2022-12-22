@@ -197,6 +197,10 @@ function filter_laporan(refresh) {
                 className: "text-center",
             },
             {
+                data: "keterangan",
+                className: "text-center",
+            },
+            {
                 data: "action",
                 className: "text-center",
             },
@@ -263,32 +267,44 @@ function filter_histori_ruangan(refresh) {
             },
         ],
     });
-
 }
 
-
-
-function FilterHistoriAset() {
+function FilterHistoriAset(refresh) {
     var tanggal_awal = document.getElementById("tanggal_awal").value;
     var tanggal_akhir = document.getElementById("tanggal_akhir").value;
-    var mahasiswa = document.getElementById("mahasiswa").value;
+    var id_user = document.getElementById("id_user_filter").value;
+    var refresh = refresh;
 
     // console.log(tanggal_awal,tanggal_akhir,mahasiswa);
-    $("#dataTableHistoriAdmin").DataTable().destroy();
+    $("#dataTabelAset").DataTable().destroy();
     var i = 0;
+    // $.ajax({
+    //     url: "/filterHistori",
+    //     method: "POST",
+    //     dataType: "json",
+    //     data: {
+    //         tanggal_awal: tanggal_awal,
+    //         tanggal_akhir: tanggal_akhir,
+    //         id_user: id_user,
+    //         refresh: refresh,
+    //     },
+    //     success: function (data) {
+    //         console.log(data);
+    //     },
+    // });
 
-    $("#dataTableHistoriAdmin").DataTable({
+    $("#dataTabelAset").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ url('filterHistori') }}",
+            url: "/filterHistori",
             dataType: "json",
             type: "POST",
             data: {
-                _token: "{{ csrf_token() }}",
-                awal: tanggal_awal,
-                akhir: tanggal_akhir,
-                mahasiswa: mahasiswa
+                tanggal_awal: tanggal_awal,
+                tanggal_akhir: tanggal_akhir,
+                id_user: id_user,
+                refresh:refresh
             },
         },
         columns: [
@@ -319,10 +335,13 @@ function FilterHistoriAset() {
                 data: "selesai",
                 className: "text-center",
             },
+            {
+                data: "action",
+                className: "text-center",
+            },
         ],
     });
 }
-
 
 //MODAL EDIT
 function buttonModalEditJurusan(params) {

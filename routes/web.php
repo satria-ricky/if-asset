@@ -44,16 +44,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
 
     //FILTER LAPORAN
+    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
     Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 
 
     //FILTER HISTORI
     Route::post('/filterHistoriRuangan',[HistoriController::class,'filterHistoriRuangan']);
+    Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
 
     //HISTORI
     Route::get('/histori_aset',[HistoriController::class,'histori_aset']);
-    Route::post('/filterHistori',[HistoriController::class,'filterHistori']);
-
     Route::get('/histori_ruangan',[HistoriController::class,'histori_ruangan']);
 
 
@@ -63,9 +63,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/selesai_dipakai_ruangan',[HistoriController::class,'selesai_dipakai_ruangan']);
 
 
+    
+
 
     Route::post('/logout', [UserController::class, 'logout']);
 });
+
 
 Route::group(['middleware' => ['auth','ceklevel:1']], function () {
 
@@ -97,13 +100,14 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/edit_aset', [AsetController::class, 'edit_aset']);
 
     //LAPORAN
-    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
+    
     Route::post('/tambah_laporan',[LaporanController::class,'tambah_laporan']);
     Route::post('/hapus_laporan', [LaporanController::class, 'hapus_laporan']);
 
 
-    //HISTORI RUANGAN
+    //HISTORI
     Route::post('/hapus_histori_ruangan', [HistoriController::class, 'hapus_histori_ruangan']);
+    Route::post('/hapus_histori', [HistoriController::class, 'hapus_histori']);
     
 });
 
@@ -119,15 +123,16 @@ Route::group(['middleware' => ['auth','ceklevel:2']], function () {
 // });
 
 Route::group(['middleware' => ['auth','ceklevel:4']], function () {
-    Route::get('/list_historiDsn',[HistoriController::class,'list_histori_ruangan']);
+    // Route::get('/list_historiDsn',[HistoriController::class,'list_histori_ruangan']);
    
 });
 
 Route::get('/', [UserController::class, 'tampil_home']);
 Route::get('/auth', [UserController::class, 'tampil_login'])->name("login");
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
 
+// DETAIL
+Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
 Route::get('/detail_ruangan/{id}', [RuanganController::class, 'tampil_detail_ruangan']);
 
 //FROM QRCODE

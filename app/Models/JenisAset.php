@@ -10,4 +10,5 @@ class JenisAset extends Model
     use HasFactory;
     protected $primaryKey = 'id_jenis';
     protected $guarded = ['id_jenis'];
+    
 }
