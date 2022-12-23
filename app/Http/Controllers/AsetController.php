@@ -17,6 +17,27 @@ use Yajra\DataTables\DataTables;
 class AsetController extends Controller
 {
 
+    public function chartByJenis(Request $req)
+    {
+
+        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi where asets.id_jenis=? group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC',[$req->id_jenis]);
+
+
+        // DB::table('kondisis')
+        // ->leftJoin('asets', 'asets.id_kondisi', '=', 'kondisis.id_kondisi')
+        // ->groupBy('asets.id_kondisi')
+        // ->orderBy('kondisis.id_kondisi')
+        // ->get();
+
+
+        return response()->json($data);
+        
+
+
+        // ->select('kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, COUNT(asets.id_kondisi) as jumlah_aset')
+    }
+
+
     public function asetByRuangan(Request $req)
     {
         if ( $req->refresh == 1) {

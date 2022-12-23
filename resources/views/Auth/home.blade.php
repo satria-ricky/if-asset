@@ -203,6 +203,19 @@
     {{-- <script src={{ asset('js/mychart.js') }}></script> --}}
 
     <script>
+        // gett();
+        function gett(){
+            $.ajax({
+                url: "/chartByJenis/"+2,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                },
+            });
+        }
+         
+
         // console.log(
         //     @foreach ($dataJenis as $item)
         //         ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"],
@@ -221,21 +234,17 @@
                         @endforeach
                     ],
                     datasets: [{
+                        $.ajax({
+                            url: "/chartByJenis/"+2,
+                            method: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(data);
+                            },
+                        })
+                        
                         data: [
-                            
-                            $.ajax({
-                                url: "asetByRuangan",
-                                method: "POST",
-                                dataType: "json",
-                                data: {
-                                    id_jurusan: id_jurusan,
-                                    id_ruangan: id_ruangan,
-                                    id_kondisi: id_kondisi,
-                                },
-                                success: function (data) {
-                                    console.log(data);
-                                },
-                            });
+                           
 
                         ],
                         backgroundColor: ["#2ba9e1", "#1cc09f", "#1cc0d78"]

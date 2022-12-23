@@ -143,4 +143,8 @@ Route::get('/authRuangan/{id_jurusan}/{id_ruangan}', [UserController::class, 'ta
 Route::post('/loginRuangan', [UserController::class, 'loginRuangan']);
 
 
+//CHART
+Route::get('/chartByJenis/{id_jenis}', [AsetController::class, 'chartByJenis']);
+
+
 
