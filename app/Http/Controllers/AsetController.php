@@ -22,19 +22,28 @@ class AsetController extends Controller
 
         $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi where asets.id_jenis=? group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC',[$req->id_jenis]);
 
+        $dataKondisi = Kondisi::all();
 
-        // DB::table('kondisis')
-        // ->leftJoin('asets', 'asets.id_kondisi', '=', 'kondisis.id_kondisi')
-        // ->groupBy('asets.id_kondisi')
-        // ->orderBy('kondisis.id_kondisi')
-        // ->get();
+        return response()->json([
+            'data' => $data,
+            'dataKondisi' => $dataKondisi,
 
+        ]);
 
-        return response()->json($data);
-        
+    }
 
+    public function chartAllAset()
+    {
+            $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
+ 
+            $dataKondisi = Kondisi::all();
+    
+            return response()->json([
+                'data' => $data,
+                'dataKondisi' => $dataKondisi,
+    
+            ]);
 
-        // ->select('kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, COUNT(asets.id_kondisi) as jumlah_aset')
     }
 
 

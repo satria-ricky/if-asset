@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
@@ -67,56 +68,34 @@
 
                 <div class="tabs-container">
                     <ul class="nav nav-tabs" role="tablist">
+                        <li><a class="nav-link active" data-toggle="tab" href="#tabChart" onclick="getChart()">
+                            Semua</a></li>
+
                         @foreach ($dataJenis as $item)
-                            @if ($item->id_jenis == 1)
-                                <li><a class="nav-link active" data-toggle="tab" href="#tab{{ $item->id_jenis }}">
-                                        {{ $item->nama_jenis }}</a></li>
-                            @else
-                                <li><a class="nav-link" data-toggle="tab" href="#tab{{ $item->id_jenis }}">
-                                        {{ $item->nama_jenis }}</a></li>
-                            @endif
+                        <li><a class="nav-link" data-toggle="tab" href="#tabChart" onclick="getChart({{ $item->id_jenis }})">
+                            {{ $item->nama_jenis }}</a></li>
                         @endforeach
 
 
-                        {{-- <li><a class="nav-link" data-toggle="tab" href="#tab-2">This is second tab</a></li> --}}
+                        
                     </ul>
                     <div class="tab-content">
 
-                        @foreach ($dataJenis as $item)
-                            @if ($item->id_jenis == 1)
-                                <div role="tabpanel" id="tab{{ $item->id_jenis }}" class="tab-pane active">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-4"></div>
-                                            <div class="col-4"><canvas id="Chart{{ $item->id_jenis }}"></canvas></div>
-                                            <div class="col-4"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div role="tabpanel" id="tab{{ $item->id_jenis }}" class="tab-pane">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-4"></div>
-                                            <div class="col-4"><canvas id="Chart{{ $item->id_jenis }}"></canvas></div>
-                                            <div class="col-4"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-
-
-                        {{-- <div role="tabpanel" id="tab-2" class="tab-pane">
+                        <div role="tabpanel" id="tabChart" class="tab-pane active">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-4"></div>
-                                    <div class="col-4"><canvas id="dosen2Chart" height="140"></canvas></div>
+                                    <div class="col-4">
+                                        <div id="id_chart">
+                                            <canvas id="myChart"></canvas>
+                                        </div>
+                                        
+                                    </div>
                                     <div class="col-4"></div>
                                 </div>
+
                             </div>
-                        </div> --}}
+                        </div>
 
                     </div>
 
@@ -203,60 +182,124 @@
     {{-- <script src={{ asset('js/mychart.js') }}></script> --}}
 
     <script>
-        // gett();
-        function gett(){
-            $.ajax({
-                url: "/chartByJenis/"+2,
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
+        $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
             });
+            getChart();
+        function getChart(p){
+            if (p != null) {
+                // console.log('ada');
+                getChartByJenis(p);
+                
+            } else {
+                // console.log('nda');
+                chartAllAset()
+            }
         }
-         
+
+        function getChartByJenis(p){
+            // console.log(p);
+            $.ajax({
+                url: "/chartByJenis",
+                method: "POST",
+                data:{
+                    id_jenis:p
+                },
+                dataType: "json",
+                success: function (response) {
+                    // console.log(response);
+                   
+                    var labels = response.data.map(function (e) {
+                        return e.nama_kondisi
+                    })
+
+                    var data = response.data.map(function (e) {
+                        return e.jumlah_aset
+                    })
+
+                    var backgroundColor = response.data.map(function (e) {
+                        return e.warna_kondisi
+                    })
+
+                    
+                    var config = {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Total aset',
+                                data: data,
+                                backgroundColor: backgroundColor,
+
+                            }]
+                        }
+                    };
+                    document.getElementById('id_chart').innerHTML = "<canvas id='myChart'></canvas>";
+                    var ctx = $('#myChart');
+                    var chart = new Chart(ctx, config);
+                }
+            });
+        }
+
+        function chartAllAset(){
+            // console.log(p);
+            // $.ajax({
+            //     url: "/chartAllAset/",
+            //     method: "GET",
+            //     dataType: "json",
+            //     success: function (data) {
+            //         console.log(data);
+            //     },
+            // });
+
+            $.ajax({
+                url: "/chartAllAset",
+                method: "GET",
+                dataType: "json",
+                success: function (response) {
+                    // console.log(response);
+                    var labels = response.dataKondisi.map(function (e) {
+                        return e.nama_kondisi
+                    })
+
+                    var data = response.data.map(function (e) {
+                        return e.jumlah_aset
+                    })
+
+                    var backgroundColor = response.dataKondisi.map(function (e) {
+                        return e.warna_kondisi
+                    })
+
+                    
+                    var config = {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Total aset',
+                                data: data,
+                                backgroundColor: backgroundColor,
+
+                            }]
+                        }
+                    };
+                    document.getElementById('id_chart').innerHTML = "<canvas id='myChart'></canvas>";
+                    var ctx = $('#myChart');
+                    var chart = new Chart(ctx, config);
+                }
+            });
+
+        }
+    
+
 
         // console.log(
         //     @foreach ($dataJenis as $item)
         //         ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"],
         //     @endforeach
         // );
-
-        @foreach ($dataJenis as $item)
-            ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"]
-
-            new Chart(document.getElementById("Chart"+{{ $item->id_jenis }} ).getContext("2d"), {
-                type: 'doughnut',
-                data: {
-                    labels: [
-                        @foreach ($dataJenis as $item)
-                            ["{{ $item->nama_jenis }}"],
-                        @endforeach
-                    ],
-                    datasets: [{
-                        $.ajax({
-                            url: "/chartByJenis/"+2,
-                            method: "GET",
-                            dataType: "json",
-                            success: function (data) {
-                                console.log(data);
-                            },
-                        })
-                        
-                        data: [
-                           
-
-                        ],
-                        backgroundColor: ["#2ba9e1", "#1cc09f", "#1cc0d78"]
-                    }]
-                },
-                options: {
-                    responsive: true
-                }
-            });
-
-
-        @endforeach
         
     </script>
 

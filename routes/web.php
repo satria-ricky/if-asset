@@ -144,7 +144,8 @@ Route::post('/loginRuangan', [UserController::class, 'loginRuangan']);
 
 
 //CHART
-Route::get('/chartByJenis/{id_jenis}', [AsetController::class, 'chartByJenis']);
+Route::post('/chartByJenis', [AsetController::class, 'chartByJenis']);
+Route::get('/chartAllAset', [AsetController::class, 'chartAllAset']);
 
 
 
