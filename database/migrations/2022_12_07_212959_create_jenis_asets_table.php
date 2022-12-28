@@ -16,6 +16,7 @@ class CreateJenisAsetsTable extends Migration
         Schema::create('jenis_asets', function (Blueprint $table) {
             $table->id('id_jenis');
             $table->string('nama_jenis');
+            $table->string('warna_jenis');
             $table->timestamps();
         });
     }

@@ -47,20 +47,6 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        // DB::table('historis')->insert([
-        //     [
-        //         'id_user' => 3,
-        //         'id_aset' => 3,
-        //         'mulai' => '2022-12-06 00:44:50',
-        //         'selesai' => '2022-12-03 11:03:54'
-        //     ],
-        //     [
-        //         'id_user' => 2,
-        //         'id_aset' => 3,
-        //         'mulai' => '2022-12-06 00:44:50',
-        //         'selesai' => '2022-12-03 11:03:54'
-        //     ]
-        // ]);
 
         DB::table('kondisis')->insert([
             [
@@ -80,39 +66,14 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        // DB::table('ruangans')->insert([
-        //     [
-        //         'nama_ruangan'    => 'Lab 1',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg'
-        //     ],
-        //     [
-        //         'nama_ruangan'    => 'Lab 2',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
-        //     ],
-        //     [
-        //         'nama_ruangan'    => 'Lab 3',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
-        //     ],
-        //     [
-        //         'nama_ruangan'    => 'Lab 4',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
-        //     ],
-        //     [
-        //         'nama_ruangan'    => 'Ruang D3-03',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
-        //     ],
-        //     [
-        //         'nama_ruangan'    => 'Ruang D4-03',
-        //         'foto_ruangan' => 'foto-ruangan/default.jpg',
-        //     ]
-        // ]);
-
         DB::table('jenis_asets')->insert([
             [
-                'nama_jenis'    => 'ATK'
+                'nama_jenis'    => 'ATK',
+                'warna_jenis'    => '#5ea832'
             ],
             [
-                'nama_jenis'    => 'Elektronik'
+                'nama_jenis'    => 'Elektronik',
+                'warna_jenis'    => '#7f99ba'
             ]
         ]);
         

@@ -60,7 +60,28 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="navy-line"></div>
-                <h1>Statistik Penggunaan Aset</h1> <br>
+                <h1>Statistik Data Aset</h1> <br>
+            </div>
+        </div>
+        <div class="card">
+            <center>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <div id="id_chartJenisAset">
+                        <div id="myChartJenisAset"></div>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+                    
+                </div>
+            </center>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Statistik Kondisi Data Aset</h1> <br>
             </div>
         </div>
         <div class="row">
@@ -69,66 +90,42 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs" role="tablist">
                         <li><a class="nav-link active" data-toggle="tab" href="#tabChart" onclick="getChart()">
-                            Semua</a></li>
+                                Semua</a></li>
 
                         @foreach ($dataJenis as $item)
-                        <li><a class="nav-link" data-toggle="tab" href="#tabChart" onclick="getChart({{ $item->id_jenis }})">
-                            {{ $item->nama_jenis }}</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tabChart"
+                                    onclick="getChart({{ $item->id_jenis }})">
+                                    {{ $item->nama_jenis }}</a></li>
                         @endforeach
 
 
-                        
+
                     </ul>
                     <div class="tab-content">
+                        <center>
+                            <div role="tabpanel" id="tabChart" class="tab-pane active">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-4"></div>
+                                        <div class="col-4">
+                                            <div id="id_chart">
+                                                <canvas id="myChart"></canvas>
+                                            </div>
 
-                        <div role="tabpanel" id="tabChart" class="tab-pane active">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-4"></div>
-                                    <div class="col-4">
-                                        <div id="id_chart">
-                                            <canvas id="myChart"></canvas>
                                         </div>
-                                        
+                                        <div class="col-4"></div>
                                     </div>
-                                    <div class="col-4"></div>
+
                                 </div>
-
                             </div>
-                        </div>
-
+                        </center>
                     </div>
 
 
                 </div>
 
 
-                {{-- <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Profil Tenaga Pengajar</h5>
-                    </div>
-                    <div class="ibox-tools">
-                        <div class="btn-group">
-                            <a href="https://data.if.unram.ac.id/dosen/" style="color: white !important;" class="btn-xs btn-primary btn-ibox-tools" >Lihat Data</a>
-                        </div>
-                    </div>
-                    
-                    <div class="ibox-content">
-                        
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <canvas id="dosen1Chart" height="140"></canvas>
-                            </div>
-                            <div class="col-lg-4">
-                                <canvas id="dosen2Chart" height="140"></canvas>
-                            </div>
-                            <div class="col-lg-4">
-                                <canvas id="dosen3Chart" height="140"></canvas>
-                            </div>
-                        </div>
-                    </div>
-    
-                </div> --}}
+
             </div>
         </div>
     </section>
@@ -178,52 +175,113 @@
     <script src={{ asset('js/beranda.js') }}></script>
 
     {{-- chart --}}
+    <script src={{ asset('js/plugins/morris/raphael-2.1.0.min.js') }}></script>
+    <script src={{ asset('js/plugins/morris/morris.js') }}></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     {{-- <script src={{ asset('js/mychart.js') }}></script> --}}
 
     <script>
         $.ajaxSetup({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                },
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+
+        window.onload = function() {
+
+            Morris.Bar({
+                element: 'myChartJenisAset',
+                data: [{
+                        y: '2006',
+                        a: 60,
+                        b: 50
+                    },
+                    {
+                        y: '2007',
+                        a: 75,
+                        b: 65
+                    },
+                    {
+                        y: '2008',
+                        a: 50,
+                        b: 40
+                    },
+                    {
+                        y: '2009',
+                        a: 75,
+                        b: 65
+                    },
+                    {
+                        y: '2010',
+                        a: 50,
+                        b: 40
+                    },
+                    {
+                        y: '2011',
+                        a: 75,
+                        b: 65
+                    },
+                    {
+                        y: '2012',
+                        a: 100,
+                        b: 90
+                    }
+                ],
+                xkey: 'y',
+                ykeys: ['a', 'b'],
+                labels: ['Series A', 'Series B'],
+                hideHover: 'auto',
+                resize: true,
+                barColors: ['#1ab394', '#cacaca'],
             });
-            getChart();
-        function getChart(p){
+
+        }
+
+
+
+
+
+        getChart();
+
+        function getChart(p) {
             if (p != null) {
                 // console.log('ada');
                 getChartByJenis(p);
-                
+
             } else {
                 // console.log('nda');
                 chartAllAset()
             }
         }
 
-        function getChartByJenis(p){
+        function getChartByJenis(p) {
             // console.log(p);
             $.ajax({
                 url: "/chartByJenis",
                 method: "POST",
-                data:{
-                    id_jenis:p
+                data: {
+                    id_jenis: p
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     // console.log(response);
-                   
-                    var labels = response.data.map(function (e) {
+
+
+                    var labels = response.data.map(function(e) {
                         return e.nama_kondisi
                     })
 
-                    var data = response.data.map(function (e) {
+                    var data = response.data.map(function(e) {
                         return e.jumlah_aset
                     })
 
-                    var backgroundColor = response.data.map(function (e) {
+                    var backgroundColor = response.data.map(function(e) {
                         return e.warna_kondisi
                     })
 
-                    
+
                     var config = {
                         type: 'doughnut',
                         data: {
@@ -236,14 +294,20 @@
                             }]
                         }
                     };
-                    document.getElementById('id_chart').innerHTML = "<canvas id='myChart'></canvas>";
-                    var ctx = $('#myChart');
-                    var chart = new Chart(ctx, config);
+                    if (response.data.length <= 0) {
+                        // console.log('m');
+                        document.getElementById('id_chart').innerHTML = "<h1> <b> Tidak ada aset! </b> </h1>";
+                    } else {
+                        document.getElementById('id_chart').innerHTML = "<canvas id='myChart'></canvas>";
+                        var ctx = $('#myChart');
+                        var chart = new Chart(ctx, config);
+                    }
+
                 }
             });
         }
 
-        function chartAllAset(){
+        function chartAllAset() {
             // console.log(p);
             // $.ajax({
             //     url: "/chartAllAset/",
@@ -258,21 +322,21 @@
                 url: "/chartAllAset",
                 method: "GET",
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     // console.log(response);
-                    var labels = response.dataKondisi.map(function (e) {
+                    var labels = response.dataKondisi.map(function(e) {
                         return e.nama_kondisi
                     })
 
-                    var data = response.data.map(function (e) {
+                    var data = response.data.map(function(e) {
                         return e.jumlah_aset
                     })
 
-                    var backgroundColor = response.dataKondisi.map(function (e) {
+                    var backgroundColor = response.dataKondisi.map(function(e) {
                         return e.warna_kondisi
                     })
 
-                    
+
                     var config = {
                         type: 'doughnut',
                         data: {
@@ -292,15 +356,6 @@
             });
 
         }
-    
-
-
-        // console.log(
-        //     @foreach ($dataJenis as $item)
-        //         ["{{ $item->id_jenis }}", "{{ $item->nama_jenis }}"],
-        //     @endforeach
-        // );
-        
     </script>
 
 </body>

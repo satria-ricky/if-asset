@@ -47,6 +47,21 @@ class AsetController extends Controller
     }
 
 
+    public function BarChartDataAset()
+    {
+            $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
+ 
+            $dataKondisi = Kondisi::all();
+    
+            return response()->json([
+                'data' => $data,
+                'dataKondisi' => $dataKondisi,
+    
+            ]);
+
+    }
+
+
     public function asetByRuangan(Request $req)
     {
         if ( $req->refresh == 1) {

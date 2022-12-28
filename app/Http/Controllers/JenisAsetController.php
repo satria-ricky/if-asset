@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JenisAset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class JenisAsetController extends Controller
 {
@@ -25,6 +26,7 @@ class JenisAsetController extends Controller
 
         $hasil = [
             'nama_jenis' => $req['nama_jenis'],
+            'warna_jenis' => '#' . substr(Str::uuid(), 0, 6),
         ];
 
         JenisAset::create($hasil);
