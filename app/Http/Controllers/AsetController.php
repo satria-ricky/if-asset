@@ -138,7 +138,7 @@ class AsetController extends Controller
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
         $dataJenis = JenisAset::all();
-        $dataJurusan = Jurusan::all();
+        $dataJurusan = https://prasarana.unram.ac.id/index.php/api/sia/ruang?number=-1&__csrf=P25sigHhPqKyeo
         $dataKondisi = Kondisi::all();
 
         $dataAset = DB::table('asets')
