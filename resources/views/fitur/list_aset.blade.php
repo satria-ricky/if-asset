@@ -32,7 +32,7 @@
                         <select class="js-example-basic-single form-control" id="jurusan_filter1"
                             onchange="getRuanganByJurusan(1)">
                             @foreach ($dataJurusan as $item)
-                                <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                <option value="{{ $item->fakultas_kode }}"> {{ $item->_fakultas_nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -176,7 +176,7 @@
                                         name="kode_jurusan" required id="jurusan_filter2"
                                         onchange="getRuanganByJurusan(2)">
                                         @foreach ($dataJurusan as $item)
-                                            <option value="{{ $item->id_jurusan }}"> {{ $item->nama_jurusan }}</option>
+                                            <option value="{{ $item->fakultas_kode }}"> {{ $item->_fakultas_nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>

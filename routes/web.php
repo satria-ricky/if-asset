@@ -26,7 +26,8 @@ use LaravelQRCode\Facades\QRCode as FacadesQRCode;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/get_aset', [AsetController::class, 'getGuzzleRequest']);
+// Route::get('/list_aset',[AsetController::class,'list_aset']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/profil',  [UserController::class, 'tampil_profil']);
 
@@ -98,6 +99,7 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/hapus_aset', [AsetController::class, 'hapus_aset']);
     Route::get('/edit_aset/{id}', [AsetController::class, 'tampil_edit_aset']);
     Route::post('/edit_aset', [AsetController::class, 'edit_aset']);
+    
 
     //LAPORAN
     

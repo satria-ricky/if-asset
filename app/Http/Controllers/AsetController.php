@@ -3,24 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aset;
-use App\Models\JenisAset;
+use App\Models\Sumber;
+use GuzzleHttp\Client;
 use App\Models\Jurusan;
 use App\Models\Kondisi;
 use App\Models\Ruangan;
-use App\Models\Sumber;
+use App\Models\JenisAset;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
+use LDAP\Result;
 
 class AsetController extends Controller
 {
 
+    function getPrasarana($check, $id)
+    {
+        $client = new Client();
+
+        if ($check == 'all') {
+            $response = $client->request('GET', 'https://prasarana.unram.ac.id/index.php/api/sia/ruang?number=-1&__csrf=P25sigHhPqKyeo');
+        } elseif ($check == 'jurusan') {
+            $response = $client->request('GET', 'https://prasarana.unram.ac.id/index.php/api/sia/ruang?fakultas_kode=' . $id . '&number=-1&__csrf=P25sigHhPqKyeo');
+        }
+
+        // Get the response body as a string
+        $data = $response->getBody()->getContents();
+        // dd(json_decode($data));
+        return $data;
+        
+        // return $result;
+// $tampung = [];
+//         foreach ($result as $element) {
+//             // echo $element->fakultas_kode;
+//             if (in_array($element->fakultas_kode, $tampung)) {}
+//             else{
+//                 $tampung[] = [
+//                     'fakultas_kode' => $element->fakultas_kode,
+//                     '_fakultas_nama' => $element->_fakultas_nama,
+//                 ];
+//             }
+//         }
+
+//         return $tampung;
+        // $idColumn = array_map(function ($item) {
+
+        //     $result[] = [
+        //         'kode_fakultas' => $item->fakultas_kode,
+        //         '_fakultas_nama' => $item->_fakultas_nama,
+        //     ];
+
+        // }, $array);
+
+    
+        // $response = new Response($distinctIdColumn);
+
+
+        // $distinctIdColumn = json_encode($distinctIdColumn);
+        // return $distinctIdColumn;
+    }
+
+
     public function chartByJenis(Request $req)
     {
 
-        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi where asets.id_jenis=? group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC',[$req->id_jenis]);
+        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi where asets.id_jenis=? group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC', [$req->id_jenis]);
 
         $dataKondisi = Kondisi::all();
 
@@ -29,61 +79,58 @@ class AsetController extends Controller
             'dataKondisi' => $dataKondisi,
 
         ]);
-
     }
 
     public function chartAllAset()
     {
-            $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
- 
-            $dataKondisi = Kondisi::all();
-    
-            return response()->json([
-                'data' => $data,
-                'dataKondisi' => $dataKondisi,
-    
-            ]);
+        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
 
+        $dataKondisi = Kondisi::all();
+
+        return response()->json([
+            'data' => $data,
+            'dataKondisi' => $dataKondisi,
+
+        ]);
     }
 
 
     public function BarChartDataAset()
     {
-            $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
- 
-            $dataKondisi = Kondisi::all();
-    
-            return response()->json([
-                'data' => $data,
-                'dataKondisi' => $dataKondisi,
-    
-            ]);
+        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
 
+        $dataKondisi = Kondisi::all();
+
+        return response()->json([
+            'data' => $data,
+            'dataKondisi' => $dataKondisi,
+
+        ]);
     }
 
 
     public function asetByRuangan(Request $req)
     {
-        if ( $req->refresh == 1) {
+        if ($req->refresh == 1) {
             $data = DB::table('asets')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
-            ->get();
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+                ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+                ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+                ->get();
         } else {
             $data = DB::table('asets')
-            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
-            ->where('asets.kode_jurusan', $req->id_jurusan)
-            ->where('asets.id_ruangan', $req->id_ruangan)
-            ->where('asets.id_jenis', $req->id_jenis)
-            ->where('asets.id_kondisi', $req->id_kondisi)
-            ->get();
+                ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+                ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+                ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+                ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+                ->where('asets.kode_jurusan', $req->id_jurusan)
+                ->where('asets.id_ruangan', $req->id_ruangan)
+                ->where('asets.id_jenis', $req->id_jenis)
+                ->where('asets.id_kondisi', $req->id_kondisi)
+                ->get();
         }
-        
+
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
                 $btn = '<div class="btn-group">
@@ -119,10 +166,10 @@ class AsetController extends Controller
                 </div>';
                 return $btn;
             })
-            ->editColumn('id_kondisi',function ($data){
-                return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>'; 
+            ->editColumn('id_kondisi', function ($data) {
+                return '<p class="btn btn-' . $data->icon_kondisi . ' btn-sm"> ' . $data->nama_kondisi . ' </p>';
             })
-            ->rawColumns(['id_kondisi','action'])->make(true);
+            ->rawColumns(['id_kondisi', 'action'])->make(true);
     }
 
     public function asetById(Request $req)
@@ -138,9 +185,12 @@ class AsetController extends Controller
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
         $dataJenis = JenisAset::all();
-        $dataJurusan = https://prasarana.unram.ac.id/index.php/api/sia/ruang?number=-1&__csrf=P25sigHhPqKyeo
+        // $dataJurusan = AsetController::getPrasarana('all', 0);
+        $dataJurusan = Jurusan::all();
+        // dd($dataJurusan);
         $dataKondisi = Kondisi::all();
 
+        // dd($dataJurusan);
         $dataAset = DB::table('asets')
             ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
             ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
@@ -173,9 +223,9 @@ class AsetController extends Controller
             'nilai_barang' => $req['nilai_barang'],
             'id_kondisi' => $req['id_kondisi'],
             'keterangan' => $req['keterangan'],
-            
+
         ];
-        
+
         if ($req->file('foto')) {
             $extension = $req->file('foto')->getClientOriginalExtension();
             $filename = 'foto-aset/' . uniqid() . '.' . $extension;
@@ -212,13 +262,13 @@ class AsetController extends Controller
         // dd($dataAset);
         $dataJurusan = Jurusan::all();
         $dataRuangan = DB::table('ruangans')
-        ->where('id_jurusan', $dataAset->kode_jurusan)
-        ->get();
+            ->where('id_jurusan', $dataAset->kode_jurusan)
+            ->get();
 
         $dataJenis = JenisAset::all();
         $dataKondisi = Kondisi::all();
 
-        return view("fitur.edit_aset", compact("dataJurusan", "dataKondisi", "dataAset", "title", "dataRuangan","dataJenis"));
+        return view("fitur.edit_aset", compact("dataJurusan", "dataKondisi", "dataAset", "title", "dataRuangan", "dataJenis"));
     }
 
     public function edit_aset(Request $req)
@@ -247,7 +297,7 @@ class AsetController extends Controller
             'jumlah' => $req['jumlah'],
             'nilai_barang' => $req['nilai_barang'],
             'id_kondisi' => $req['id_kondisi'],
-            'keterangan' => $req['keterangan'], 
+            'keterangan' => $req['keterangan'],
         ];
 
         // dd($req);
@@ -274,12 +324,12 @@ class AsetController extends Controller
     {
         $id = Crypt::decrypt($req->id);
         $dataAset = DB::table('asets')
-        ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
-        ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
-        ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
-        ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
-        ->where('asets.id_aset', $id)
-        ->first();
+            ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
+            ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')
+            ->leftJoin('jenis_asets', 'jenis_asets.id_jenis', '=', 'asets.id_jenis')
+            ->leftJoin('kondisis', 'kondisis.id_kondisi', '=', 'asets.id_kondisi')
+            ->where('asets.id_aset', $id)
+            ->first();
 
         return view('fitur.detail_aset', [
             "data" => $dataAset,
@@ -289,18 +339,15 @@ class AsetController extends Controller
 
 
     public function qr_code(Request $req)
-    { $id = Crypt::decrypt($req->id);
+    {
+        $id = Crypt::decrypt($req->id);
 
         $aset = Aset::findOrFail($id);
-        
-        return view('fitur.qr_code',[
+
+        return view('fitur.qr_code', [
             'aset' => $aset,
             'title' => 'QRcode',
-            'data' => url('/detail_aset/'.$req->id)
+            'data' => url('/detail_aset/' . $req->id)
         ]);
-
     }
-
-
-
 }
