@@ -33,37 +33,34 @@ class AsetController extends Controller
         // Get the response body as a string
         $data = $response->getBody()->getContents();
         // dd(json_decode($data));
-        return $data;
-        
-        // return $result;
-// $tampung = [];
-//         foreach ($result as $element) {
-//             // echo $element->fakultas_kode;
-//             if (in_array($element->fakultas_kode, $tampung)) {}
-//             else{
-//                 $tampung[] = [
-//                     'fakultas_kode' => $element->fakultas_kode,
-//                     '_fakultas_nama' => $element->_fakultas_nama,
-//                 ];
-//             }
-//         }
+        $kode = [];
+        $f_nama = [];
+        foreach($data as $dd){
+            array_push($kode, $dd->fakultas_kode);
+            array_push($f_nama, $dd->_fakultas_nama);
+        }
 
-//         return $tampung;
-        // $idColumn = array_map(function ($item) {
+        $u_kode = array_unique($kode);
+        $u_nama = array_unique($f_nama);
+        $kk = [];
+        $nm = [];
+        foreach($u_kode as $k){
+            array_push($kk,$k);
+        }
 
-        //     $result[] = [
-        //         'kode_fakultas' => $item->fakultas_kode,
-        //         '_fakultas_nama' => $item->_fakultas_nama,
-        //     ];
+        foreach($u_nama as $n){
+            array_push($nm,$n);
+        }
 
-        // }, $array);
-
-    
-        // $response = new Response($distinctIdColumn);
-
-
-        // $distinctIdColumn = json_encode($distinctIdColumn);
-        // return $distinctIdColumn;
+        $jml_arr = count($nm);
+        $object = [];
+        for($i=0 ; $i<$jml_arr ; $i++){
+            $object[] = (object) [
+                'kode' => $kk[$i],
+                'nama' => $nm[$i],
+              ];
+        }
+        return $object;
     }
 
 
