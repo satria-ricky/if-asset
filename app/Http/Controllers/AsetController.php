@@ -90,21 +90,60 @@ class AsetController extends Controller
         return response()->json([
             'data' => $data,
             'dataKondisi' => $dataKondisi,
-
         ]);
     }
 
 
     public function BarChartDataAset()
     {
-        $data = DB::select('select kondisis.id_kondisi, kondisis.nama_kondisi, kondisis.warna_kondisi, asets.id_kondisi as kondisi_aset, COUNT(asets.id_kondisi) as jumlah_aset from kondisis left join asets on kondisis.id_kondisi = asets.id_kondisi group by asets.id_kondisi ORDER BY kondisis.id_kondisi ASC');
+        $data = DB::select('select asets.tahun_pengadaan, jenis_asets.id_jenis, jenis_asets.nama_jenis,jenis_asets.warna_jenis, SUM(asets.jumlah) as jumlah_aset FROM asets LEFT JOIN jenis_asets ON jenis_asets.id_jenis = asets.id_jenis GROUP BY asets.id_jenis, asets.tahun_pengadaan ORDER BY asets.tahun_pengadaan');
 
-        $dataKondisi = Kondisi::all();
 
+        // dd($data);
+        $tahun = Array();
+        $a = Array();
+        $b = Array();
+        $c = Array();
+        foreach($data as $item) {
+            // dd($item->tahun_pengadaan);
+            // echo 
+            if (!in_array($item->tahun_pengadaan,$tahun)) {
+                array_push($tahun,$item->tahun_pengadaan);
+                if ($item->id_jenis ==1) {
+                    
+                        array_push($a,$item->jumlah_aset);
+
+                        array_push($b,0);
+                        array_push($c,0);
+
+                }if ($item->id_jenis ==2) {
+                    array_push($a,0);
+                    array_push($b,$item->jumlah_aset);
+                    array_push($c,0);
+                }if ($item->id_jenis ==3) {
+                    array_push($a,$item->jumlah_aset);
+                        array_push($b,0);
+                        array_push($c,0);
+                }
+            } else {
+                if ($item->id_jenis ==1) {
+                    $a[count($a)-1] = $item->jumlah_aset;
+
+            }if ($item->id_jenis ==2) {
+                $b[count($b)-1] = $item->jumlah_aset;
+            }if ($item->id_jenis ==3) {
+                $c[count($c)-1] = $item->jumlah_aset;
+            }
+            }
+        } 
+        $isi['a'] = $a;
+        $isi['b'] = $b;
+        $isi['c'] = $c;
+
+        dd($isi);
+        
         return response()->json([
-            'data' => $data,
-            'dataKondisi' => $dataKondisi,
-
+            'data' => $data
         ]);
     }
 

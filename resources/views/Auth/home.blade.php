@@ -69,7 +69,7 @@
                     <div class="col-2"></div>
                     <div class="col-8">
                         <div id="id_chartJenisAset">
-                            <div id="myChartJenisAset"></div>
+                            <canvas id="myChartJenisAset"></canvas>
                         </div>
                     </div>
                     <div class="col-2"></div>
@@ -191,87 +191,54 @@
 
         window.onload = function() {
 
-            // Morris.Bar({
-            //     element: 'myChartJenisAset',
-            //     data: [{
-            //             y: '2006',
-            //             a: 60,
-            //             b: 50
-            //         },
-            //         {
-            //             y: '2007',
-            //             a: 75,
-            //             b: 65
-            //         },
-            //         {
-            //             y: '2008',
-            //             a: 50,
-            //             b: 40
-            //         },
-            //         {
-            //             y: '2009',
-            //             a: 75,
-            //             b: 65
-            //         },
-            //         {
-            //             y: '2010',
-            //             a: 50,
-            //             b: 40
-            //         },
-            //         {
-            //             y: '2011',
-            //             a: 75,
-            //             b: 65
-            //         },
-            //         {
-            //             y: '2012',
-            //             a: 100,
-            //             b: 90
-            //         }
-            //     ],
-            //     xkey: 'y',
-            //     ykeys: ['a', 'b'],
-            //     labels: ['Series A', 'Series B'],
-            //     hideHover: 'auto',
-            //     resize: true,
-            //     barColors: ['#1ab394', '#cacaca'],
-            // });
-            var ctxMahasiswa = document.getElementById("barChart").getContext("2d");
-            // new Chart(ctxMahasiswa, { type: "bar", data: barData, options: barOptions });
-            const chart_kerjasam_pendidikan = new Chart(ctxMahasiswa, {
-                // Chart configuration
-                type: "bar",
-                data: {
-                    labels: ['2017','2018','2019'],
-                    datasets: [
+            var data = {
+                labels: ['Label 1', 'Label 2', 'Label 3', 'Label 1', 'Label 2'], // The labels array
+                datasets: [{
+                    label: 'ATK',
+                    data: [100, null, 300, 400, 500] // The data array
+                }, {
+                    label: 'Elektronik',
+                    data: [100, 200, 300, 400, 500] // The data array
+                }, {
+                    label: 'Apa',
+                    data: [100, 200, 300, 400, 500] // The data array
+                }]
+            };
 
-                        {
-                            label: "Lulus Seleksi",
-                            backgroundColor: "rgba(220, 220, 220, 0.5)",
-                            pointBorderColor: "#fff",
-                            data: [105, 111, 99, 101, 155, 177],
-                        },
 
-                        {
-                            label: "Daftar Ulang",
-                            backgroundColor: "rgba(26,179,148,0.5)",
-                            borderColor: "rgba(26,179,148,0.7)",
-                            pointBackgroundColor: "rgba(26,179,148,1)",
-                            pointBorderColor: "#fff",
-                            data: [100, 101, 85, 89, 144, 166],
-                        },
+            function dataBarChart(tahun, jenis, warna, value) {
 
-                        {
-                            label: "Aktif",
-                            backgroundColor: "rgba(3,138,255,0.5)",
-                            borderColor: "rgba(3,138,255,0.7)",
-                            pointBackgroundColor: "rgba(3,138,255,1)",
-                            pointBorderColor: "#fff",
-                            data: [191, 249, 299, 322, 370, 514],
-                        },
-                    ],
-                },
+                console.log(tahun, jenis, warna, value);
+            }
+
+
+            var ctx = document.getElementById('myChartJenisAset').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {}
             });
+
+            $.ajax({
+                url: "/BarChartDataAset",
+                method: "GET",
+                dataType: "json",
+                success: function(result) {
+                    // console.log(result.data);
+                    
+                    for (var data in result) {
+                        console.log(result[data]);
+                        // dataBarChart(result[data].tahun_pengadaan, result[data].nama_jenis, result[data].warna_jenis, result[data].jumlah_aset);
+                    }
+
+                   
+                }
+            });
+
+
+            // var ctxMahasiswa = document.getElementById("myChartJenisAset").getContext("2d");
+            // new Chart(ctxMahasiswa, { type: "bar", data: barData, options: barOptions });
+
 
             // for (let i = 0; i < kerjasama_pendidikan.length; i++) {
             //     // Generate a label
@@ -291,7 +258,7 @@
             //         kerjasama_pendidikan[i].aktif_reguler
             //     );
             // }
-            chart_kerjasam_pendidikan.update();
+            // chart_kerjasam_pendidikan.update();
 
 
         }

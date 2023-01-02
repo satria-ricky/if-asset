@@ -24,6 +24,7 @@ class UserController extends Controller
         ]);
     }
 
+
     public function tampil_home()
     {
         $dataJenis = JenisAset::all();
