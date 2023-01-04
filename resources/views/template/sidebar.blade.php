@@ -15,12 +15,23 @@
                         </div>
                     </li>
                     
-                    <li class="@if(Request::is('list_ruangan')) active @elseif(Request::is('list_jurusan')) active @endif">
+                    {{-- <li class="@if(Request::is('list_ruangan')) active @elseif(Request::is('list_jurusan')) active @endif">
                         <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Lokasi </span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="/list_jurusan">Jurusan</a></li>
                             <li><a href="/list_ruangan">Ruangan</a></li>
                         </ul>
+                    </li> --}}
+                    {{-- <li class="@if(Request::is('list_ruangan')) active @elseif(Request::is('list_jurusan')) active @endif">
+                        <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Lokasi </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/list_jurusan">Jurusan</a></li>
+                            <li><a href="/list_ruangan">Ruangan</a></li>
+                        </ul>
+                    </li> --}}
+                    
+                    <li  class="@if(Request::is('list_ruangan')) active @endif">
+                        <a href="/list_ruangan"><i class="fa fa-home"></i> <span class="nav-label">Ruangan</span></a>
                     </li>
 
                     <li class="@if(Request::is('list_aset')) active @elseif(Request::is('edit_aset/*')) active @elseif(Request::is('list_jenis_aset')) active @endif">

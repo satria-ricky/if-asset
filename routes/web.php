@@ -85,6 +85,8 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/edit_ruangan', [RuanganController::class, 'edit_ruangan']);
     Route::post('/hapus_ruangan', [RuanganController::class, 'hapus_ruangan']);
 
+    Route::get('/sync_ruangan', [RuanganController::class, 'sync_ruangan']);
+
 
     //JENIS ASET
     Route::get('/list_jenis_aset',[JenisAsetController::class,'list_jenis_aset']);

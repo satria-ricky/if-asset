@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(4)->create();
         \App\Models\Aset::factory(5)->create();
-        \App\Models\Jurusan::factory(3)->create();
-        \App\Models\Ruangan::factory(3)->create();
+        // \App\Models\Jurusan::factory(3)->create();
+        // \App\Models\Ruangan::factory(3)->create();
         DB::table('users')->insert([
             [
                 'nama_user' => 'nama admin',

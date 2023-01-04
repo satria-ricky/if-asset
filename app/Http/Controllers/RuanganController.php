@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jurusan;
 use App\Models\User;
 use App\Models\Ruangan;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
@@ -12,6 +13,80 @@ use Illuminate\Support\Facades\Storage;
 
 class RuanganController extends Controller
 {
+
+
+    public function sync_ruangan(){
+        $client = new Client();
+        $response = $client->request('GET', 'https://prasarana.unram.ac.id/index.php/api/sia/ruang?number=-1&__csrf=P25sigHhPqKyeo');
+
+        $data = $response->getBody()->getContents();
+        // dd(json_decode($data));
+
+        $dataJurusan = json_decode($data);
+
+        // dd($data);
+        $kode = [];
+        $f_nama = [];
+
+        foreach($dataJurusan as $dd){
+            array_push($kode, $dd->fakultas_kode);
+            array_push($f_nama, $dd->_fakultas_nama);
+        }
+
+        $u_kode = array_unique($kode);
+        $u_nama = array_unique($f_nama);
+        $kk = [];
+        $nm = [];
+
+
+        foreach($u_kode as $k){
+            array_push($kk,$k);
+        }
+
+        foreach($u_nama as $n){
+            array_push($nm,$n);
+        }
+
+        $jml_arr = count($nm);
+        $object = [];
+        for($i=0 ; $i<$jml_arr ; $i++){
+            $object[] = (object) [
+                'id_jurusan' => $kk[$i],
+                'nama_jurusan' => $nm[$i],
+              ];
+        }
+        // dd($object[0]->kode);
+        
+        Jurusan::query()->truncate();
+
+        foreach($object as $hasil){
+            // Jurusan::create($hasil);
+            DB::table('jurusans')->insert([
+                'id_jurusan' => $hasil->id_jurusan,
+                'nama_jurusan' => $hasil->nama_jurusan,
+            ]);
+        }
+
+
+        Ruangan::query()->truncate();
+
+        $dataRuangan = json_decode($data);
+        // return $dataRuangan;
+        foreach($dataRuangan as $i){
+            // Jurusan::create($hasil);
+            DB::table('ruangans')->insert([
+                'id_ruangan' => $i->ruang_id,
+                'id_jurusan' => $i->fakultas_kode,
+                'nama_ruangan' => $i->ruang_kode.' - '.$i->ruang_nama,
+                'foto_ruangan' => 'foto-ruangan/default.jpg',
+            ]);
+        }
+
+        // dd(Ruangan::all());
+        return redirect('/list_ruangan')->with('success', 'Data Berhasil Disinkron');
+
+        
+    }   
 
     public function getRuanganByJurusan(Request $req){
         $data = DB::table('ruangans')

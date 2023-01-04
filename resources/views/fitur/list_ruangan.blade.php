@@ -27,14 +27,17 @@
                         <h5>Ruangan</h5>
                     </div> --}}
                     <div class="ibox-content" style=" min-height: calc(100vh - 244px); ">
-                        <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
-                            Ruangan</button>
+                        {{-- <button class="btn btn-lg btn-primary mb-3 mt-1" data-toggle="modal" data-target="#myModal"> Tambah
+                            Ruangan</button> --}}
+
+                            <a href="/sync_ruangan" style="color: aliceblue" class="btn btn-lg btn-primary mb-3 mt-1"> Sync</a>
+
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Kode Jurusan</th>
+                                        <th class="text-center">Nama Jurusan</th>
                                         <th class="text-center">Ruangan</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -59,7 +62,7 @@
                                                             <a href="/qr_codeRuangan/{{ Crypt::encrypt($item->id_ruangan) }}"
                                                                 class="dropdown-item" target="_blank">Generate QR Code</a>
                                                         </li>
-                                                        <li>
+                                                        {{-- <li>
                                                             <button
                                                                     style="border-radius: 3px; color: inherit; line-height: 25px; margin: 4px; text-align: left; font-weight: normal; display: block; padding: 3px 20px; width: 95%;"
                                                                     class="dropdown-item pb-2" 
@@ -77,7 +80,7 @@
                                                                     onclick="return confirm('Are you sure?')">
                                                                     Hapus</button>
                                                             </form>
-                                                        </li>
+                                                        </li> --}}
                                                     </ul>
                                                 </div>
                                             </td>

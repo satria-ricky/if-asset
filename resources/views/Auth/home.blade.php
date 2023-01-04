@@ -195,7 +195,7 @@
                 labels: ['Label 1', 'Label 2', 'Label 3', 'Label 1', 'Label 2'], // The labels array
                 datasets: [{
                     label: 'ATK',
-                    data: [100, null, 300, 400, 500] // The data array
+                    data: [100, 200, 300, 400, 500] // The data array
                 }, {
                     label: 'Elektronik',
                     data: [100, 200, 300, 400, 500] // The data array
