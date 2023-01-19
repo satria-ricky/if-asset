@@ -99,7 +99,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Kode Jurusan</th>
+                                        <th class="text-center">Nama Jurusan</th>
                                         <th class="text-center">Nama Ruangan</th>
                                         <th class="text-center">Dipakai pada:</th>
                                         <th class="text-center">Selesai pada:</th>

@@ -8,7 +8,7 @@ function getRuanganByJurusan(p) {
     });
 
     var id_jurusan = document.getElementById("jurusan_filter" + p).value;
-
+    // console.log(id_jurusan);
     $.ajax({
         url: "/getRuanganByJurusan",
         method: "POST",

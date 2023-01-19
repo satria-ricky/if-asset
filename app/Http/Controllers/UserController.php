@@ -110,6 +110,7 @@ class UserController extends Controller
             } elseif (Auth::user()->level == 3) {
                 $checkHistori = DB::table('historis')
                     ->where('id_aset', $id_aset)
+                    ->where('id_user', Auth::user()->id)
                     ->whereNull('selesai')
                     ->first();
                 // dd($checkHistori);
@@ -154,6 +155,7 @@ class UserController extends Controller
 
                 $checkHistori = DB::table('historis')
                     ->where('id_aset', $id_aset)
+                    ->where('id_user', Auth::user()->id)
                     ->whereNull('selesai')
                     ->first();
 

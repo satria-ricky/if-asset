@@ -20,49 +20,6 @@ use LDAP\Result;
 class AsetController extends Controller
 {
 
-    function getPrasarana($check, $id)
-    {
-        $client = new Client();
-
-        if ($check == 'all') {
-            $response = $client->request('GET', 'https://prasarana.unram.ac.id/index.php/api/sia/ruang?number=-1&__csrf=P25sigHhPqKyeo');
-        } elseif ($check == 'jurusan') {
-            $response = $client->request('GET', 'https://prasarana.unram.ac.id/index.php/api/sia/ruang?fakultas_kode=' . $id . '&number=-1&__csrf=P25sigHhPqKyeo');
-        }
-
-        // Get the response body as a string
-        $data = $response->getBody()->getContents();
-        // dd(json_decode($data));
-        $kode = [];
-        $f_nama = [];
-        foreach($data as $dd){
-            array_push($kode, $dd->fakultas_kode);
-            array_push($f_nama, $dd->_fakultas_nama);
-        }
-
-        $u_kode = array_unique($kode);
-        $u_nama = array_unique($f_nama);
-        $kk = [];
-        $nm = [];
-        foreach($u_kode as $k){
-            array_push($kk,$k);
-        }
-
-        foreach($u_nama as $n){
-            array_push($nm,$n);
-        }
-
-        $jml_arr = count($nm);
-        $object = [];
-        for($i=0 ; $i<$jml_arr ; $i++){
-            $object[] = (object) [
-                'kode' => $kk[$i],
-                'nama' => $nm[$i],
-              ];
-        }
-        return $object;
-    }
-
 
     public function chartByJenis(Request $req)
     {
@@ -93,7 +50,7 @@ class AsetController extends Controller
 
     public function BarChartDataAset()
     {
-        $data = DB::select('select asets.tahun_pengadaan, jenis_asets.id_jenis, jenis_asets.nama_jenis,jenis_asets.warna_jenis, SUM(asets.jumlah) as jumlah_aset FROM asets LEFT JOIN jenis_asets ON jenis_asets.id_jenis = asets.id_jenis GROUP BY asets.id_jenis, asets.tahun_pengadaan ORDER BY asets.tahun_pengadaan');
+        $data = DB::select('SELECT jenis_asets.nama_jenis, SUM(jumlah) as jumlah, tahun_pengadaan FROM `asets` LEFT JOIN jenis_asets ON asets.id_jenis = jenis_asets.id_jenis GROUP by asets.id_jenis, tahun_pengadaan order by tahun_pengadaan;');
 
 
         // dd($data);
@@ -136,6 +93,7 @@ class AsetController extends Controller
         $isi['a'] = $a;
         $isi['b'] = $b;
         $isi['c'] = $c;
+        $isi['tahun'] = $tahun;
 
         dd($isi);
         
@@ -221,12 +179,10 @@ class AsetController extends Controller
         $title = "Daftar Aset";
         $dataRuangan = Ruangan::all();
         $dataJenis = JenisAset::all();
-        // $dataJurusan = AsetController::getPrasarana('all', 0);
         $dataJurusan = Jurusan::all();
-        // dd($dataJurusan);
+        // dd($dataJurusan[0]->id_jurusan);
         $dataKondisi = Kondisi::all();
 
-        // dd($dataJurusan);
         $dataAset = DB::table('asets')
             ->leftJoin('jurusans', 'jurusans.id_jurusan', '=', 'asets.kode_jurusan')
             ->leftJoin('ruangans', 'ruangans.id_ruangan', '=', 'asets.id_ruangan')

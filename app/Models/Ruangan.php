@@ -10,6 +10,7 @@ class Ruangan extends Model
     use HasFactory;
     protected $primaryKey = 'id_ruangan';
     protected $guarded = ['id_ruangan'];
-    
+    protected $keyType = 'string';
+    public $incrementing = false;
     
 }
