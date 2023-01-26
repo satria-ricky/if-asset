@@ -180,7 +180,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    {{-- <script src={{ asset('js/mychart.js') }}></script> --}}
+    <script>
+        var dataBarchartjenisaset = @JSON($data);
+        var tahun = @JSON($tahun);
+
+    </script>
 
     <script>
         $.ajaxSetup({
@@ -191,75 +195,42 @@
 
         window.onload = function() {
 
-            var data = {
-                labels: ['Label 1', 'Label 2', 'Label 3', 'Label 1', 'Label 2'], // The labels array
-                datasets: [{
-                    label: 'ATK',
-                    data: [100, 200, 300, 400, 500] // The data array
-                }, {
-                    label: 'Elektronik',
-                    data: [100, 200, 300, 400, 500] // The data array
-                }, {
-                    label: 'Apa',
-                    data: [100, 200, 300, 400, 500] // The data array
-                }]
-            };
+
+            // $.ajax({
+            //     url: "/BarChartDataAset",
+            //     method: "GET",
+            //     dataType: "json",
+            //     success: function(result) {
+            //         console.log(result);
 
 
-            function dataBarChart(tahun, jenis, warna, value) {
 
-                console.log(tahun, jenis, warna, value);
-            }
-
+            //     }
+            // });
 
             var ctx = document.getElementById('myChartJenisAset').getContext('2d');
-            var chart = new Chart(ctx, {
+            var barchartJenisAsetPerTahun = new Chart(ctx, {
                 type: 'bar',
-                data: data,
-                options: {}
-            });
-
-            $.ajax({
-                url: "/BarChartDataAset",
-                method: "GET",
-                dataType: "json",
-                success: function(result) {
-                    // console.log(result.data);
-                    
-                    for (var data in result) {
-                        console.log(result[data]);
-                        // dataBarChart(result[data].tahun_pengadaan, result[data].nama_jenis, result[data].warna_jenis, result[data].jumlah_aset);
-                    }
-
-                   
+                data: {
+                    labels: tahun, 
+                    datasets: dataBarchartjenisaset
                 }
             });
 
-
-            // var ctxMahasiswa = document.getElementById("myChartJenisAset").getContext("2d");
-            // new Chart(ctxMahasiswa, { type: "bar", data: barData, options: barOptions });
-
-
-            // for (let i = 0; i < kerjasama_pendidikan.length; i++) {
+            // for (let i = 0; i < dataBarchartjenisaset.length - 2; i++) {
             //     // Generate a label
-            //     const label = kerjasama_pendidikan[i].tahun;
+            //     const label = dataBarchartjenisaset[i].tahun;
 
             //     // Push the label to the labels array
-            //     chart_kerjasam_pendidikan.data.labels.push(label);
+            //     barchartJenisAsetPerTahun.data.labels.push(label);
 
             //     // Push a data point to the dataset
-            //     chart_kerjasam_pendidikan.data.datasets[0].data.push(
-            //         kerjasama_pendidikan[i].lulus_seleksi
-            //     );
-            //     chart_kerjasam_pendidikan.data.datasets[1].data.push(
-            //         kerjasama_pendidikan[i].baru_reguler
-            //     );
-            //     chart_kerjasam_pendidikan.data.datasets[2].data.push(
-            //         kerjasama_pendidikan[i].aktif_reguler
+            //     barchartJenisAsetPerTahun.data.datasets[i].data.push(
+            //         dataBarchartjenisaset[i].isi
             //     );
             // }
-            // chart_kerjasam_pendidikan.update();
 
+            // barchartJenisAsetPerTahun.update();
 
         }
 

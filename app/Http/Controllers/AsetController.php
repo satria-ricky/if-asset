@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use LDAP\Result;
+use PhpParser\Node\Stmt\Return_;
 
 class AsetController extends Controller
 {
@@ -52,53 +53,62 @@ class AsetController extends Controller
     {
         $data = DB::select('SELECT jenis_asets.nama_jenis, SUM(jumlah) as jumlah, tahun_pengadaan FROM `asets` LEFT JOIN jenis_asets ON asets.id_jenis = jenis_asets.id_jenis GROUP by asets.id_jenis, tahun_pengadaan order by tahun_pengadaan;');
 
+        $jenis = DB::select('SELECT DISTINCT(jenis_asets.nama_jenis) FROM `asets` join jenis_asets on jenis_asets.id_jenis = asets.id_jenis ;');
 
-        // dd($data);
-        $tahun = Array();
-        $a = Array();
-        $b = Array();
-        $c = Array();
+        $tahun = array();
+
+        // dd($jenis);
+        $index =0;
+        $re = [];
+        foreach($jenis as $isi) { 
+            // dd($isi->nama_jenis);
+            
+            $re[ $isi->nama_jenis] = [];
+            
+        }
+
+        // dd($re);
+        
         foreach($data as $item) {
-            // dd($item->tahun_pengadaan);
-            // echo 
-            if (!in_array($item->tahun_pengadaan,$tahun)) {
+            if(!in_array($item->tahun_pengadaan, $tahun)){
                 array_push($tahun,$item->tahun_pengadaan);
-                if ($item->id_jenis ==1) {
+                // dd($re[0]['Elektronik']);
+                foreach ($jenis as $jn) {
+                    if ($item->nama_jenis == $jn->nama_jenis) {
+                        array_push($re[$jn->nama_jenis], $item->jumlah);
+                        // break;
+                    } else {
+                        array_push($re[$jn->nama_jenis], 0);
+                    }
                     
-                        array_push($a,$item->jumlah_aset);
-
-                        array_push($b,0);
-                        array_push($c,0);
-
-                }if ($item->id_jenis ==2) {
-                    array_push($a,0);
-                    array_push($b,$item->jumlah_aset);
-                    array_push($c,0);
-                }if ($item->id_jenis ==3) {
-                    array_push($a,$item->jumlah_aset);
-                        array_push($b,0);
-                        array_push($c,0);
                 }
+                
             } else {
-                if ($item->id_jenis ==1) {
-                    $a[count($a)-1] = $item->jumlah_aset;
+                foreach ($jenis as $jn) {
 
-            }if ($item->id_jenis ==2) {
-                $b[count($b)-1] = $item->jumlah_aset;
-            }if ($item->id_jenis ==3) {
-                $c[count($c)-1] = $item->jumlah_aset;
-            }
+                    if ($item->nama_jenis == $jn->nama_jenis) {
+                        $re[$jn->nama_jenis][count($re[$jn->nama_jenis])-1] = $item->jumlah;
+                        // break;
+                    } 
+                    
+                }
             }
         } 
-        $isi['a'] = $a;
-        $isi['b'] = $b;
-        $isi['c'] = $c;
-        $isi['tahun'] = $tahun;
 
-        dd($isi);
-        
+        // 
+        $re['tahun'] = $tahun;
+        $re['jenis_aset'] = DB::select('SELECT nama_jenis,warna_jenis FROM jenis_asets');
+        // dd($re);
+        // $array = json_encode($re, true);
+        // return $array;
+        // return $re;
+        $data = [];
+        foreach ($re as $i => $a){
+            array_push($data,['nama' => $i, 'isi' => $a]);
+        }
+        // dd($data);
         return response()->json([
-            'data' => $data
+            'data' =>  $data
         ]);
     }
 

@@ -31,10 +31,70 @@ class UserController extends Controller
         $dataKondisi = Kondisi::all();
 
         // SELECT jenis_asets.nama_jenis, COUNT(asets.id_kondisi) as jumlah_aset FROM tb_subbidang LEFT JOIN tb_keluar ON tb_subbidang.sub_id = tb_keluar.id_subbidang_keluar GROUP BY sub_id_bidang ORDER BY sub_id_bidang ASC
+        
+        $data = DB::select('SELECT jenis_asets.nama_jenis, SUM(jumlah) as jumlah, tahun_pengadaan FROM `asets` LEFT JOIN jenis_asets ON asets.id_jenis = jenis_asets.id_jenis GROUP by asets.id_jenis, tahun_pengadaan order by tahun_pengadaan;');
+
+        $jenis = DB::select('SELECT DISTINCT(jenis_asets.nama_jenis) FROM `asets` join jenis_asets on jenis_asets.id_jenis = asets.id_jenis ;');
+
+        $tahun = array();
+
+        // dd($jenis);
+        $index =0;
+        $re = [];
+        foreach($jenis as $isi) { 
+            // dd($isi->nama_jenis);
+            
+            $re[ $isi->nama_jenis] = [];
+            
+        }
+
+        // dd($re);
+        
+        foreach($data as $item) {
+            if(!in_array($item->tahun_pengadaan, $tahun)){
+                array_push($tahun,$item->tahun_pengadaan);
+                // dd($re[0]['Elektronik']);
+                foreach ($jenis as $jn) {
+                    if ($item->nama_jenis == $jn->nama_jenis) {
+                        array_push($re[$jn->nama_jenis], $item->jumlah);
+                        // break;
+                    } else {
+                        array_push($re[$jn->nama_jenis], 0);
+                    }
+                    
+                }
+                
+            } else {
+                foreach ($jenis as $jn) {
+
+                    if ($item->nama_jenis == $jn->nama_jenis) {
+                        $re[$jn->nama_jenis][count($re[$jn->nama_jenis])-1] = $item->jumlah;
+                        // break;
+                    } 
+                    
+                }
+            }
+        } 
+
+        // 
+        // $re['jenis_aset'] = DB::select('SELECT nama_jenis,warna_jenis FROM jenis_asets');
+        // dd($re);
+        // $array = json_encode($re, true);
+        // return $array;
+        // return $re;
+        $data = [];
+        foreach ($re as $i => $a){
+            array_push($data,['label' => $i, 'data' => $a]);
+        }
+        // dd($data);
+
+
         return view('Auth.home', [
             'title' => 'Inventaris Aset PSTI-UNRAM',
             'dataJenis' => $dataJenis,
-            'dataKondisi' => $dataKondisi
+            'dataKondisi' => $dataKondisi,
+            'data' =>  $data,
+            'tahun' =>  $tahun,
         ]);
     }
 
