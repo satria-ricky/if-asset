@@ -12,6 +12,7 @@ use App\Http\Controllers\JenisAsetController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\SSOController;
 use App\Models\JenisAset;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use LaravelQRCode\Facades\QRCode as FacadesQRCode;
@@ -45,7 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/asetByRuangan', [AsetController::class, 'asetByRuangan'])->name('asetByRuangan');
 
     //FILTER LAPORAN
-    Route::get('/list_laporan',[LaporanController::class,'list_laporan']);
+    Route::get('/list_laporan',[LaporanController::class,'list_laporan'])->name('list_laporan');
     Route::post('/filterLaporan',[LaporanController::class,'filterLaporan']);
 
 
@@ -80,7 +81,7 @@ Route::group(['middleware' => ['auth','ceklevel:1']], function () {
     Route::post('/hapus_jurusan', [JurusanController::class, 'hapus_jurusan']);
 
     //RUANGAN
-    Route::get('/list_ruangan',[RuanganController::class,'list_ruangan']);
+    Route::get('/list_ruangan',[RuanganController::class,'list_ruangan'])->name('list_ruangan');
     Route::post('/tambah_ruangan', [RuanganController::class, 'tambah_ruangan']);
     Route::post('/edit_ruangan', [RuanganController::class, 'edit_ruangan']);
     Route::post('/hapus_ruangan', [RuanganController::class, 'hapus_ruangan']);
@@ -131,9 +132,9 @@ Route::group(['middleware' => ['auth','ceklevel:4']], function () {
    
 });
 
-Route::get('/', [UserController::class, 'tampil_home']);
+Route::get('/', [UserController::class, 'tampil_home'])->name('home');
 Route::get('/auth', [UserController::class, 'tampil_login'])->name("login");
-Route::post('/login', [UserController::class, 'login']);
+// Route::post('/login', [UserController::class, 'login']);
 
 // DETAIL
 Route::get('/detail_aset/{id}', [AsetController::class, 'tampil_detail_aset']);
@@ -152,6 +153,11 @@ Route::post('/chartByJenis', [AsetController::class, 'chartByJenis']);
 Route::get('/chartAllAset', [AsetController::class, 'chartAllAset']);
 
 Route::get('/BarChartDataAset', [AsetController::class, 'BarChartDataAset']);
+
+Route::post('/login', [SSOController::class, 'login']);
+Route::get('/sso', [SSOController::class, 'logout_sso'])->name('logout');
+Route::get('/logout', [SSOController::class, 'logout']);
+
 
 
 

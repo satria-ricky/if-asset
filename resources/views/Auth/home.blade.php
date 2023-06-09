@@ -44,7 +44,7 @@
                     <div class="carousel-caption">
                         <h1 class="wow zoomIn animated"> Inventaris Aset </h1>
                         <p class="wow zoomIn animated"> Sistem Informasi Inventaris Aset PSTI-UNRAM </p> <br />
-                        <p> <br /> <a class="btn btn-lg btn-success" href="/auth"> <i class="fa fa-lock"></i>
+                        <p> <br /> <a class="btn btn-lg btn-success" href="{{env('SSO_NAME')}}"> <i class="fa fa-lock"></i>
                                 &nbsp;Masuk </a> </p>
                     </div>
                     <div class="carousel-image wow zoomIn animated"> <img src="{{ asset('storage/logo/logoPSTI.jpg') }}"
