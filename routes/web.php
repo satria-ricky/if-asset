@@ -133,7 +133,7 @@ Route::group(['middleware' => ['auth','ceklevel:4']], function () {
 });
 
 Route::get('/', [UserController::class, 'tampil_home'])->name('home');
-Route::get('/auth', [UserController::class, 'tampil_login'])->name("login");
+// Route::get('/auth', [UserController::class, 'tampil_login'])->name("login");
 // Route::post('/login', [UserController::class, 'login']);
 
 // DETAIL
@@ -154,7 +154,8 @@ Route::get('/chartAllAset', [AsetController::class, 'chartAllAset']);
 
 Route::get('/BarChartDataAset', [AsetController::class, 'BarChartDataAset']);
 
-Route::post('/login', [SSOController::class, 'login']);
+Route::post('auth', [SSOController::class, 'login']);
+Route::get('auth', [SSOController::class, 'login']);
 Route::get('/sso', [SSOController::class, 'logout_sso'])->name('logout');
 Route::get('/logout', [SSOController::class, 'logout']);
 

@@ -55,7 +55,7 @@
                             {{-- <a href="/logout">
                                 <i class="fa fa-sign-out"></i> Keluar
                             </a> --}}
-                            <form action="{{route('logout')}}" method="post">
+                            <form action="{{route('logout')}}" method="get">
 								@csrf
                                 <button type="submit" class="btn btn-outline btn-link" onclick="return confirm('Are you sure?')"><i class="fa fa-sign-out"></i> Keluar</button>
 
